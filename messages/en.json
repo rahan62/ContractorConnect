@@ -18,7 +18,11 @@
       "title": "Sign in",
       "email": "Email",
       "password": "Password",
-      "submit": "Sign in"
+      "submit": "Sign in",
+      "errors": {
+        "turnstileRequired": "Please complete the security verification.",
+        "turnstileFailed": "Security verification failed. Please try again."
+      }
     },
     "register": {
       "title": "Register",
@@ -37,7 +41,9 @@
       "authorizedPhone": "Authorized person phone",
       "success": "Registration successful. Please check your email to verify your account.",
       "errors": {
-        "failed": "Registration failed"
+        "failed": "Registration failed",
+        "turnstileRequired": "Please complete the security verification.",
+        "turnstileFailed": "Security verification failed. Please try again."
       }
     }
   },

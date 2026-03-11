@@ -15,6 +15,8 @@ export default function SignInPage() {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileEnabled = process.env.NEXT_PUBLIC_TURNSTILE_ENABLED !== "false" && Boolean(siteKey);
 
   useEffect(() => {
     setMounted(true);
@@ -23,12 +25,32 @@ export default function SignInPage() {
   useEffect(() => {
     (window as any).onTurnstileSuccess = (token: string) => {
       setTurnstileToken(token);
+      setError(null);
     };
-  }, []);
+    (window as any).onTurnstileExpired = () => {
+      setTurnstileToken(null);
+      setError(t("errors.turnstileRequired"));
+    };
+    (window as any).onTurnstileError = () => {
+      setTurnstileToken(null);
+      setError(t("errors.turnstileFailed"));
+    };
+    return () => {
+      delete (window as any).onTurnstileSuccess;
+      delete (window as any).onTurnstileExpired;
+      delete (window as any).onTurnstileError;
+    };
+  }, [t]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (turnstileEnabled && !turnstileToken) {
+      setError(t("errors.turnstileRequired"));
+      return;
+    }
+
     setLoading(true);
 
     const result = await signIn("credentials", {
@@ -47,8 +69,6 @@ export default function SignInPage() {
 
     router.push(`/${locale}/dashboard`);
   }
-
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md items-center px-4">
@@ -74,11 +94,13 @@ export default function SignInPage() {
             required
           />
         </div>
-        {mounted && siteKey && (
+        {mounted && turnstileEnabled && siteKey && (
           <div
             className="cf-turnstile mt-2"
             data-sitekey={siteKey}
             data-callback="onTurnstileSuccess"
+            data-expired-callback="onTurnstileExpired"
+            data-error-callback="onTurnstileError"
           />
         )}
         {error && <p className="text-sm text-red-600">{error}</p>}

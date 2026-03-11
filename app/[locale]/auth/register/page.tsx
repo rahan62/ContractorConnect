@@ -23,6 +23,8 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileEnabled = process.env.NEXT_PUBLIC_TURNSTILE_ENABLED !== "false" && Boolean(siteKey);
 
   useEffect(() => {
     setMounted(true);
@@ -31,8 +33,22 @@ export default function RegisterPage() {
   useEffect(() => {
     (window as any).onTurnstileSuccess = (token: string) => {
       setTurnstileToken(token);
+      setError(null);
     };
-  }, []);
+    (window as any).onTurnstileExpired = () => {
+      setTurnstileToken(null);
+      setError(t("errors.turnstileRequired"));
+    };
+    (window as any).onTurnstileError = () => {
+      setTurnstileToken(null);
+      setError(t("errors.turnstileFailed"));
+    };
+    return () => {
+      delete (window as any).onTurnstileSuccess;
+      delete (window as any).onTurnstileExpired;
+      delete (window as any).onTurnstileError;
+    };
+  }, [t]);
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm(prev => ({ ...prev, [key]: value }));
@@ -42,6 +58,12 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    if (turnstileEnabled && !turnstileToken) {
+      setError(t("errors.turnstileRequired"));
+      return;
+    }
+
     setLoading(true);
 
     const res = await fetch("/api/auth/register", {
@@ -62,7 +84,6 @@ export default function RegisterPage() {
     setTimeout(() => router.push(`/${locale}/auth/signin`), 2500);
   }
 
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const isCompany = form.userType === "CONTRACTOR" || form.userType === "SUBCONTRACTOR";
 
   return (
@@ -153,11 +174,13 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {mounted && siteKey && (
+        {mounted && turnstileEnabled && siteKey && (
           <div
             className="cf-turnstile mt-2"
             data-sitekey={siteKey}
             data-callback="onTurnstileSuccess"
+            data-expired-callback="onTurnstileExpired"
+            data-error-callback="onTurnstileError"
           />
         )}
 

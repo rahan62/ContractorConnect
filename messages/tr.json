@@ -18,7 +18,11 @@
       "title": "Giriş Yap",
       "email": "E-posta",
       "password": "Şifre",
-      "submit": "Giriş Yap"
+      "submit": "Giriş Yap",
+      "errors": {
+        "turnstileRequired": "Lütfen güvenlik doğrulamasını tamamlayın.",
+        "turnstileFailed": "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
+      }
     },
     "register": {
       "title": "Kayıt Ol",
@@ -37,7 +41,9 @@
       "authorizedPhone": "Yetkili kişi telefonu",
       "success": "Kayıt başarılı. Hesabınızı doğrulamak için lütfen e-postanızı kontrol edin.",
       "errors": {
-        "failed": "Kayıt işlemi başarısız oldu"
+        "failed": "Kayıt işlemi başarısız oldu",
+        "turnstileRequired": "Lütfen güvenlik doğrulamasını tamamlayın.",
+        "turnstileFailed": "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
       }
     }
   },
