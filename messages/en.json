@@ -10,7 +10,8 @@
     "profile": "Profile",
     "company": "Company information",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "toggleNavigation": "Toggle navigation"
   },
   "auth": {
     "signin": {
@@ -22,16 +23,45 @@
     "register": {
       "title": "Register",
       "name": "Name",
+      "email": "Email",
+      "password": "Password",
       "userType": "User type",
       "contractor": "Contractor",
       "subcontractor": "Sub-contractor",
       "team": "Team",
-      "submit": "Register"
+      "submit": "Register",
+      "companyInfo": "Company information",
+      "taxOffice": "Company tax office",
+      "taxNumber": "Company tax number",
+      "authorizedName": "Authorized person name",
+      "authorizedPhone": "Authorized person phone",
+      "success": "Registration successful. Please check your email to verify your account.",
+      "errors": {
+        "failed": "Registration failed"
+      }
     }
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back"
+    "welcome": "Welcome back, {email}.",
+    "loading": "Loading dashboard..."
+  },
+  "profile": {
+    "title": "Profile",
+    "loading": "Loading profile...",
+    "fields": {
+      "email": "Email",
+      "name": "Name",
+      "phone": "Phone",
+      "userType": "User type"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "themeTitle": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
   "directory": {
     "contractorsTitle": "Contractors directory",
@@ -51,7 +81,12 @@
     "title": "Contracts",
     "loading": "Loading contracts...",
     "new": "New contract",
-    "empty": "No contracts yet."
+    "empty": "No contracts yet.",
+    "startLabel": "Start",
+    "days": "days",
+    "noStartDate": "Start date not set",
+    "noDuration": "Duration not set",
+    "contractId": "Contract ID"
   },
   "contractCreate": {
     "title": "New contract",
@@ -192,12 +227,67 @@
     "daysLabel": "days",
     "noStartDate": "Start date not set",
     "noDuration": "Duration not set",
+    "statuses": {
+      "DRAFT": "Draft",
+      "OPEN_FOR_BIDS": "Open for bids",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
     "metrics": {
       "completed": "Completed jobs",
       "active": "Active contracts",
       "total": "Total contracts",
       "references": "References"
     }
+  },
+  "homePage": {
+    "hero": {
+      "badge": "Built for modern construction teams",
+      "title": "Find the right partners and move every project forward with confidence.",
+      "description": "Taseron helps contractors, sub-contractors and teams connect around verified company profiles, project files and transparent contract workflows.",
+      "primaryCta": "Create account",
+      "secondaryCta": "Sign in"
+    },
+    "signedIn": {
+      "title": "Available contracts",
+      "description": "Review active opportunities, examine project details and move into bidding faster.",
+      "viewAll": "Open contracts page",
+      "empty": "There are no contracts available right now.",
+      "noDescription": "No description provided.",
+      "startLabel": "Start",
+      "days": "days",
+      "noStartDate": "Start date not set",
+      "noDuration": "Duration not set"
+    },
+    "statuses": {
+      "DRAFT": "Draft",
+      "OPEN_FOR_BIDS": "Open for bids",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "footer": {
+    "tagline": "Professional contract and company management for contractors, sub-contractors and field teams.",
+    "sections": {
+      "platform": "Platform",
+      "account": "Account",
+      "contact": "Contact"
+    },
+    "links": {
+      "home": "Home",
+      "contracts": "Contracts",
+      "contractors": "Find Contractor",
+      "subcontractors": "Find Sub-contractor",
+      "teams": "Find Team",
+      "signin": "Sign in",
+      "register": "Register",
+      "company": "Company information",
+      "settings": "Settings"
+    },
+    "contactText": "Reach out for partnerships, support requests or platform onboarding.",
+    "copyright": "© 2026 Taseron. All rights reserved."
   }
 }
 

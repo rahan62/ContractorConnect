@@ -51,11 +51,11 @@ export default function ContractsPage() {
 
   return (
       <section className="mx-auto max-w-5xl px-4 py-8">
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-semibold">{t("title")}</h1>
           <Link
             href={`/${locale}/contracts/new`}
-            className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+            className="inline-flex w-full items-center justify-center rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground sm:w-auto"
           >
             {t("new")}
           </Link>
@@ -85,11 +85,11 @@ export default function ContractsPage() {
               <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                 {c.description ?? ""}
               </p>
-              <div className="mt-3 flex gap-4 text-xs text-muted-foreground">
-                <span>{c.startsAt ? `Start: ${new Date(c.startsAt).toLocaleDateString()}` : "Start date not set"}</span>
-                <span>{c.totalDays ? `${c.totalDays} days` : "Duration not set"}</span>
+              <div className="mt-3 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:gap-4">
+                <span>{c.startsAt ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}` : t("noStartDate")}</span>
+                <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">Contract ID: {c.id}</p>
+              <p className="mt-3 break-all text-xs text-muted-foreground">{t("contractId")}: {c.id}</p>
             </div>
           </Link>
         ))}

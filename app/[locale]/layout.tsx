@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { getMessages } from "next-intl/server";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { AppProviders } from "../providers";
 
 export default async function LocaleLayout({
@@ -18,6 +19,7 @@ export default async function LocaleLayout({
         {/* Navbar is a client component */}
         <Navbar />
         <main className="flex-1">{children}</main>
+        <Footer locale={params.locale} />
       </div>
     </AppProviders>
   );

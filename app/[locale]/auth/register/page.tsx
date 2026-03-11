@@ -54,11 +54,11 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.message ?? "Registration failed");
+      setError(data.message ?? t("errors.failed"));
       return;
     }
 
-    setSuccess("Registration successful. Please check your email to verify your account.");
+    setSuccess(t("success"));
     setTimeout(() => router.push(`/${locale}/auth/signin`), 2500);
   }
 
@@ -80,7 +80,7 @@ export default function RegisterPage() {
             />
           </div>
           <div className="space-y-1">
-            <label className="block text-sm font-medium">Email</label>
+            <label className="block text-sm font-medium">{t("email")}</label>
             <input
               type="email"
               className="mt-1 w-full rounded border px-3 py-2 text-sm"
@@ -90,7 +90,7 @@ export default function RegisterPage() {
             />
           </div>
           <div className="space-y-1">
-            <label className="block text-sm font-medium">Password</label>
+            <label className="block text-sm font-medium">{t("password")}</label>
             <input
               type="password"
               className="mt-1 w-full rounded border px-3 py-2 text-sm"
@@ -115,10 +115,10 @@ export default function RegisterPage() {
 
         {isCompany && (
           <div className="mt-4 space-y-3 rounded-md border p-3">
-            <h2 className="text-sm font-semibold">Company information</h2>
+            <h2 className="text-sm font-semibold">{t("companyInfo")}</h2>
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-1">
-                <label className="block text-sm font-medium">Company tax office</label>
+                <label className="block text-sm font-medium">{t("taxOffice")}</label>
                 <input
                   className="mt-1 w-full rounded border px-3 py-2 text-sm"
                   value={form.companyTaxOffice}
@@ -126,7 +126,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="block text-sm font-medium">Company tax number</label>
+                <label className="block text-sm font-medium">{t("taxNumber")}</label>
                 <input
                   className="mt-1 w-full rounded border px-3 py-2 text-sm"
                   value={form.companyTaxNumber}
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="block text-sm font-medium">Authorized person name</label>
+                <label className="block text-sm font-medium">{t("authorizedName")}</label>
                 <input
                   className="mt-1 w-full rounded border px-3 py-2 text-sm"
                   value={form.authorizedPersonName}
@@ -142,7 +142,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="block text-sm font-medium">Authorized person phone</label>
+                <label className="block text-sm font-medium">{t("authorizedPhone")}</label>
                 <input
                   className="mt-1 w-full rounded border px-3 py-2 text-sm"
                   value={form.authorizedPersonPhone}

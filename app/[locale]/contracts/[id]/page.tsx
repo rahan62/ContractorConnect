@@ -104,7 +104,7 @@ export default function ContractDetailPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-8 space-y-6">
       <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
-        <div className="h-72 w-full overflow-hidden border-b bg-slate-100">
+        <div className="h-52 w-full overflow-hidden border-b bg-slate-100 sm:h-64 lg:h-72">
           {imageUrls[0] ? (
             <img src={imageUrls[0]} alt={contract.title} className="h-full w-full object-cover" />
           ) : (
@@ -113,9 +113,9 @@ export default function ContractDetailPage() {
             </div>
           )}
         </div>
-        <div className="grid gap-6 p-6 lg:grid-cols-[1.4fr,0.9fr]">
+        <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[1.4fr,0.9fr]">
           <div>
-            <h1 className="text-3xl font-semibold">{contract.title}</h1>
+            <h1 className="text-2xl font-semibold sm:text-3xl">{contract.title}</h1>
             <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
               <span className="rounded-full border px-3 py-1">
                 {contract.startsAt
@@ -156,7 +156,7 @@ export default function ContractDetailPage() {
       </div>
 
       {imageUrls.length > 1 && (
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {imageUrls.slice(1).map(url => (
             <div key={url} className="overflow-hidden rounded-xl border bg-card">
               <img src={url} alt={contract.title} className="h-56 w-full object-cover" />
@@ -193,7 +193,7 @@ export default function ContractDetailPage() {
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground"
+            className="w-full rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground sm:w-auto"
           >
             {t("bid.submit")}
           </button>
@@ -212,7 +212,7 @@ export default function ContractDetailPage() {
           />
           <button
             type="submit"
-            className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground"
+            className="w-full rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground sm:w-auto"
           >
             {t("comment.submit")}
           </button>

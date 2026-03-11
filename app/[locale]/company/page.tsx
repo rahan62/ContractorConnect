@@ -105,13 +105,13 @@ export default function CompanyPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to upload file");
+        throw new Error(t("messages.uploadFailed"));
       }
 
       const data = await res.json();
       const url = data.url ?? data.path ?? data.key;
       if (!url) {
-        throw new Error("Upload response did not contain file URL");
+        throw new Error(t("messages.uploadFailed"));
       }
 
       update(field as keyof typeof form, url as never);
@@ -218,7 +218,7 @@ export default function CompanyPage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8 space-y-6">
+    <section className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <h1 className="text-2xl font-semibold">{t("title")}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border bg-card p-4">
@@ -250,7 +250,7 @@ export default function CompanyPage() {
                 onChange={e => handleFileChange("logoUrl", e.target.files)}
               />
               {form.logoUrl && (
-                <img src={form.logoUrl} alt="Logo" className="mt-2 h-16 w-16 rounded border object-cover" />
+                <img src={form.logoUrl} alt={t("logo")} className="mt-2 h-16 w-16 rounded border object-cover" />
               )}
             </div>
             <div className="space-y-1">
@@ -261,7 +261,7 @@ export default function CompanyPage() {
                 onChange={e => handleFileChange("bannerUrl", e.target.files)}
               />
               {form.bannerUrl && (
-                <img src={form.bannerUrl} alt="Banner" className="mt-2 h-20 w-full rounded border object-cover" />
+                <img src={form.bannerUrl} alt={t("banner")} className="mt-2 h-20 w-full rounded border object-cover" />
               )}
             </div>
           </div>
@@ -346,7 +346,7 @@ export default function CompanyPage() {
         <button
           type="submit"
           disabled={saving}
-          className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+          className="w-full rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60 sm:w-auto"
         >
           {saving ? t("saving") : t("save")}
         </button>
@@ -433,19 +433,19 @@ export default function CompanyPage() {
                               <option value="CANCELLED">{t("contracts.statuses.CANCELLED")}</option>
                             </select>
                           </div>
-                          <div className="flex items-end gap-2">
+                          <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
                             <button
                               type="button"
                               onClick={() => void saveContract(contract.id)}
                               disabled={savingContract}
-                              className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+                              className="w-full rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground sm:w-auto"
                             >
                               {savingContract ? t("contracts.messages.saving") : t("contracts.actions.save")}
                             </button>
                             <button
                               type="button"
                               onClick={() => setEditingContractId(null)}
-                              className="rounded border px-3 py-2 text-sm"
+                              className="w-full rounded border px-3 py-2 text-sm sm:w-auto"
                             >
                               {t("contracts.actions.cancel")}
                             </button>
@@ -460,18 +460,18 @@ export default function CompanyPage() {
                                 {contract.description ?? t("contracts.noDescription")}
                               </p>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                               <button
                                 type="button"
                                 onClick={() => startEditing(contract)}
-                                className="rounded border px-3 py-2 text-sm font-medium hover:bg-slate-50"
+                                className="w-full rounded border px-3 py-2 text-sm font-medium hover:bg-slate-50 sm:w-auto"
                               >
                                 {t("contracts.actions.edit")}
                               </button>
                               <button
                                 type="button"
                                 onClick={() => void deleteContract(contract.id)}
-                                className="rounded bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500"
+                                className="w-full rounded bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 sm:w-auto"
                               >
                                 {t("contracts.actions.delete")}
                               </button>

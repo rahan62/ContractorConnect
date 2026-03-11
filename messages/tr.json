@@ -10,7 +10,8 @@
     "profile": "Profil",
     "company": "Firma bilgileri",
     "settings": "Ayarlar",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış Yap",
+    "toggleNavigation": "Gezinmeyi aç veya kapat"
   },
   "auth": {
     "signin": {
@@ -22,16 +23,45 @@
     "register": {
       "title": "Kayıt Ol",
       "name": "Firma Adı",
+      "email": "E-posta",
+      "password": "Şifre",
       "userType": "Kullanıcı tipi",
       "contractor": "Yüklenici",
       "subcontractor": "Alt Yüklenici",
       "team": "Ekip",
-      "submit": "Kayıt Ol"
+      "submit": "Kayıt Ol",
+      "companyInfo": "Firma bilgileri",
+      "taxOffice": "Vergi dairesi",
+      "taxNumber": "Vergi numarası",
+      "authorizedName": "Yetkili kişi adı",
+      "authorizedPhone": "Yetkili kişi telefonu",
+      "success": "Kayıt başarılı. Hesabınızı doğrulamak için lütfen e-postanızı kontrol edin.",
+      "errors": {
+        "failed": "Kayıt işlemi başarısız oldu"
+      }
     }
   },
   "dashboard": {
     "title": "Panel",
-    "welcome": "Tekrar hoş geldiniz"
+    "welcome": "Tekrar hoş geldiniz, {email}.",
+    "loading": "Panel yükleniyor..."
+  },
+  "profile": {
+    "title": "Profil",
+    "loading": "Profil yükleniyor...",
+    "fields": {
+      "email": "E-posta",
+      "name": "Ad",
+      "phone": "Telefon",
+      "userType": "Kullanıcı tipi"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "themeTitle": "Tema",
+    "light": "Açık",
+    "dark": "Koyu",
+    "system": "Sistem"
   },
   "directory": {
     "contractorsTitle": "Yüklenici rehberi",
@@ -51,7 +81,12 @@
     "title": "Sözleşmeler",
     "loading": "Sözleşmeler yükleniyor...",
     "new": "Yeni sözleşme",
-    "empty": "Henüz sözleşme yok."
+    "empty": "Henüz sözleşme yok.",
+    "startLabel": "Başlangıç",
+    "days": "gün",
+    "noStartDate": "Başlangıç tarihi yok",
+    "noDuration": "Süre belirtilmemiş",
+    "contractId": "Sözleşme ID"
   },
   "contractCreate": {
     "title": "Yeni sözleşme",
@@ -192,12 +227,67 @@
     "daysLabel": "gün",
     "noStartDate": "Başlangıç tarihi yok",
     "noDuration": "Süre belirtilmemiş",
+    "statuses": {
+      "DRAFT": "Taslak",
+      "OPEN_FOR_BIDS": "Teklife açık",
+      "ACTIVE": "Aktif",
+      "COMPLETED": "Tamamlandı",
+      "CANCELLED": "İptal edildi"
+    },
     "metrics": {
       "completed": "Tamamlanan işler",
       "active": "Aktif sözleşmeler",
       "total": "Toplam sözleşme",
       "references": "Referanslar"
     }
+  },
+  "homePage": {
+    "hero": {
+      "badge": "Modern insaat ekipleri icin tasarlandi",
+      "title": "Dogru is ortaklarini bulun ve her projeyi guvenle ileri tasiyin.",
+      "description": "Taseron; yuklenicilerin, alt yuklenicilerin ve ekiplerin dogrulanmis firma profilleri, proje dosyalari ve seffaf sozlesme surecleri etrafinda bulusmasini saglar.",
+      "primaryCta": "Hesap olustur",
+      "secondaryCta": "Giris yap"
+    },
+    "signedIn": {
+      "title": "Mevcut sozlesmeler",
+      "description": "Aktif firsatlari inceleyin, proje detaylarini gorun ve teklif surecine daha hizli gecin.",
+      "viewAll": "Sozlesmeler sayfasini ac",
+      "empty": "Su anda kullanilabilir sozlesme bulunmuyor.",
+      "noDescription": "Aciklama girilmemis.",
+      "startLabel": "Baslangic",
+      "days": "gun",
+      "noStartDate": "Baslangic tarihi yok",
+      "noDuration": "Sure belirtilmemis"
+    },
+    "statuses": {
+      "DRAFT": "Taslak",
+      "OPEN_FOR_BIDS": "Teklife acik",
+      "ACTIVE": "Aktif",
+      "COMPLETED": "Tamamlandi",
+      "CANCELLED": "Iptal edildi"
+    }
+  },
+  "footer": {
+    "tagline": "Yukleniciler, alt yukleniciler ve saha ekipleri icin profesyonel sozlesme ve firma yonetimi.",
+    "sections": {
+      "platform": "Platform",
+      "account": "Hesap",
+      "contact": "Iletisim"
+    },
+    "links": {
+      "home": "Ana sayfa",
+      "contracts": "Sozlesmeler",
+      "contractors": "Yuklenici Bul",
+      "subcontractors": "Alt Yuklenici Bul",
+      "teams": "Ekip Bul",
+      "signin": "Giris yap",
+      "register": "Kayit ol",
+      "company": "Firma bilgileri",
+      "settings": "Ayarlar"
+    },
+    "contactText": "Is birlikleri, destek talepleri veya platform kurulumu icin bize ulasin.",
+    "copyright": "© 2026 Taseron. Tum haklari saklidir."
   }
 }
 

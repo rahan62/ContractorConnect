@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ProfileData {
   email: string;
@@ -13,14 +14,16 @@ interface ProfileData {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("profile");
   const { data: session, status } = useSession();
   const [user, setUser] = useState<ProfileData | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/en/auth/signin");
+      router.push(`/${locale}/auth/signin`);
     }
-  }, [status, router]);
+  }, [status, router, locale]);
 
   useEffect(() => {
     async function load() {
@@ -42,26 +45,26 @@ export default function ProfilePage() {
   if (!session || !user) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-8">
-        <p className="text-sm text-muted-foreground">Loading profile...</p>
+        <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+      <h1 className="mb-4 text-2xl font-semibold">{t("title")}</h1>
       <div className="space-y-2 rounded-lg border bg-card p-4">
         <p>
-          <span className="font-medium">Email:</span> {user.email}
+          <span className="font-medium">{t("fields.email")}:</span> {user.email}
         </p>
         <p>
-          <span className="font-medium">Name:</span> {user.name ?? "-"}
+          <span className="font-medium">{t("fields.name")}:</span> {user.name ?? "-"}
         </p>
         <p>
-          <span className="font-medium">Phone:</span> {user.phone ?? "-"}
+          <span className="font-medium">{t("fields.phone")}:</span> {user.phone ?? "-"}
         </p>
         <p>
-          <span className="font-medium">User type:</span> {user.userType ?? "-"}
+          <span className="font-medium">{t("fields.userType")}:</span> {user.userType ?? "-"}
         </p>
       </div>
     </section>

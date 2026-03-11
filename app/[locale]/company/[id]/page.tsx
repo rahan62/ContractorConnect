@@ -67,7 +67,7 @@ export default function CompanyPublicPage() {
     <section className="mx-auto max-w-5xl px-4 py-8 space-y-4">
       <div className="overflow-hidden rounded-lg border bg-card">
         {data.bannerUrl && (
-          <div className="h-40 w-full overflow-hidden border-b bg-muted">
+          <div className="h-32 w-full overflow-hidden border-b bg-muted sm:h-40">
             <img
               src={data.bannerUrl}
               alt={data.companyName}
@@ -75,7 +75,7 @@ export default function CompanyPublicPage() {
             />
           </div>
         )}
-        <div className="flex items-center gap-4 p-4">
+        <div className="flex flex-col items-start gap-4 p-4 sm:flex-row sm:items-center">
           {data.logoUrl && (
             <img
               src={data.logoUrl}
@@ -83,8 +83,8 @@ export default function CompanyPublicPage() {
               className="h-16 w-16 rounded border object-cover"
             />
           )}
-          <div>
-            <h1 className="text-2xl font-semibold">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-semibold break-words">
               {data.companyName}
               {data.isVerified && (
                 <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
@@ -103,7 +103,7 @@ export default function CompanyPublicPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         <div className="rounded-lg border bg-card p-4 text-center">
           <p className="text-xs text-muted-foreground">{t("metrics.completed")}</p>
           <p className="mt-1 text-2xl font-semibold">
@@ -134,7 +134,7 @@ export default function CompanyPublicPage() {
             {t("noContracts")}
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-2">
             {data.contracts.map(contract => (
               <a
                 key={contract.id}
@@ -167,7 +167,7 @@ export default function CompanyPublicPage() {
                   </div>
                   <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                     <span className="rounded-full border px-2 py-1">
-                      {t("statusLabel")}: {contract.status}
+                      {t("statusLabel")}: {t(`statuses.${contract.status}` as any)}
                     </span>
                     <span className="rounded-full border px-2 py-1">
                       {contract.startsAt
