@@ -1,0 +1,203 @@
+{
+  "navbar": {
+    "home": "Home",
+    "contracts": "Contracts",
+    "findContractor": "Find Contractor",
+    "findSubcontractor": "Find Sub-contractor",
+    "findTeam": "Find Team",
+    "login": "Login",
+    "register": "Register",
+    "profile": "Profile",
+    "company": "Company information",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in"
+    },
+    "register": {
+      "title": "Register",
+      "name": "Name",
+      "userType": "User type",
+      "contractor": "Contractor",
+      "subcontractor": "Sub-contractor",
+      "team": "Team",
+      "submit": "Register"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back"
+  },
+  "directory": {
+    "contractorsTitle": "Contractors directory",
+    "subcontractorsTitle": "Sub-contractors directory",
+    "teamsTitle": "Teams directory",
+    "loadingContractors": "Loading contractors...",
+    "loadingSubcontractors": "Loading sub-contractors...",
+    "loadingTeams": "Loading teams...",
+    "noContractors": "No contractors found.",
+    "noSubcontractors": "No sub-contractors found.",
+    "noTeams": "No teams found.",
+    "verified": "Verified",
+    "phoneLabel": "Phone",
+    "teamLeaderLabel": "Team leader"
+  },
+  "contracts": {
+    "title": "Contracts",
+    "loading": "Loading contracts...",
+    "new": "New contract",
+    "empty": "No contracts yet."
+  },
+  "contractCreate": {
+    "title": "New contract",
+    "creating": "Creating...",
+    "submit": "Create contract",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "startDate": "Start date",
+      "totalDays": "Total days",
+      "totalDaysPlaceholder": "e.g. 30",
+      "dwgFiles": "DWG files",
+      "images": "Contract images",
+      "imagesHint": "Upload one or more images to present the project. If none are uploaded, a placeholder will be used."
+    },
+    "errors": {
+      "eligibility": "You are not allowed to create contracts yet. Please complete your company documents.",
+      "uploadDwg": "Failed to upload DWG file",
+      "uploadImage": "Failed to upload contract image",
+      "create": "Failed to create contract",
+      "generic": "Something went wrong"
+    }
+  },
+  "contractDetail": {
+    "loading": "Loading contract...",
+    "startLabel": "Start",
+    "durationLabel": "Duration",
+    "days": "days",
+    "noStartDate": "Start date not set",
+    "noDuration": "Duration not set",
+    "downloadableFiles": "Downloadable Files",
+    "download": "Download",
+    "noFiles": "No project files uploaded yet.",
+    "bidsTitle": "Bids",
+    "commentsTitle": "Comments",
+    "noBids": "No bids yet.",
+    "noComments": "No comments yet.",
+    "bid": {
+      "title": "Place a bid",
+      "hint": "Sub-contractors can submit an amount and a short message for the contractor.",
+      "amount": "Amount",
+      "message": "Message",
+      "submit": "Submit bid"
+    },
+    "comment": {
+      "title": "Add comment",
+      "hint": "Contractors can leave notes and clarifications for interested parties.",
+      "submit": "Add comment"
+    },
+    "errors": {
+      "placeBid": "Failed to place bid",
+      "addComment": "Failed to add comment"
+    }
+  },
+  "company": {
+    "title": "Company information",
+    "loading": "Loading company information...",
+    "brandingTitle": "Public company profile",
+    "companyName": "Company name",
+    "bio": "Short description",
+    "logo": "Logo",
+    "banner": "Banner",
+    "taxOffice": "Company tax office",
+    "taxNumber": "Company tax number",
+    "authorizedName": "Authorized person name",
+    "authorizedPhone": "Authorized person phone",
+    "documentsTitle": "Company documents",
+    "documentsHint": "Upload the required company documents. After uploading, click \"Save changes\" to store them.",
+    "signatureDoc": "Signature authorization document (signature circular)",
+    "taxCertificateDoc": "Tax certificate",
+    "tradeRegistryGazetteDoc": "Trade registry gazette",
+    "viewCurrentFile": "View current file",
+    "uploadingSignature": "Uploading signature authorization document",
+    "uploadingTax": "Uploading tax certificate",
+    "uploadingGazette": "Uploading trade registry gazette",
+    "uploadingLogo": "Uploading logo",
+    "uploadingBanner": "Uploading banner",
+    "saving": "Saving...",
+    "save": "Save changes",
+    "messages": {
+      "fileUploaded": "File uploaded. Remember to save changes.",
+      "uploadFailed": "File upload failed",
+      "saved": "Saved",
+      "saveFailed": "Failed to save"
+    },
+    "contracts": {
+      "title": "My contracts",
+      "hint": "Monitor, update and delete the contracts created by your company.",
+      "empty": "No contracts created yet.",
+      "noDescription": "No description",
+      "fields": {
+        "title": "Title",
+        "description": "Description",
+        "startDate": "Start date",
+        "totalDays": "Total days",
+        "status": "Status"
+      },
+      "actions": {
+        "save": "Save contract",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "badges": {
+        "status": "Status",
+        "start": "Start",
+        "days": "days",
+        "noStart": "Start date not set",
+        "noDuration": "Duration not set"
+      },
+      "statuses": {
+        "DRAFT": "Draft",
+        "OPEN_FOR_BIDS": "Open for bids",
+        "ACTIVE": "Active",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      },
+      "messages": {
+        "saving": "Saving...",
+        "updateFailed": "Failed to update contract",
+        "updated": "Contract updated successfully.",
+        "confirmDelete": "Delete this contract?",
+        "deleteFailed": "Failed to delete contract",
+        "deleted": "Contract deleted successfully."
+      }
+    }
+  },
+  "companyPublic": {
+    "loading": "Loading company profile...",
+    "verified": "Verified",
+    "noDescription": "This company has not added a description yet.",
+    "contractsTitle": "Company contracts",
+    "contractsHint": "Browse the work published by this company.",
+    "noContracts": "This company has not published any contracts yet.",
+    "noContractDescription": "No contract description provided.",
+    "statusLabel": "Status",
+    "startLabel": "Start",
+    "daysLabel": "days",
+    "noStartDate": "Start date not set",
+    "noDuration": "Duration not set",
+    "metrics": {
+      "completed": "Completed jobs",
+      "active": "Active contracts",
+      "total": "Total contracts",
+      "references": "References"
+    }
+  }
+}
+

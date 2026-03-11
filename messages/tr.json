@@ -1,0 +1,203 @@
+{
+  "navbar": {
+    "home": "Firma Sayfası",
+    "contracts": "Sözleşmeler",
+    "findContractor": "Yüklenici Bul",
+    "findSubcontractor": "Alt Yüklenici Bul",
+    "findTeam": "Ekip Bul",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "profile": "Profil",
+    "company": "Firma bilgileri",
+    "settings": "Ayarlar",
+    "logout": "Çıkış Yap"
+  },
+  "auth": {
+    "signin": {
+      "title": "Giriş Yap",
+      "email": "E-posta",
+      "password": "Şifre",
+      "submit": "Giriş Yap"
+    },
+    "register": {
+      "title": "Kayıt Ol",
+      "name": "Firma Adı",
+      "userType": "Kullanıcı tipi",
+      "contractor": "Yüklenici",
+      "subcontractor": "Alt Yüklenici",
+      "team": "Ekip",
+      "submit": "Kayıt Ol"
+    }
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "Tekrar hoş geldiniz"
+  },
+  "directory": {
+    "contractorsTitle": "Yüklenici rehberi",
+    "subcontractorsTitle": "Alt yüklenici rehberi",
+    "teamsTitle": "Ekip rehberi",
+    "loadingContractors": "Yükleniciler yükleniyor...",
+    "loadingSubcontractors": "Alt yükleniciler yükleniyor...",
+    "loadingTeams": "Ekipler yükleniyor...",
+    "noContractors": "Henüz yüklenici bulunamadı.",
+    "noSubcontractors": "Henüz alt yüklenici bulunamadı.",
+    "noTeams": "Henüz ekip bulunamadı.",
+    "verified": "Doğrulandı",
+    "phoneLabel": "Telefon",
+    "teamLeaderLabel": "Ekip lideri"
+  },
+  "contracts": {
+    "title": "Sözleşmeler",
+    "loading": "Sözleşmeler yükleniyor...",
+    "new": "Yeni sözleşme",
+    "empty": "Henüz sözleşme yok."
+  },
+  "contractCreate": {
+    "title": "Yeni sözleşme",
+    "creating": "Oluşturuluyor...",
+    "submit": "Sözleşme oluştur",
+    "fields": {
+      "title": "Başlık",
+      "description": "Açıklama",
+      "startDate": "Başlangıç tarihi",
+      "totalDays": "Toplam gün",
+      "totalDaysPlaceholder": "örn. 30",
+      "dwgFiles": "DWG dosyaları",
+      "images": "Sözleşme görselleri",
+      "imagesHint": "Projeyi tanıtmak için bir veya daha fazla görsel yükleyin. Görsel yüklenmezse yer tutucu kullanılacaktır."
+    },
+    "errors": {
+      "eligibility": "Henüz sözleşme oluşturamazsınız. Lütfen önce firma evraklarınızı tamamlayın.",
+      "uploadDwg": "DWG dosyası yüklenemedi",
+      "uploadImage": "Sözleşme görseli yüklenemedi",
+      "create": "Sözleşme oluşturulamadı",
+      "generic": "Bir şeyler ters gitti"
+    }
+  },
+  "contractDetail": {
+    "loading": "Sözleşme yükleniyor...",
+    "startLabel": "Başlangıç",
+    "durationLabel": "Süre",
+    "days": "gün",
+    "noStartDate": "Başlangıç tarihi yok",
+    "noDuration": "Süre belirtilmemiş",
+    "downloadableFiles": "İndirilebilir Dosyalar",
+    "download": "İndir",
+    "noFiles": "Henüz proje dosyası yüklenmedi.",
+    "bidsTitle": "Teklifler",
+    "commentsTitle": "Yorumlar",
+    "noBids": "Henüz teklif yok.",
+    "noComments": "Henüz yorum yok.",
+    "bid": {
+      "title": "Teklif ver",
+      "hint": "Alt yükleniciler, yükleniciye tutar ve kısa bir mesaj ile teklif gönderebilir.",
+      "amount": "Tutar",
+      "message": "Mesaj",
+      "submit": "Teklif gönder"
+    },
+    "comment": {
+      "title": "Yorum ekle",
+      "hint": "Yükleniciler ilgili taraflar için not ve açıklamalar bırakabilir.",
+      "submit": "Yorum ekle"
+    },
+    "errors": {
+      "placeBid": "Teklif verilemedi",
+      "addComment": "Yorum eklenemedi"
+    }
+  },
+  "company": {
+    "title": "Firma bilgileri",
+    "loading": "Firma bilgileri yükleniyor...",
+    "brandingTitle": "Genel firma profili",
+    "companyName": "Firma adı",
+    "bio": "Kısa açıklama",
+    "logo": "Logo",
+    "banner": "Banner",
+    "taxOffice": "Vergi dairesi",
+    "taxNumber": "Vergi numarası",
+    "authorizedName": "Yetkili kişi adı",
+    "authorizedPhone": "Yetkili kişi telefonu",
+    "documentsTitle": "Firma evrakları",
+    "documentsHint": "Gerekli firma evraklarını yükleyin. Yükledikten sonra \"Değişiklikleri kaydet\"e tıklamayı unutmayın.",
+    "signatureDoc": "İmza sirküleri",
+    "taxCertificateDoc": "Vergi levhası",
+    "tradeRegistryGazetteDoc": "Ticaret sicil gazetesi",
+    "viewCurrentFile": "Mevcut dosyayı görüntüle",
+    "uploadingSignature": "İmza sirküleri yükleniyor",
+    "uploadingTax": "Vergi levhası yükleniyor",
+    "uploadingGazette": "Ticaret sicil gazetesi yükleniyor",
+    "uploadingLogo": "Logo yükleniyor",
+    "uploadingBanner": "Banner yükleniyor",
+    "saving": "Kaydediliyor...",
+    "save": "Değişiklikleri kaydet",
+    "messages": {
+      "fileUploaded": "Dosya yüklendi. Değişiklikleri kaydetmeyi unutmayın.",
+      "uploadFailed": "Dosya yüklenemedi",
+      "saved": "Kaydedildi",
+      "saveFailed": "Kaydetme başarısız oldu"
+    },
+    "contracts": {
+      "title": "Sözleşmelerim",
+      "hint": "Firmanızın oluşturduğu sözleşmeleri izleyin, güncelleyin ve silin.",
+      "empty": "Henüz sözleşme oluşturulmadı.",
+      "noDescription": "Açıklama yok",
+      "fields": {
+        "title": "Başlık",
+        "description": "Açıklama",
+        "startDate": "Başlangıç tarihi",
+        "totalDays": "Toplam gün",
+        "status": "Durum"
+      },
+      "actions": {
+        "save": "Sözleşmeyi kaydet",
+        "cancel": "İptal",
+        "edit": "Düzenle",
+        "delete": "Sil"
+      },
+      "badges": {
+        "status": "Durum",
+        "start": "Başlangıç",
+        "days": "gün",
+        "noStart": "Başlangıç tarihi yok",
+        "noDuration": "Süre belirtilmemiş"
+      },
+      "statuses": {
+        "DRAFT": "Taslak",
+        "OPEN_FOR_BIDS": "Teklife açık",
+        "ACTIVE": "Aktif",
+        "COMPLETED": "Tamamlandı",
+        "CANCELLED": "İptal edildi"
+      },
+      "messages": {
+        "saving": "Kaydediliyor...",
+        "updateFailed": "Sözleşme güncellenemedi",
+        "updated": "Sözleşme başarıyla güncellendi.",
+        "confirmDelete": "Bu sözleşme silinsin mi?",
+        "deleteFailed": "Sözleşme silinemedi",
+        "deleted": "Sözleşme başarıyla silindi."
+      }
+    }
+  },
+  "companyPublic": {
+    "loading": "Firma profili yükleniyor...",
+    "verified": "Doğrulandı",
+    "noDescription": "Bu firma henüz bir açıklama eklemedi.",
+    "contractsTitle": "Firma sözleşmeleri",
+    "contractsHint": "Bu firmanın yayınladığı işleri inceleyin.",
+    "noContracts": "Bu firma henüz sözleşme yayınlamadı.",
+    "noContractDescription": "Sözleşme açıklaması girilmemiş.",
+    "statusLabel": "Durum",
+    "startLabel": "Başlangıç",
+    "daysLabel": "gün",
+    "noStartDate": "Başlangıç tarihi yok",
+    "noDuration": "Süre belirtilmemiş",
+    "metrics": {
+      "completed": "Tamamlanan işler",
+      "active": "Aktif sözleşmeler",
+      "total": "Toplam sözleşme",
+      "references": "Referanslar"
+    }
+  }
+}
+
