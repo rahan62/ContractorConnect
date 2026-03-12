@@ -1,8 +1,9 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { TurnstileWidget } from "@/components/turnstile-widget";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,35 +20,25 @@ export default function RegisterPage() {
     authorizedPersonPhone: ""
   });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const turnstileEnabled = process.env.NEXT_PUBLIC_TURNSTILE_ENABLED !== "false" && Boolean(siteKey);
 
-  useEffect(() => {
-    setMounted(true);
+  const handleTurnstileSuccess = useCallback((token: string) => {
+    setTurnstileToken(token);
+    setError(null);
   }, []);
 
-  useEffect(() => {
-    (window as any).onTurnstileSuccess = (token: string) => {
-      setTurnstileToken(token);
-      setError(null);
-    };
-    (window as any).onTurnstileExpired = () => {
-      setTurnstileToken(null);
-      setError(t("errors.turnstileRequired"));
-    };
-    (window as any).onTurnstileError = () => {
-      setTurnstileToken(null);
-      setError(t("errors.turnstileFailed"));
-    };
-    return () => {
-      delete (window as any).onTurnstileSuccess;
-      delete (window as any).onTurnstileExpired;
-      delete (window as any).onTurnstileError;
-    };
+  const handleTurnstileExpired = useCallback(() => {
+    setTurnstileToken(null);
+    setError(t("errors.turnstileRequired"));
+  }, [t]);
+
+  const handleTurnstileError = useCallback(() => {
+    setTurnstileToken(null);
+    setError(t("errors.turnstileFailed"));
   }, [t]);
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
@@ -174,13 +165,13 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {mounted && turnstileEnabled && siteKey && (
-          <div
-            className="cf-turnstile mt-2"
-            data-sitekey={siteKey}
-            data-callback="onTurnstileSuccess"
-            data-expired-callback="onTurnstileExpired"
-            data-error-callback="onTurnstileError"
+        {turnstileEnabled && siteKey && (
+          <TurnstileWidget
+            siteKey={siteKey}
+            onSuccess={handleTurnstileSuccess}
+            onExpired={handleTurnstileExpired}
+            onError={handleTurnstileError}
+            className="mt-2 min-h-[65px]"
           />
         )}
 
