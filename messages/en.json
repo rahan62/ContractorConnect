@@ -127,6 +127,7 @@
     "download": "Download",
     "noFiles": "No project files uploaded yet.",
     "bidsTitle": "Bids",
+    "bidsPublicHint": "Only the contract owner can view offer amounts. Publicly, only bidding subcontractors are listed.",
     "commentsTitle": "Comments",
     "noBids": "No bids yet.",
     "noComments": "No comments yet.",

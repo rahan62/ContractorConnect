@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getAppBaseUrl } from "@/lib/app-url";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -7,7 +8,7 @@ const EMAIL_FROM = process.env.EMAIL_FROM ?? "no-reply@example.com";
 
 export async function sendEmailVerification(params: { to: string; token: string }) {
   const { to, token } = params;
-  const baseUrl = process.env.NEXTAUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = getAppBaseUrl();
   const verificationUrl = `${baseUrl}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
 
   console.log("[email] Sending verification email", { to, verificationUrl });

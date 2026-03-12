@@ -127,6 +127,7 @@
     "download": "İndir",
     "noFiles": "Henüz proje dosyası yüklenmedi.",
     "bidsTitle": "Teklifler",
+    "bidsPublicHint": "Teklif tutarlarını yalnızca sözleşme sahibi görebilir. Herkese açık listede sadece teklif veren alt yükleniciler gösterilir.",
     "commentsTitle": "Yorumlar",
     "noBids": "Henüz teklif yok.",
     "noComments": "Henüz yorum yok.",

@@ -10,12 +10,35 @@ interface Params {
 }
 
 export async function GET(_req: Request, { params }: Params) {
+  const session = await getServerSession(authOptions);
   const contract = await prisma.contract.findUnique({
-    where: { id: params.id }
+    where: { id: params.id },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
+      contractorId: true,
+      dwgFiles: true,
+      imageUrls: true,
+      startsAt: true,
+      totalDays: true,
+      createdAt: true,
+      updatedAt: true
+    }
   });
   if (!contract) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
+
+  const currentUser = session?.user?.email
+    ? await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true }
+      })
+    : null;
+
+  const canViewBidDetails = currentUser?.id === contract.contractorId;
 
   const [bids, comments] = await Promise.all([
     prisma.bid.findMany({
@@ -26,6 +49,13 @@ export async function GET(_req: Request, { params }: Params) {
         amount: true,
         currency: true,
         bidderId: true,
+        bidder: {
+          select: {
+            companyName: true,
+            name: true,
+            email: true
+          }
+        },
         createdAt: true
       }
     }),
@@ -43,10 +73,12 @@ export async function GET(_req: Request, { params }: Params) {
 
   return NextResponse.json({
     contract,
+    canViewBidDetails,
     bids: bids.map(bid => ({
       id: bid.id,
-      amount: bid.amount,
-      message: bid.currency ?? null
+      bidderName: bid.bidder.companyName ?? bid.bidder.name ?? bid.bidder.email,
+      amount: canViewBidDetails ? bid.amount : null,
+      message: canViewBidDetails ? bid.currency ?? null : null
     })),
     comments: comments.map(comment => ({
       id: comment.id,

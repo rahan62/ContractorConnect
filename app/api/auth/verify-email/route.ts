@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAppBaseUrl } from "@/lib/app-url";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
@@ -29,9 +30,7 @@ export async function GET(request: Request) {
 
     await prisma.emailVerificationToken.delete({ where: { id: record.id } });
 
-    const redirectUrl = process.env.NEXT_PUBLIC_APP_URL
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/en/auth/signin?verified=1`
-      : "/en/auth/signin?verified=1";
+    const redirectUrl = `${getAppBaseUrl()}/tr/auth/signin?verified=1`;
 
     return NextResponse.redirect(redirectUrl);
   } catch (error) {

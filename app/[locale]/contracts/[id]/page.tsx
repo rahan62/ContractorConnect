@@ -16,7 +16,8 @@ interface Contract {
 
 interface Bid {
   id: string;
-  amount: number;
+  bidderName: string;
+  amount: number | null;
   message?: string | null;
 }
 
@@ -35,6 +36,7 @@ export default function ContractDetailPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [downloadableFiles, setDownloadableFiles] = useState<string[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [canViewBidDetails, setCanViewBidDetails] = useState(false);
   const [bidAmount, setBidAmount] = useState("");
   const [bidMessage, setBidMessage] = useState("");
   const [commentBody, setCommentBody] = useState("");
@@ -50,6 +52,7 @@ export default function ContractDetailPage() {
       setComments(data.comments);
       setDownloadableFiles(data.downloadableFiles ?? []);
       setImageUrls(data.imageUrls ?? []);
+      setCanViewBidDetails(Boolean(data.canViewBidDetails));
     }
     if (id) {
       void load();
@@ -224,11 +227,15 @@ export default function ContractDetailPage() {
       <div className="grid gap-6 md:grid-cols-2">
         <div>
           <h2 className="mb-3 text-base font-semibold">{t("bidsTitle")}</h2>
+          {!canViewBidDetails && bids.length > 0 && (
+            <p className="mb-3 text-xs text-muted-foreground">{t("bidsPublicHint")}</p>
+          )}
           <div className="space-y-2">
             {bids.map(b => (
               <div key={b.id} className="rounded-xl border bg-card p-3 text-sm shadow-sm">
-                <p className="font-medium">{b.amount}</p>
-                {b.message && <p className="text-xs text-muted-foreground">{b.message}</p>}
+                <p className="font-medium">{b.bidderName}</p>
+                {canViewBidDetails && b.amount !== null && <p className="mt-1">{b.amount}</p>}
+                {canViewBidDetails && b.message && <p className="text-xs text-muted-foreground">{b.message}</p>}
               </div>
             ))}
             {bids.length === 0 && (

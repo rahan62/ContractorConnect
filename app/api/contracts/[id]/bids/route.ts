@@ -15,7 +15,7 @@ export async function POST(request: Request, { params }: Params) {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { id: true, userType: true }
+    select: { id: true, userType: true, companyName: true, name: true, email: true }
   });
 
   if (!user || user.userType !== "SUBCONTRACTOR") {
@@ -46,8 +46,9 @@ export async function POST(request: Request, { params }: Params) {
   return NextResponse.json(
     {
       id: bid.id,
-      amount: bid.amount,
-      message: bid.currency
+      bidderName: user.companyName ?? user.name ?? user.email,
+      amount: null,
+      message: null
     },
     { status: 201 }
   );
