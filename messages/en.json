@@ -9,6 +9,7 @@
     "register": "Register",
     "profile": "Profile",
     "company": "Company information",
+    "myBids": "My bids",
     "settings": "Settings",
     "logout": "Logout",
     "toggleNavigation": "Toggle navigation"
@@ -60,6 +61,30 @@
       "name": "Name",
       "phone": "Phone",
       "userType": "User type"
+    }
+  },
+  "myBids": {
+    "title": "My bids",
+    "loading": "Loading bids...",
+    "empty": "You have not submitted any bids yet.",
+    "forbidden": "This page is available only for sub-contractors.",
+    "contractor": "Contractor",
+    "amount": "Offer amount",
+    "message": "Message",
+    "submittedAt": "Submitted",
+    "openContract": "Open contract",
+    "noMessage": "No message added.",
+    "startLabel": "Start",
+    "noStartDate": "Start date not set",
+    "durationLabel": "Duration",
+    "noDuration": "Duration not set",
+    "days": "days",
+    "statuses": {
+      "DRAFT": "Draft",
+      "OPEN_FOR_BIDS": "Open for bids",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
     }
   },
   "settings": {

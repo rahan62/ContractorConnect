@@ -13,6 +13,7 @@ export function Navbar() {
   const locale = useLocale();
   const tNav = useTranslations("navbar");
   const basePath = `/${locale}`;
+  const userType = (session?.user as any)?.userType;
 
   const [displayName, setDisplayName] = useState<string>("?");
 
@@ -133,6 +134,15 @@ export function Navbar() {
                   >
                     {tNav("home")}
                   </Link>
+                  {userType === "SUBCONTRACTOR" && (
+                    <Link
+                      href={`${basePath}/bids`}
+                      className="block rounded px-2 py-1 hover:bg-muted"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("myBids")}
+                    </Link>
+                  )}
                   <Link
                     href={`${basePath}/settings`}
                     className="block rounded px-2 py-1 hover:bg-muted"
@@ -206,6 +216,11 @@ export function Navbar() {
                 <Link href={`${basePath}/company/${(session.user as any)?.id}`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
                   {tNav("home")}
                 </Link>
+                {userType === "SUBCONTRACTOR" && (
+                  <Link href={`${basePath}/bids`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
+                    {tNav("myBids")}
+                  </Link>
+                )}
                 <Link href={`${basePath}/settings`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
                   {tNav("settings")}
                 </Link>

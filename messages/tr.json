@@ -9,6 +9,7 @@
     "register": "Kayıt Ol",
     "profile": "Profil",
     "company": "Firma bilgileri",
+    "myBids": "Tekliflerim",
     "settings": "Ayarlar",
     "logout": "Çıkış Yap",
     "toggleNavigation": "Gezinmeyi aç veya kapat"
@@ -60,6 +61,30 @@
       "name": "Ad",
       "phone": "Telefon",
       "userType": "Kullanıcı tipi"
+    }
+  },
+  "myBids": {
+    "title": "Tekliflerim",
+    "loading": "Teklifler yükleniyor...",
+    "empty": "Henüz hiç teklif göndermediniz.",
+    "forbidden": "Bu sayfa yalnızca alt yüklenicilere açıktır.",
+    "contractor": "Yüklenici",
+    "amount": "Teklif tutarı",
+    "message": "Mesaj",
+    "submittedAt": "Gönderim",
+    "openContract": "Sözleşmeyi aç",
+    "noMessage": "Mesaj eklenmedi.",
+    "startLabel": "Başlangıç",
+    "noStartDate": "Başlangıç tarihi yok",
+    "durationLabel": "Süre",
+    "noDuration": "Süre belirtilmemiş",
+    "days": "gün",
+    "statuses": {
+      "DRAFT": "Taslak",
+      "OPEN_FOR_BIDS": "Teklife açık",
+      "ACTIVE": "Aktif",
+      "COMPLETED": "Tamamlandı",
+      "CANCELLED": "İptal edildi"
     }
   },
   "settings": {
