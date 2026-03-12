@@ -28,6 +28,7 @@ export async function GET() {
       id: true,
       amount: true,
       currency: true,
+      documentUrl: true,
       createdAt: true,
       contract: {
         select: {
@@ -53,6 +54,7 @@ export async function GET() {
       id: bid.id,
       amount: bid.amount,
       message: bid.currency ?? null,
+      documentUrl: bid.documentUrl ?? null,
       createdAt: bid.createdAt,
       contract: {
         id: bid.contract.id,

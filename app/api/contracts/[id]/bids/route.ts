@@ -23,7 +23,7 @@ export async function POST(request: Request, { params }: Params) {
   }
 
   const body = await request.json();
-  const { amount, message } = body as { amount: number; message?: string };
+  const { amount, message, documentUrl } = body as { amount: number; message?: string; documentUrl?: string };
 
   if (!amount || amount <= 0) {
     return NextResponse.json({ message: "Amount must be positive" }, { status: 400 });
@@ -39,7 +39,8 @@ export async function POST(request: Request, { params }: Params) {
       contractId: params.id,
       bidderId: user.id,
       amount,
-      currency: message || null
+      currency: message || null,
+      documentUrl: documentUrl || null
     }
   });
 
@@ -48,7 +49,8 @@ export async function POST(request: Request, { params }: Params) {
       id: bid.id,
       bidderName: user.companyName ?? user.name ?? user.email,
       amount: null,
-      message: null
+      message: null,
+      documentUrl: null
     },
     { status: 201 }
   );

@@ -73,6 +73,7 @@
     "message": "Message",
     "submittedAt": "Submitted",
     "openContract": "Open contract",
+    "openDocument": "Open offer document",
     "noMessage": "No message added.",
     "startLabel": "Start",
     "noStartDate": "Start date not set",
@@ -161,7 +162,11 @@
       "hint": "Sub-contractors can submit an amount and a short message for the contractor.",
       "amount": "Amount",
       "message": "Message",
-      "submit": "Submit bid"
+      "document": "Offer document",
+      "documentHint": "Optional. Upload a PDF, spreadsheet or proposal file to support your offer.",
+      "submit": "Submit bid",
+      "submitting": "Submitting...",
+      "openDocument": "Open offer document"
     },
     "comment": {
       "title": "Add comment",
@@ -170,7 +175,8 @@
     },
     "errors": {
       "placeBid": "Failed to place bid",
-      "addComment": "Failed to add comment"
+      "addComment": "Failed to add comment",
+      "uploadBidDocument": "Failed to upload offer document"
     }
   },
   "company": {

@@ -19,6 +19,7 @@ interface Bid {
   bidderName: string;
   amount: number | null;
   message?: string | null;
+  documentUrl?: string | null;
 }
 
 interface Comment {
@@ -39,6 +40,8 @@ export default function ContractDetailPage() {
   const [canViewBidDetails, setCanViewBidDetails] = useState(false);
   const [bidAmount, setBidAmount] = useState("");
   const [bidMessage, setBidMessage] = useState("");
+  const [bidDocument, setBidDocument] = useState<File | null>(null);
+  const [isSubmittingBid, setIsSubmittingBid] = useState(false);
   const [commentBody, setCommentBody] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -62,20 +65,61 @@ export default function ContractDetailPage() {
   async function submitBid(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    const res = await fetch(`/api/contracts/${id}/bids`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: parseFloat(bidAmount), message: bidMessage || undefined })
-    });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      setError(data.message ?? t("errors.placeBid"));
-      return;
+    setIsSubmittingBid(true);
+
+    try {
+      let documentUrl: string | undefined;
+
+      if (bidDocument) {
+        const fd = new FormData();
+        fd.append("file", bidDocument);
+        fd.append("folder", "bid-documents");
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: fd
+        });
+
+        if (!uploadRes.ok) {
+          setError(t("errors.uploadBidDocument"));
+          return;
+        }
+
+        const uploadData = await uploadRes.json();
+        documentUrl = uploadData.url ?? uploadData.path ?? uploadData.key;
+
+        if (!documentUrl) {
+          setError(t("errors.uploadBidDocument"));
+          return;
+        }
+      }
+
+      const res = await fetch(`/api/contracts/${id}/bids`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: parseFloat(bidAmount),
+          message: bidMessage || undefined,
+          documentUrl
+        })
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.message ?? t("errors.placeBid"));
+        return;
+      }
+
+      const created = await res.json();
+      setBids(prev => [created, ...prev]);
+      setBidAmount("");
+      setBidMessage("");
+      setBidDocument(null);
+    } catch {
+      setError(t("errors.placeBid"));
+    } finally {
+      setIsSubmittingBid(false);
     }
-    const created = await res.json();
-    setBids(prev => [created, ...prev]);
-    setBidAmount("");
-    setBidMessage("");
   }
 
   async function submitComment(e: FormEvent) {
@@ -194,11 +238,23 @@ export default function ContractDetailPage() {
               onChange={e => setBidMessage(e.target.value)}
             />
           </div>
+          <div className="space-y-1">
+            <label className="block text-xs font-medium">{t("bid.document")}</label>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,image/*"
+              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              onChange={e => setBidDocument(e.target.files?.[0] ?? null)}
+            />
+            <p className="text-xs text-muted-foreground">{t("bid.documentHint")}</p>
+            {bidDocument && <p className="text-xs text-muted-foreground">{bidDocument.name}</p>}
+          </div>
           <button
             type="submit"
-            className="w-full rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground sm:w-auto"
+            disabled={isSubmittingBid}
+            className="w-full rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground disabled:opacity-60 sm:w-auto"
           >
-            {t("bid.submit")}
+            {isSubmittingBid ? t("bid.submitting") : t("bid.submit")}
           </button>
         </form>
 
@@ -236,6 +292,16 @@ export default function ContractDetailPage() {
                 <p className="font-medium">{b.bidderName}</p>
                 {canViewBidDetails && b.amount !== null && <p className="mt-1">{b.amount}</p>}
                 {canViewBidDetails && b.message && <p className="text-xs text-muted-foreground">{b.message}</p>}
+                {canViewBidDetails && b.documentUrl && (
+                  <a
+                    href={b.documentUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-flex text-xs font-medium text-blue-600 hover:underline"
+                  >
+                    {t("bid.openDocument")}
+                  </a>
+                )}
               </div>
             ))}
             {bids.length === 0 && (

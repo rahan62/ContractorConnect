@@ -73,6 +73,7 @@
     "message": "Mesaj",
     "submittedAt": "Gönderim",
     "openContract": "Sözleşmeyi aç",
+    "openDocument": "Teklif belgesini aç",
     "noMessage": "Mesaj eklenmedi.",
     "startLabel": "Başlangıç",
     "noStartDate": "Başlangıç tarihi yok",
@@ -161,7 +162,11 @@
       "hint": "Alt yükleniciler, yükleniciye tutar ve kısa bir mesaj ile teklif gönderebilir.",
       "amount": "Tutar",
       "message": "Mesaj",
-      "submit": "Teklif gönder"
+      "document": "Teklif belgesi",
+      "documentHint": "İsteğe bağlı. Teklifinizi desteklemek için PDF, tablo veya teklif dosyası yükleyin.",
+      "submit": "Teklif gönder",
+      "submitting": "Gönderiliyor...",
+      "openDocument": "Teklif belgesini aç"
     },
     "comment": {
       "title": "Yorum ekle",
@@ -170,7 +175,8 @@
     },
     "errors": {
       "placeBid": "Teklif verilemedi",
-      "addComment": "Yorum eklenemedi"
+      "addComment": "Yorum eklenemedi",
+      "uploadBidDocument": "Teklif belgesi yüklenemedi"
     }
   },
   "company": {
