@@ -77,7 +77,12 @@ export async function GET(request: Request) {
       ? Math.round(user.bids.reduce((total, bid) => total + bid.amount, 0) / user.bids.length)
       : null;
     const trust = computeTrustScore({
-      userType: user.userType,
+      userType:
+        user.userType === "CONTRACTOR" ||
+        user.userType === "SUBCONTRACTOR" ||
+        user.userType === "TEAM"
+          ? user.userType
+          : null,
       bio: user.bio,
       logoUrl: user.logoUrl,
       bannerUrl: user.bannerUrl,
