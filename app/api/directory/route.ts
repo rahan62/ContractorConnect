@@ -73,8 +73,14 @@ export async function GET(request: Request) {
           }, 0) / user.bids.length
         : null;
       const verifiedReferenceCount = user.referencesOwned.length;
+      const trustedUserType =
+        user.userType === "CONTRACTOR" ||
+        user.userType === "SUBCONTRACTOR" ||
+        user.userType === "TEAM"
+          ? (user.userType as "CONTRACTOR" | "SUBCONTRACTOR" | "TEAM")
+          : null;
       const trust = computeTrustScore({
-        userType: user.userType,
+        userType: trustedUserType,
         bio: user.bio,
         logoUrl: user.logoUrl,
         bannerUrl: user.bannerUrl,

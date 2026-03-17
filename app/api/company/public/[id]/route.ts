@@ -105,13 +105,15 @@ export async function GET(
         return total + Math.max(diff / (1000 * 60 * 60), 0);
       }, 0) / user.bids.length
     : null;
+  const trustedUserType =
+    user.userType === "CONTRACTOR" ||
+    user.userType === "SUBCONTRACTOR" ||
+    user.userType === "TEAM"
+      ? (user.userType as "CONTRACTOR" | "SUBCONTRACTOR" | "TEAM")
+      : null;
+
   const trust = computeTrustScore({
-    userType:
-      user.userType === "CONTRACTOR" ||
-      user.userType === "SUBCONTRACTOR" ||
-      user.userType === "TEAM"
-        ? user.userType
-        : null,
+    userType: trustedUserType,
     bio: user.bio,
     logoUrl: user.logoUrl,
     bannerUrl: user.bannerUrl,

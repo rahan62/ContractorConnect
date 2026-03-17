@@ -76,13 +76,15 @@ export async function GET(request: Request) {
     const averageQuoteValue = user.bids.length
       ? Math.round(user.bids.reduce((total, bid) => total + bid.amount, 0) / user.bids.length)
       : null;
+    const trustedUserType =
+      user.userType === "CONTRACTOR" ||
+      user.userType === "SUBCONTRACTOR" ||
+      user.userType === "TEAM"
+        ? (user.userType as "CONTRACTOR" | "SUBCONTRACTOR" | "TEAM")
+        : null;
+
     const trust = computeTrustScore({
-      userType:
-        user.userType === "CONTRACTOR" ||
-        user.userType === "SUBCONTRACTOR" ||
-        user.userType === "TEAM"
-          ? user.userType
-          : null,
+      userType: trustedUserType,
       bio: user.bio,
       logoUrl: user.logoUrl,
       bannerUrl: user.bannerUrl,
