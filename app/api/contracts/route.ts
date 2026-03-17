@@ -9,9 +9,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   // Regular contracts list excludes urgent jobs to keep "Contracts" and "Urgent jobs" as separate sections
   const contracts = await prisma.contract.findMany({
-    where: {
-      OR: [{ isUrgent: false }, { isUrgent: null }]
-    },
+    where: { isUrgent: false },
     select: {
       id: true,
       title: true,
