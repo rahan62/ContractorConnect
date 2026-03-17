@@ -106,7 +106,12 @@ export async function GET(
       }, 0) / user.bids.length
     : null;
   const trust = computeTrustScore({
-    userType: user.userType,
+    userType:
+      user.userType === "CONTRACTOR" ||
+      user.userType === "SUBCONTRACTOR" ||
+      user.userType === "TEAM"
+        ? user.userType
+        : null,
     bio: user.bio,
     logoUrl: user.logoUrl,
     bannerUrl: user.bannerUrl,
