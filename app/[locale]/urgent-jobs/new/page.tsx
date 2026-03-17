@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 
 interface CapabilityNode {
@@ -10,20 +11,26 @@ interface CapabilityNode {
   children: CapabilityNode[];
 }
 
-export default function NewContractPage() {
+export default function NewUrgentJobPage() {
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations("contractCreate");
+  const t = useTranslations("urgentJobs");
+  const { data: session, status } = useSession();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startsAt, setStartsAt] = useState("");
   const [totalDays, setTotalDays] = useState("");
-  const [dwgFiles, setDwgFiles] = useState<FileList | null>(null);
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [capabilities, setCapabilities] = useState<CapabilityNode[]>([]);
   const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push(`/${locale}/auth/signin`);
+    }
+  }, [status, router, locale]);
 
   useEffect(() => {
     async function loadCapabilities() {
@@ -46,43 +53,10 @@ export default function NewContractPage() {
     setLoading(true);
 
     try {
-      // 1) Check eligibility before uploading anything
       const eligibilityRes = await fetch("/api/contracts/eligibility");
       if (!eligibilityRes.ok) {
         const data = await eligibilityRes.json().catch(() => ({}));
-        throw new Error(
-          data.message ?? t("errors.eligibility")
-        );
-      }
-
-      const uploadedPaths: string[] = [];
-      if (dwgFiles && dwgFiles.length > 0) {
-        for (const file of Array.from(dwgFiles)) {
-          const fd = new FormData();
-          fd.append("file", file);
-          fd.append("folder", "dwg");
-          const res = await fetch("/api/upload", { method: "POST", body: fd });
-          if (!res.ok) {
-            throw new Error(t("errors.uploadDwg"));
-          }
-          const data = await res.json();
-          uploadedPaths.push(data.url ?? data.key);
-        }
-      }
-
-      const uploadedImages: string[] = [];
-      if (imageFiles && imageFiles.length > 0) {
-        for (const file of Array.from(imageFiles)) {
-          const fd = new FormData();
-          fd.append("file", file);
-          fd.append("folder", "contract-images");
-          const res = await fetch("/api/upload", { method: "POST", body: fd });
-          if (!res.ok) {
-            throw new Error(t("errors.uploadImage"));
-          }
-          const data = await res.json();
-          uploadedImages.push(data.url ?? data.key);
-        }
+        throw new Error(data.message ?? t("errors.eligibility"));
       }
 
       const res = await fetch("/api/contracts", {
@@ -93,9 +67,8 @@ export default function NewContractPage() {
           description,
           startsAt: startsAt || undefined,
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
-          dwgFiles: uploadedPaths,
-          imageUrls: uploadedImages,
-          capabilityIds: selectedCapabilities
+          capabilityIds: selectedCapabilities,
+          isUrgent: true
         })
       });
 
@@ -113,9 +86,27 @@ export default function NewContractPage() {
     }
   }
 
+  if (!session) {
+    return (
+      <section className="mx-auto max-w-3xl px-4 py-8">
+        <p className="text-sm text-muted-foreground">{t("loading")}</p>
+      </section>
+    );
+  }
+
+  // Only contractors can create urgent jobs
+  if ((session.user as any).userType !== "CONTRACTOR") {
+    return (
+      <section className="mx-auto max-w-3xl px-4 py-8">
+        <p className="text-sm text-muted-foreground">{t("notContractorAccount")}</p>
+      </section>
+    );
+  }
+
   return (
     <section className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("title")}</h1>
+      <h1 className="mb-4 text-2xl font-semibold">{t("newTitle")}</h1>
+      <p className="mb-4 text-sm text-muted-foreground">{t("newDescription")}</p>
       <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border bg-card p-4">
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.title")}</label>
@@ -154,7 +145,6 @@ export default function NewContractPage() {
               className="mt-1 w-full rounded border px-3 py-2 text-sm"
               value={totalDays}
               onChange={e => setTotalDays(e.target.value)}
-              placeholder={t("fields.totalDaysPlaceholder")}
             />
           </div>
         </div>
@@ -179,30 +169,6 @@ export default function NewContractPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground">{t("fields.capabilitiesHint")}</p>
-        </div>
-        <div className="space-y-1">
-          <label className="block text-sm font-medium">{t("fields.dwgFiles")}</label>
-          <input
-            type="file"
-            multiple
-            accept=".dwg"
-            onChange={e => setDwgFiles(e.target.files)}
-            className="mt-1 text-sm"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="block text-sm font-medium">{t("fields.images")}</label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={e => setImageFiles(e.target.files)}
-            className="mt-1 text-sm"
-          />
-          <p className="text-xs text-muted-foreground">
-            {t("fields.imagesHint")}
-          </p>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button

@@ -44,6 +44,17 @@ enum ComplaintStatus {
   REJECTED
 }
 
+enum ReferenceStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum PenaltyType {
+  AVAILABILITY_ABUSE
+  OTHER
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -61,6 +72,7 @@ model User {
   bio       String?
   logoUrl   String?
   bannerUrl String?
+  location  String?
 
   // Company info (for contractor / subcontractor)
   companyName           String?
@@ -77,6 +89,10 @@ model User {
   // Monetization
   tokenBalance      Int @default(0)
   freeContractsUsed Int @default(0)
+
+  // Trust & penalties
+  penaltyPoints Int        @default(0)
+  penalties     Penalty[]
 
   // Manual approval (admin side)
   isVerified Boolean @default(false)
@@ -95,9 +111,22 @@ model User {
   comments          Comment[]
   teamsLed          Team[]
   teamMemberships   TeamMember[]
+  referencesOwned   CompanyReference[]         @relation("ReferenceOwner")
+  referencesToCheck CompanyReference[]         @relation("ReferenceVerifier")
+  capabilities      UserCapability[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Penalty {
+  id        String      @id @default(cuid())
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  points    Int
+  type      PenaltyType?
+  reason    String?
+  createdAt DateTime    @default(now())
 }
 
 model Team {
@@ -107,8 +136,26 @@ model Team {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  leader  User         @relation(fields: [leaderId], references: [id])
-  members TeamMember[]
+  leader      User                 @relation(fields: [leaderId], references: [id])
+  members     TeamMember[]
+  availabilityPosts TeamAvailabilityPost[]
+}
+
+model TeamAvailabilityPost {
+  id          String   @id @default(cuid())
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId      String
+  title       String
+  description String?
+  // Profession / capability that best represents this team for this availability window
+  profession  CapabilityCategory @relation(fields: [professionId], references: [id], onDelete: Cascade)
+  professionId String
+  availableFrom DateTime
+  availableTo   DateTime
+  totalDays     Int
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model TeamMember {
@@ -130,6 +177,9 @@ model Contract {
   title       String
   description String?
   status      ContractStatus @default(DRAFT)
+
+  // Urgent / team-focused jobs
+  isUrgent Boolean @default(false)
 
   // Parties
   contractor   User?  @relation("UserContractsCreated", fields: [contractorId], references: [id])
@@ -154,6 +204,7 @@ model Contract {
   messages   Message[]
   complaints Complaint[]
   payments   Payment[]
+  capabilities ContractCapability[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -174,6 +225,68 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CompanyReference {
+  id          String          @id @default(cuid())
+  title       String
+  description String?
+  location    String?
+  evidenceUrl String?
+  status      ReferenceStatus @default(PENDING)
+  verifierNote String?
+  startsAt    DateTime?
+  completedAt DateTime?
+
+  owner   User   @relation("ReferenceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  verifier   User?   @relation("ReferenceVerifier", fields: [verifierId], references: [id])
+  verifierId String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  verifiedAt DateTime?
+  rejectedAt DateTime?
+}
+
+model CapabilityCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  sortOrder   Int      @default(0)
+
+  parent   CapabilityCategory?  @relation("CapabilityTree", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId String?
+  children CapabilityCategory[] @relation("CapabilityTree")
+
+  users            UserCapability[]
+  contracts        ContractCapability[]
+  teamAvailability TeamAvailabilityPost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserCapability {
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  capability CapabilityCategory @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capabilityId String
+  createdAt  DateTime           @default(now())
+
+  @@id([userId, capabilityId])
+}
+
+model ContractCapability {
+  contract     Contract            @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contractId   String
+  capability   CapabilityCategory  @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capabilityId String
+  createdAt    DateTime            @default(now())
+
+  @@id([contractId, capabilityId])
 }
 
 model Comment {

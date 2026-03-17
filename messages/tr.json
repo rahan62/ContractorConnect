@@ -10,6 +10,8 @@
     "profile": "Profil",
     "company": "Firma bilgileri",
     "myBids": "Tekliflerim",
+    "references": "Referanslar",
+    "referenceRequests": "Referans talepleri",
     "settings": "Ayarlar",
     "logout": "Çıkış Yap",
     "toggleNavigation": "Gezinmeyi aç veya kapat"
@@ -88,6 +90,53 @@
       "CANCELLED": "İptal edildi"
     }
   },
+  "references": {
+    "title": "Referanslar",
+    "hint": "Gecmis projelerinizi veya referanslarinizi ekleyin ve dogrulama durumlarini takip edin.",
+    "loading": "Referanslar yukleniyor...",
+    "listTitle": "Referans kayitlarim",
+    "empty": "Henuz referans eklenmedi.",
+    "verifiedBy": "Dogrulayan",
+    "fields": {
+      "title": "Baslik",
+      "description": "Aciklama",
+      "location": "Konum",
+      "startDate": "Baslangic tarihi",
+      "completedAt": "Bitis tarihi",
+      "verifier": "Dogrulayici firma",
+      "selectVerifier": "Bir dogrulayici secin",
+      "evidence": "Kanıt dosyasi",
+      "evidenceHint": "Istege bagli. Destekleyici belge, teslim tutanagi veya imzali kanit yukleyin.",
+      "openEvidence": "Kaniti ac"
+    },
+    "actions": {
+      "save": "Referansi kaydet",
+      "saving": "Kaydediliyor..."
+    },
+    "statuses": {
+      "PENDING": "Dogrulama bekliyor",
+      "VERIFIED": "Dogrulandi",
+      "REJECTED": "Reddedildi"
+    },
+    "messages": {
+      "saved": "Referans basariyla kaydedildi.",
+      "saveFailed": "Referans kaydedilemedi",
+      "uploadFailed": "Kanit dosyasi yuklenemedi"
+    }
+  },
+  "referenceRequests": {
+    "title": "Referans talepleri",
+    "hint": "Onayinizi bekleyen referans dogrulama taleplerini inceleyin.",
+    "loading": "Talepler yukleniyor...",
+    "empty": "Bekleyen referans talebi bulunmuyor.",
+    "forbidden": "Bu sayfa yalnizca yukleniciler ve alt yukleniciler icindir.",
+    "requestedBy": "Talep eden",
+    "openCompany": "Firma profilini ac",
+    "openEvidence": "Kaniti ac",
+    "noteLabel": "Dogrulama notu",
+    "approve": "Onayla",
+    "reject": "Reddet"
+  },
   "settings": {
     "title": "Ayarlar",
     "themeTitle": "Tema",
@@ -107,7 +156,33 @@
     "noTeams": "Henüz ekip bulunamadı.",
     "verified": "Doğrulandı",
     "phoneLabel": "Telefon",
-    "teamLeaderLabel": "Ekip lideri"
+    "teamLeaderLabel": "Ekip lideri",
+    "compareAction": "Secilenleri karsilastir ({count})",
+    "comparePick": "Karsilastir",
+    "trustLabel": "Guven skoru"
+  },
+  "compare": {
+    "title": "Firma karsilastirmasi",
+    "hint": "Karar vermeden once secilen firmalari yan yana inceleyin.",
+    "loading": "Karsilastirma yukleniyor...",
+    "empty": "Karsilastirmak icin en az iki firma secin.",
+    "verified": "Dogrulandi",
+    "notVerified": "Dogrulanmadi",
+    "hours": "saat",
+    "fields": {
+      "field": "Alan",
+      "location": "Konum",
+      "verification": "Dogrulama durumu",
+      "trustScore": "Guven skoru",
+      "profileCompleteness": "Profil tamamlilik",
+      "documentCompleteness": "Belge tamamlilik",
+      "referenceCount": "Referans sayisi",
+      "completedJobCount": "Tamamlanan is sayisi",
+      "responseSpeed": "Cevap hizi",
+      "specialties": "Uzmanliklar",
+      "quoteValue": "Ortalama teklif tutari",
+      "notes": "Notlar"
+    }
   },
   "contracts": {
     "title": "Sözleşmeler",
@@ -130,6 +205,8 @@
       "startDate": "Başlangıç tarihi",
       "totalDays": "Toplam gün",
       "totalDaysPlaceholder": "örn. 30",
+      "capabilities": "Gerekli yetkinlikler",
+      "capabilitiesHint": "Bu is icin gereken uzmanlik alanlarini secin.",
       "dwgFiles": "DWG dosyaları",
       "images": "Sözleşme görselleri",
       "imagesHint": "Projeyi tanıtmak için bir veya daha fazla görsel yükleyin. Görsel yüklenmezse yer tutucu kullanılacaktır."
@@ -150,6 +227,7 @@
     "noStartDate": "Başlangıç tarihi yok",
     "noDuration": "Süre belirtilmemiş",
     "downloadableFiles": "İndirilebilir Dosyalar",
+    "requiredCapabilities": "Gerekli yetkinlikler",
     "download": "İndir",
     "noFiles": "Henüz proje dosyası yüklenmedi.",
     "bidsTitle": "Teklifler",

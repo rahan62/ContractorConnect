@@ -10,6 +10,8 @@
     "profile": "Profile",
     "company": "Company information",
     "myBids": "My bids",
+    "references": "References",
+    "referenceRequests": "Reference requests",
     "settings": "Settings",
     "logout": "Logout",
     "toggleNavigation": "Toggle navigation"
@@ -88,6 +90,53 @@
       "CANCELLED": "Cancelled"
     }
   },
+  "references": {
+    "title": "References",
+    "hint": "Add past projects or references and track their verification status.",
+    "loading": "Loading references...",
+    "listTitle": "My reference entries",
+    "empty": "No references added yet.",
+    "verifiedBy": "Verified by",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "location": "Location",
+      "startDate": "Start date",
+      "completedAt": "Completion date",
+      "verifier": "Verifier company",
+      "selectVerifier": "Select a verifier",
+      "evidence": "Evidence document",
+      "evidenceHint": "Optional. Upload a supporting document, completion report or signed proof.",
+      "openEvidence": "Open evidence"
+    },
+    "actions": {
+      "save": "Save reference",
+      "saving": "Saving..."
+    },
+    "statuses": {
+      "PENDING": "Pending verification",
+      "VERIFIED": "Verified",
+      "REJECTED": "Rejected"
+    },
+    "messages": {
+      "saved": "Reference saved successfully.",
+      "saveFailed": "Failed to save reference",
+      "uploadFailed": "Failed to upload evidence file"
+    }
+  },
+  "referenceRequests": {
+    "title": "Reference requests",
+    "hint": "Review reference verification requests that require your approval.",
+    "loading": "Loading requests...",
+    "empty": "There are no pending reference requests.",
+    "forbidden": "This page is available only for contractors and sub-contractors.",
+    "requestedBy": "Requested by",
+    "openCompany": "Open company",
+    "openEvidence": "Open evidence",
+    "noteLabel": "Verification note",
+    "approve": "Approve",
+    "reject": "Reject"
+  },
   "settings": {
     "title": "Settings",
     "themeTitle": "Theme",
@@ -107,7 +156,33 @@
     "noTeams": "No teams found.",
     "verified": "Verified",
     "phoneLabel": "Phone",
-    "teamLeaderLabel": "Team leader"
+    "teamLeaderLabel": "Team leader",
+    "compareAction": "Compare selected ({count})",
+    "comparePick": "Compare",
+    "trustLabel": "Trust score"
+  },
+  "compare": {
+    "title": "Company comparison",
+    "hint": "Review selected companies side by side before making a decision.",
+    "loading": "Loading comparison...",
+    "empty": "Select at least two companies to compare.",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "hours": "hours",
+    "fields": {
+      "field": "Field",
+      "location": "Location",
+      "verification": "Verification status",
+      "trustScore": "Trust score",
+      "profileCompleteness": "Profile completeness",
+      "documentCompleteness": "Document completeness",
+      "referenceCount": "Reference count",
+      "completedJobCount": "Completed job count",
+      "responseSpeed": "Response speed",
+      "specialties": "Specialties",
+      "quoteValue": "Average quote value",
+      "notes": "Notes"
+    }
   },
   "contracts": {
     "title": "Contracts",
@@ -130,6 +205,8 @@
       "startDate": "Start date",
       "totalDays": "Total days",
       "totalDaysPlaceholder": "e.g. 30",
+      "capabilities": "Required capabilities",
+      "capabilitiesHint": "Select the trade capabilities required for this job.",
       "dwgFiles": "DWG files",
       "images": "Contract images",
       "imagesHint": "Upload one or more images to present the project. If none are uploaded, a placeholder will be used."
@@ -150,6 +227,7 @@
     "noStartDate": "Start date not set",
     "noDuration": "Duration not set",
     "downloadableFiles": "Downloadable Files",
+    "requiredCapabilities": "Required capabilities",
     "download": "Download",
     "noFiles": "No project files uploaded yet.",
     "bidsTitle": "Bids",

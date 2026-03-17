@@ -12,6 +12,12 @@ interface Contract {
   imageUrls?: string | null;
   startsAt?: string | null;
   totalDays?: number | null;
+  capabilities?: Array<{
+    capability: {
+      id: string;
+      name: string;
+    };
+  }>;
 }
 
 interface Bid {
@@ -178,6 +184,18 @@ export default function ContractDetailPage() {
             <p className="mt-3 whitespace-pre-line text-sm leading-7 text-muted-foreground">
               {contract.description}
             </p>
+            {contract.capabilities && contract.capabilities.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs font-medium text-muted-foreground">{t("requiredCapabilities")}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {contract.capabilities.map(item => (
+                    <span key={item.capability.id} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
+                      {item.capability.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="rounded-xl border bg-slate-50 p-4">
             <h2 className="text-sm font-semibold text-slate-900">{t("downloadableFiles")}</h2>

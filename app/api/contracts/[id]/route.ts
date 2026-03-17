@@ -24,7 +24,17 @@ export async function GET(_req: Request, { params }: Params) {
       startsAt: true,
       totalDays: true,
       createdAt: true,
-      updatedAt: true
+      updatedAt: true,
+      capabilities: {
+        select: {
+          capability: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      }
     }
   });
   if (!contract) {

@@ -60,13 +60,15 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, description, dwgFiles, imageUrls, startsAt, totalDays } = body as {
+  const { title, description, dwgFiles, imageUrls, startsAt, totalDays, capabilityIds, isUrgent } = body as {
     title: string;
     description: string;
     dwgFiles?: string[];
     imageUrls?: string[];
     startsAt?: string;
     totalDays?: number;
+    capabilityIds?: string[];
+    isUrgent?: boolean;
   };
 
   if (!title || !description) {
@@ -78,10 +80,30 @@ export async function POST(request: Request) {
       title,
       description,
       contractorId: user.id,
+      isUrgent: Boolean(isUrgent),
       startsAt: startsAt ? new Date(startsAt) : null,
       totalDays: totalDays ?? null,
       dwgFiles: dwgFiles?.join(";") ?? null,
-      imageUrls: imageUrls?.join(";") ?? null
+      imageUrls: imageUrls?.join(";") ?? null,
+      capabilities: capabilityIds?.length
+        ? {
+            create: capabilityIds.map(capabilityId => ({
+              capabilityId
+            }))
+          }
+        : undefined
+    },
+    include: {
+      capabilities: {
+        select: {
+          capability: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      }
     }
   });
 

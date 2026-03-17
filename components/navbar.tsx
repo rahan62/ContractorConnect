@@ -143,6 +143,24 @@ export function Navbar() {
                       {tNav("myBids")}
                     </Link>
                   )}
+                  {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (
+                    <Link
+                      href={`${basePath}/references`}
+                      className="block rounded px-2 py-1 hover:bg-muted"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("references")}
+                    </Link>
+                  )}
+                  {["CONTRACTOR", "SUBCONTRACTOR"].includes(userType ?? "") && (
+                    <Link
+                      href={`${basePath}/reference-requests`}
+                      className="block rounded px-2 py-1 hover:bg-muted"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("referenceRequests")}
+                    </Link>
+                  )}
                   <Link
                     href={`${basePath}/settings`}
                     className="block rounded px-2 py-1 hover:bg-muted"
@@ -219,6 +237,16 @@ export function Navbar() {
                 {userType === "SUBCONTRACTOR" && (
                   <Link href={`${basePath}/bids`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
                     {tNav("myBids")}
+                  </Link>
+                )}
+                {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (
+                  <Link href={`${basePath}/references`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
+                    {tNav("references")}
+                  </Link>
+                )}
+                {["CONTRACTOR", "SUBCONTRACTOR"].includes(userType ?? "") && (
+                  <Link href={`${basePath}/reference-requests`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
+                    {tNav("referenceRequests")}
                   </Link>
                 )}
                 <Link href={`${basePath}/settings`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
