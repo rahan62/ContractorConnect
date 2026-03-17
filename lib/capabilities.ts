@@ -46,13 +46,15 @@ export async function getCapabilityTree() {
     byParent.set(key, list);
   }
 
-  const build = (parentId: string | null): Array<{
+  type CapabilityTreeNode = {
     id: string;
     slug: string;
     name: string;
     description: string | null;
-    children: ReturnType<typeof build>;
-  }> =>
+    children: CapabilityTreeNode[];
+  };
+
+  const build = (parentId: string | null): CapabilityTreeNode[] =>
     (byParent.get(parentId) ?? []).map(category => ({
       id: category.id,
       slug: category.slug,
