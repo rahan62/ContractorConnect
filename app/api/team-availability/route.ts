@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { getMonetizationConfig } from "@/lib/monetization";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +55,8 @@ export async function POST(request: Request) {
     where: { email: session.user.email },
     select: {
       id: true,
-      userType: true
+      userType: true,
+      tokenBalance: true
     }
   });
 
@@ -89,18 +91,60 @@ export async function POST(request: Request) {
     );
   }
 
-  const post = await prisma.teamAvailabilityPost.create({
-    data: {
-      teamId: team.id,
-      title,
-      description: description ?? null,
-      professionId,
-      availableFrom: new Date(availableFrom),
-      availableTo: new Date(availableTo),
-      totalDays
-    }
-  });
+  const monetization = await getMonetizationConfig();
+  const cost = monetization.tokensPerAvailabilityPost;
 
-  return NextResponse.json(post, { status: 201 });
+  if ((user.tokenBalance ?? 0) < cost) {
+    return NextResponse.json(
+      { message: "Insufficient tokens to create an availability post. Please contact support to receive more tokens." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const post = await prisma.$transaction(async tx => {
+      const freshUser = await tx.user.findUnique({
+        where: { id: user.id },
+        select: { tokenBalance: true }
+      });
+
+      if (!freshUser || freshUser.tokenBalance < cost) {
+        throw new Error("INSUFFICIENT_TOKENS");
+      }
+
+      const created = await tx.teamAvailabilityPost.create({
+        data: {
+          teamId: team.id,
+          title,
+          description: description ?? null,
+          professionId,
+          availableFrom: new Date(availableFrom),
+          availableTo: new Date(availableTo),
+          totalDays
+        }
+      });
+
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          tokenBalance: {
+            decrement: cost
+          }
+        }
+      });
+
+      return created;
+    });
+
+    return NextResponse.json(post, { status: 201 });
+  } catch (err: any) {
+    if (err instanceof Error && err.message === "INSUFFICIENT_TOKENS") {
+      return NextResponse.json(
+        { message: "Insufficient tokens to create an availability post. Please contact support to receive more tokens." },
+        { status: 400 }
+      );
+    }
+    throw err;
+  }
 }
 

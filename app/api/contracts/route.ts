@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { getMonetizationConfig } from "@/lib/monetization";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
     select: {
       id: true,
       userType: true,
+      tokenBalance: true,
       signatureAuthDocUrl: true,
       taxCertificateDocUrl: true,
       tradeRegistryGazetteDocUrl: true
@@ -79,38 +81,80 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Title and description are required" }, { status: 400 });
   }
 
-  const contract = await prisma.contract.create({
-    data: {
-      title,
-      description,
-      contractorId: user.id,
-      isUrgent: Boolean(isUrgent),
-      startsAt: startsAt ? new Date(startsAt) : null,
-      totalDays: totalDays ?? null,
-      dwgFiles: dwgFiles?.join(";") ?? null,
-      imageUrls: imageUrls?.join(";") ?? null,
-      capabilities: capabilityIds?.length
-        ? {
-            create: capabilityIds.map(capabilityId => ({
-              capabilityId
-            }))
-          }
-        : undefined
-    },
-    include: {
-      capabilities: {
-        select: {
-          capability: {
+  const monetization = await getMonetizationConfig();
+  const cost = Boolean(isUrgent) ? monetization.tokensPerUrgentJob : monetization.tokensPerContract;
+
+  if ((user.tokenBalance ?? 0) < cost) {
+    return NextResponse.json(
+      { message: "Insufficient tokens to create this job. Please contact support to receive more tokens." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const contract = await prisma.$transaction(async tx => {
+      const freshUser = await tx.user.findUnique({
+        where: { id: user.id },
+        select: { tokenBalance: true }
+      });
+
+      if (!freshUser || freshUser.tokenBalance < cost) {
+        throw new Error("INSUFFICIENT_TOKENS");
+      }
+
+      const created = await tx.contract.create({
+        data: {
+          title,
+          description,
+          contractorId: user.id,
+          isUrgent: Boolean(isUrgent),
+          startsAt: startsAt ? new Date(startsAt) : null,
+          totalDays: totalDays ?? null,
+          dwgFiles: dwgFiles?.join(";") ?? null,
+          imageUrls: imageUrls?.join(";") ?? null,
+          capabilities: capabilityIds?.length
+            ? {
+                create: capabilityIds.map(capabilityId => ({
+                  capabilityId
+                }))
+              }
+            : undefined
+        },
+        include: {
+          capabilities: {
             select: {
-              id: true,
-              name: true
+              capability: {
+                select: {
+                  id: true,
+                  name: true
+                }
+              }
             }
           }
         }
-      }
-    }
-  });
+      });
 
-  return NextResponse.json(contract, { status: 201 });
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          tokenBalance: {
+            decrement: cost
+          }
+        }
+      });
+
+      return created;
+    });
+
+    return NextResponse.json(contract, { status: 201 });
+  } catch (err: any) {
+    if (err instanceof Error && err.message === "INSUFFICIENT_TOKENS") {
+      return NextResponse.json(
+        { message: "Insufficient tokens to create this job. Please contact support to receive more tokens." },
+        { status: 400 }
+      );
+    }
+    throw err;
+  }
 }
 

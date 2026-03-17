@@ -210,6 +210,19 @@ model Contract {
   updatedAt DateTime @updatedAt
 }
 
+model MonetizationConfig {
+  id                       Int @id @default(1)
+  monthlySubscriptionPrice Int
+  yearlySubscriptionPrice  Int
+  featuredListingPrice     Int
+  tokenUnitPrice           Int
+  vatRate                  Int
+  tokensPerContract        Int
+  tokensPerBid             Int
+  tokensPerAvailabilityPost Int
+  tokensPerUrgentJob       Int
+}
+
 model Bid {
   id       String    @id @default(cuid())
   amount   Int
