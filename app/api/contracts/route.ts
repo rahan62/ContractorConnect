@@ -6,7 +6,11 @@ import { authOptions } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  // Regular contracts list excludes urgent jobs to keep "Contracts" and "Urgent jobs" as separate sections
   const contracts = await prisma.contract.findMany({
+    where: {
+      OR: [{ isUrgent: false }, { isUrgent: null }]
+    },
     select: {
       id: true,
       title: true,

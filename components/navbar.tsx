@@ -83,6 +83,16 @@ export function Navbar() {
           <Link href={`${basePath}/directory/teams`} className="hover:underline">
             {tNav("findTeam")}
           </Link>
+          {userType === "CONTRACTOR" && (
+            <Link href={`${basePath}/urgent-jobs/new`} className="hover:underline text-amber-700">
+              {tNav("newUrgentJob")}
+            </Link>
+          )}
+          {userType === "TEAM" && (
+            <Link href={`${basePath}/urgent-jobs`} className="hover:underline text-amber-700">
+              {tNav("urgentJobsForTeams")}
+            </Link>
+          )}
           <div className="flex items-center gap-2 border-l pl-4">
             <Link
               href="/en"
@@ -134,6 +144,33 @@ export function Navbar() {
                   >
                     {tNav("home")}
                   </Link>
+                {userType === "CONTRACTOR" && (
+                  <>
+                    <Link
+                      href={`${basePath}/urgent-jobs/new`}
+                      className="block rounded px-2 py-1 hover:bg-muted text-amber-700"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("newUrgentJob")}
+                    </Link>
+                    <Link
+                      href={`${basePath}/urgent-jobs/my`}
+                      className="block rounded px-2 py-1 hover:bg-muted text-amber-700"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("myUrgentJobs")}
+                    </Link>
+                  </>
+                )}
+                {userType === "TEAM" && (
+                  <Link
+                    href={`${basePath}/urgent-jobs`}
+                    className="block rounded px-2 py-1 hover:bg-muted text-amber-700"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {tNav("urgentJobsForTeams")}
+                  </Link>
+                )}
                   {userType === "SUBCONTRACTOR" && (
                     <Link
                       href={`${basePath}/bids`}
@@ -234,6 +271,33 @@ export function Navbar() {
                 <Link href={`${basePath}/company/${(session.user as any)?.id}`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
                   {tNav("home")}
                 </Link>
+              {userType === "CONTRACTOR" && (
+                <>
+                  <Link
+                    href={`${basePath}/urgent-jobs/new`}
+                    className="block rounded px-2 py-2 hover:bg-muted text-amber-700"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {tNav("newUrgentJob")}
+                  </Link>
+                  <Link
+                    href={`${basePath}/urgent-jobs/my`}
+                    className="block rounded px-2 py-2 hover:bg-muted text-amber-700"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {tNav("myUrgentJobs")}
+                  </Link>
+                </>
+              )}
+              {userType === "TEAM" && (
+                <Link
+                  href={`${basePath}/urgent-jobs`}
+                  className="block rounded px-2 py-2 hover:bg-muted text-amber-700"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {tNav("urgentJobsForTeams")}
+                </Link>
+              )}
                 {userType === "SUBCONTRACTOR" && (
                   <Link href={`${basePath}/bids`} className="block rounded px-2 py-2 hover:bg-muted" onClick={() => setMobileOpen(false)}>
                     {tNav("myBids")}
