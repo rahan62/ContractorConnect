@@ -22,7 +22,7 @@ export default async function HomePage({ params }: HomePageProps) {
         <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:48px_48px]" />
         <div className="relative mx-auto flex min-h-[calc(100vh-8rem)] max-w-6xl items-center px-4 py-20">
           <div className="max-w-3xl">
-            <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-white/80">
+            <span lang={params.locale} className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-white/80">
               {t("hero.badge")}
             </span>
             <h1 className="mt-6 text-5xl font-bold leading-tight text-white md:text-6xl">

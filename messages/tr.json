@@ -381,51 +381,51 @@
   },
   "homePage": {
     "hero": {
-      "badge": "Modern insaat ekipleri icin tasarlandi",
-      "title": "Dogru is ortaklarini bulun ve her projeyi guvenle ileri tasiyin.",
-      "description": "Taseron; yuklenicilerin, alt yuklenicilerin ve ekiplerin dogrulanmis firma profilleri, proje dosyalari ve seffaf sozlesme surecleri etrafinda bulusmasini saglar.",
-      "primaryCta": "Hesap olustur",
-      "secondaryCta": "Giris yap"
+      "badge": "Modern inşaat ekipleri için tasarlandı",
+      "title": "Doğru iş ortaklarını bulun ve her projeyi güvenle ileri taşıyın.",
+      "description": "Taseron; yüklenicilerin, alt yüklenicilerin ve ekiplerin doğrulanmış firma profilleri, proje dosyaları ve şeffaf sözleşme süreçleri etrafında buluşmasını sağlar.",
+      "primaryCta": "Hesap oluştur",
+      "secondaryCta": "Giriş yap"
     },
     "signedIn": {
-      "title": "Mevcut sozlesmeler",
-      "description": "Aktif firsatlari inceleyin, proje detaylarini gorun ve teklif surecine daha hizli gecin.",
-      "viewAll": "Sozlesmeler sayfasini ac",
-      "empty": "Su anda kullanilabilir sozlesme bulunmuyor.",
-      "noDescription": "Aciklama girilmemis.",
-      "startLabel": "Baslangic",
-      "days": "gun",
-      "noStartDate": "Baslangic tarihi yok",
-      "noDuration": "Sure belirtilmemis"
+      "title": "Mevcut sözleşmeler",
+      "description": "Aktif fırsatları inceleyin, proje detaylarını görün ve teklif sürecine daha hızlı geçin.",
+      "viewAll": "Sözleşmeler sayfasını aç",
+      "empty": "Şu anda kullanılabilir sözleşme bulunmuyor.",
+      "noDescription": "Açıklama girilmemiş.",
+      "startLabel": "Başlangıç",
+      "days": "gün",
+      "noStartDate": "Başlangıç tarihi yok",
+      "noDuration": "Süre belirtilmemiş"
     },
     "statuses": {
       "DRAFT": "Taslak",
-      "OPEN_FOR_BIDS": "Teklife acik",
+      "OPEN_FOR_BIDS": "Teklife açık",
       "ACTIVE": "Aktif",
-      "COMPLETED": "Tamamlandi",
-      "CANCELLED": "Iptal edildi"
+      "COMPLETED": "Tamamlandı",
+      "CANCELLED": "İptal edildi"
     }
   },
   "footer": {
-    "tagline": "Yukleniciler, alt yukleniciler ve saha ekipleri icin profesyonel sozlesme ve firma yonetimi.",
+    "tagline": "Yükleniciler, alt yükleniciler ve saha ekipleri için profesyonel sözleşme ve firma yönetimi.",
     "sections": {
       "platform": "Platform",
       "account": "Hesap",
-      "contact": "Iletisim"
+      "contact": "İletişim"
     },
     "links": {
       "home": "Ana sayfa",
-      "contracts": "Sozlesmeler",
-      "contractors": "Yuklenici Bul",
-      "subcontractors": "Alt Yuklenici Bul",
+      "contracts": "Sözleşmeler",
+      "contractors": "Yüklenici Bul",
+      "subcontractors": "Alt Yüklenici Bul",
       "teams": "Ekip Bul",
-      "signin": "Giris yap",
-      "register": "Kayit ol",
+      "signin": "Giriş yap",
+      "register": "Kayıt ol",
       "company": "Firma bilgileri",
       "settings": "Ayarlar"
     },
-    "contactText": "Is birlikleri, destek talepleri veya platform kurulumu icin bize ulasin.",
-    "copyright": "© 2026 Taseron. Tum haklari saklidir."
+    "contactText": "İş birlikleri, destek talepleri veya platform kurulumu için bize ulaşın.",
+    "copyright": "© 2026 Taseron. Tüm hakları saklıdır."
   }
 }
 
