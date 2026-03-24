@@ -234,6 +234,7 @@
     "download": "Download",
     "noFiles": "No project files uploaded yet.",
     "bidsTitle": "Bids",
+    "compareOffers": "Compare offers",
     "bidsPublicHint": "Only the contract owner can view offer amounts. Publicly, only bidding subcontractors are listed.",
     "commentsTitle": "Comments",
     "noBids": "No bids yet.",
@@ -259,6 +260,24 @@
       "addComment": "Failed to add comment",
       "uploadBidDocument": "Failed to upload offer document"
     }
+  },
+  "compareOffers": {
+    "title": "Compare offers",
+    "hint": "Compare details of each offer side by side to choose the best fit.",
+    "loading": "Loading...",
+    "notFound": "Contract not found.",
+    "forbidden": "Only the contract owner can compare offers.",
+    "needTwoOffers": "At least two offers are needed to compare.",
+    "backToContract": "Back to contract",
+    "fields": {
+      "field": "Field",
+      "bidder": "Bidder",
+      "amount": "Amount",
+      "message": "Message",
+      "document": "Document",
+      "submitted": "Submitted"
+    },
+    "openDocument": "Open document"
   },
   "company": {
     "title": "Company information",

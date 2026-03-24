@@ -11,10 +11,10 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.15.0",
     "@aws-sdk/client-s3": "^3.744.0",
+    "@prisma/client": "^5.15.0",
     "bcryptjs": "^3.0.3",
-    "next": "14.2.3",
+    "next": "^14.2.35",
     "next-auth": "^4.24.7",
     "next-intl": "^3.14.0",
     "next-themes": "^0.3.0",

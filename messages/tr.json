@@ -234,6 +234,7 @@
     "download": "İndir",
     "noFiles": "Henüz proje dosyası yüklenmedi.",
     "bidsTitle": "Teklifler",
+    "compareOffers": "Teklifleri karşılaştır",
     "bidsPublicHint": "Teklif tutarlarını yalnızca sözleşme sahibi görebilir. Herkese açık listede sadece teklif veren alt yükleniciler gösterilir.",
     "commentsTitle": "Yorumlar",
     "noBids": "Henüz teklif yok.",
@@ -259,6 +260,24 @@
       "addComment": "Yorum eklenemedi",
       "uploadBidDocument": "Teklif belgesi yüklenemedi"
     }
+  },
+  "compareOffers": {
+    "title": "Teklifleri karşılaştır",
+    "hint": "En uygun teklifi seçmek için her teklifin detaylarını yan yana karşılaştırın.",
+    "loading": "Yükleniyor...",
+    "notFound": "Sözleşme bulunamadı.",
+    "forbidden": "Teklifleri karşılaştırmak için yalnızca sözleşme sahibi yetkilidir.",
+    "needTwoOffers": "Karşılaştırmak için en az iki teklif gereklidir.",
+    "backToContract": "Sözleşmeye dön",
+    "fields": {
+      "field": "Alan",
+      "bidder": "Teklif veren",
+      "amount": "Tutar",
+      "message": "Mesaj",
+      "document": "Belge",
+      "submitted": "Gönderim tarihi"
+    },
+    "openDocument": "Belgeyi aç"
   },
   "company": {
     "title": "Firma bilgileri",

@@ -90,7 +90,8 @@ export async function GET(_req: Request, { params }: Params) {
       bidderName: bid.bidder.companyName ?? bid.bidder.name ?? bid.bidder.email,
       amount: canViewBidDetails ? bid.amount : null,
       message: canViewBidDetails ? bid.currency ?? null : null,
-      documentUrl: canViewBidDetails ? bid.documentUrl ?? null : null
+      documentUrl: canViewBidDetails ? bid.documentUrl ?? null : null,
+      createdAt: bid.createdAt
     })),
     comments: comments.map(comment => ({
       id: comment.id,

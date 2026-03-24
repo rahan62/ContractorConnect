@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 interface Contract {
@@ -36,6 +37,7 @@ interface Comment {
 export default function ContractDetailPage() {
   const params = useParams();
   const id = params?.id as string;
+  const locale = (params?.locale as string) ?? "tr";
   const t = useTranslations("contractDetail");
 
   const [contract, setContract] = useState<Contract | null>(null);
@@ -300,7 +302,17 @@ export default function ContractDetailPage() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h2 className="mb-3 text-base font-semibold">{t("bidsTitle")}</h2>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-base font-semibold">{t("bidsTitle")}</h2>
+            {canViewBidDetails && bids.length >= 2 && (
+              <Link
+                href={`/${locale}/contracts/${id}/compare`}
+                className="rounded-lg border bg-muted/50 px-3 py-2 text-sm font-medium hover:bg-muted"
+              >
+                {t("compareOffers")}
+              </Link>
+            )}
+          </div>
           {!canViewBidDetails && bids.length > 0 && (
             <p className="mb-3 text-xs text-muted-foreground">{t("bidsPublicHint")}</p>
           )}
