@@ -151,25 +151,25 @@ export default function ReferencesPage() {
 
   if (status === "loading" || !session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl space-y-6 px-4 py-8">
+    <section className="app-page space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
+      <form onSubmit={handleSubmit} className="app-card space-y-4 p-5 sm:p-6">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="block text-sm font-medium">{t("fields.title")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.title}
               onChange={e => setForm(prev => ({ ...prev, title: e.target.value }))}
               required
@@ -178,7 +178,7 @@ export default function ReferencesPage() {
           <div>
             <label className="block text-sm font-medium">{t("fields.location")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.location}
               onChange={e => setForm(prev => ({ ...prev, location: e.target.value }))}
             />
@@ -188,7 +188,7 @@ export default function ReferencesPage() {
         <div>
           <label className="block text-sm font-medium">{t("fields.description")}</label>
           <textarea
-            className="mt-1 w-full rounded border px-3 py-2 text-sm"
+            className="mt-1 min-h-[5rem] app-input"
             rows={4}
             value={form.description}
             onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
@@ -200,7 +200,7 @@ export default function ReferencesPage() {
             <label className="block text-sm font-medium">{t("fields.startDate")}</label>
             <input
               type="date"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.startsAt}
               onChange={e => setForm(prev => ({ ...prev, startsAt: e.target.value }))}
             />
@@ -209,7 +209,7 @@ export default function ReferencesPage() {
             <label className="block text-sm font-medium">{t("fields.completedAt")}</label>
             <input
               type="date"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.completedAt}
               onChange={e => setForm(prev => ({ ...prev, completedAt: e.target.value }))}
             />
@@ -220,7 +220,7 @@ export default function ReferencesPage() {
           <div>
             <label className="block text-sm font-medium">{t("fields.verifier")}</label>
             <select
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.verifierId}
               onChange={e => setForm(prev => ({ ...prev, verifierId: e.target.value }))}
               required
@@ -240,7 +240,7 @@ export default function ReferencesPage() {
           <input type="file" className="mt-1 text-sm" onChange={e => void handleEvidenceUpload(e.target.files)} />
           <p className="mt-1 text-xs text-muted-foreground">{t("fields.evidenceHint")}</p>
           {form.evidenceUrl && (
-            <a href={form.evidenceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-xs text-blue-600 hover:underline">
+            <a href={form.evidenceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-xs font-medium text-primary hover:underline">
               {t("fields.openEvidence")}
             </a>
           )}
@@ -263,7 +263,7 @@ export default function ReferencesPage() {
           <p className="text-sm text-muted-foreground">{t("empty")}</p>
         ) : (
           items.map(item => (
-            <div key={item.id} className="rounded-xl border bg-card p-4 shadow-sm">
+            <div key={item.id} className="app-card-sm p-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h3 className="font-semibold">{item.title}</h3>
@@ -278,7 +278,7 @@ export default function ReferencesPage() {
               </div>
               {item.verifierNote && <p className="mt-2 text-xs text-muted-foreground">{item.verifierNote}</p>}
               {item.evidenceUrl && (
-                <a href={item.evidenceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-xs text-blue-600 hover:underline">
+                <a href={item.evidenceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-xs font-medium text-primary hover:underline">
                   {t("fields.openEvidence")}
                 </a>
               )}

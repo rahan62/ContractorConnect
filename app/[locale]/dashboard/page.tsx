@@ -19,16 +19,18 @@ export default function DashboardPage() {
 
   if (!session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("title")}</h1>
-      <p className="text-muted-foreground">{t("welcome", { email: session.user?.email ?? "-" })}</p>
+    <section className="app-page">
+      <div className="app-card p-5 sm:p-6">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
+        <p className="mt-2 text-muted-foreground">{t("welcome", { email: session.user?.email ?? "-" })}</p>
+      </div>
     </section>
   );
 }

@@ -63,13 +63,13 @@ export default function SignInPage() {
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md items-center px-4">
-      <form onSubmit={handleSubmit} className="w-full space-y-4 rounded-lg border bg-card p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+      <form onSubmit={handleSubmit} className="app-card w-full space-y-4 p-6 sm:p-8">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("email")}</label>
           <input
             type="email"
-            className="mt-1 w-full rounded border px-3 py-2 text-sm"
+            className="mt-1 app-input"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
@@ -79,7 +79,7 @@ export default function SignInPage() {
           <label className="block text-sm font-medium">{t("password")}</label>
           <input
             type="password"
-            className="mt-1 w-full rounded border px-3 py-2 text-sm"
+            className="mt-1 app-input"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
@@ -94,11 +94,11 @@ export default function SignInPage() {
             className="mt-2 min-h-[65px]"
           />
         )}
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 w-full rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+          className="mt-2 w-full rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {loading ? `${t("submit")}...` : t("submit")}
         </button>

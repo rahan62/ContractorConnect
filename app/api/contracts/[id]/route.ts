@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { normalizeBidForResponse } from "@/lib/bid-display";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export async function GET(_req: Request, { params }: Params) {
       description: true,
       status: true,
       contractorId: true,
+      acceptedBidId: true,
       dwgFiles: true,
       imageUrls: true,
       startsAt: true,
@@ -58,7 +60,9 @@ export async function GET(_req: Request, { params }: Params) {
         id: true,
         amount: true,
         currency: true,
+        message: true,
         documentUrl: true,
+        status: true,
         bidderId: true,
         bidder: {
           select: {
@@ -85,14 +89,31 @@ export async function GET(_req: Request, { params }: Params) {
   return NextResponse.json({
     contract,
     canViewBidDetails,
-    bids: bids.map(bid => ({
-      id: bid.id,
-      bidderName: bid.bidder.companyName ?? bid.bidder.name ?? bid.bidder.email,
-      amount: canViewBidDetails ? bid.amount : null,
-      message: canViewBidDetails ? bid.currency ?? null : null,
-      documentUrl: canViewBidDetails ? bid.documentUrl ?? null : null,
-      createdAt: bid.createdAt
-    })),
+    bids: bids.map(bid => {
+      const norm = normalizeBidForResponse(bid);
+      if (!canViewBidDetails) {
+        return {
+          id: bid.id,
+          bidderName: bid.bidder.companyName ?? bid.bidder.name ?? bid.bidder.email,
+          amount: null,
+          currency: null,
+          message: null,
+          documentUrl: null,
+          status: bid.status,
+          createdAt: bid.createdAt
+        };
+      }
+      return {
+        id: bid.id,
+        bidderName: bid.bidder.companyName ?? bid.bidder.name ?? bid.bidder.email,
+        amount: norm.amount,
+        currency: norm.currency,
+        message: norm.message,
+        documentUrl: bid.documentUrl ?? null,
+        status: bid.status,
+        createdAt: bid.createdAt
+      };
+    }),
     comments: comments.map(comment => ({
       id: comment.id,
       body: comment.content

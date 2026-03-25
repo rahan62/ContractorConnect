@@ -79,13 +79,13 @@ export default function RegisterPage() {
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-4">
-      <form onSubmit={handleSubmit} className="w-full space-y-4 rounded-lg border bg-card p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+      <form onSubmit={handleSubmit} className="app-card w-full space-y-4 p-6 sm:p-8">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("name")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.companyName}
               onChange={e => updateField("companyName", e.target.value)}
               required
@@ -95,7 +95,7 @@ export default function RegisterPage() {
             <label className="block text-sm font-medium">{t("email")}</label>
             <input
               type="email"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.email}
               onChange={e => updateField("email", e.target.value)}
               required
@@ -105,7 +105,7 @@ export default function RegisterPage() {
             <label className="block text-sm font-medium">{t("password")}</label>
             <input
               type="password"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.password}
               onChange={e => updateField("password", e.target.value)}
               required
@@ -114,7 +114,7 @@ export default function RegisterPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("userType")}</label>
             <select
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.userType}
               onChange={e => updateField("userType", e.target.value)}
             >
@@ -126,13 +126,13 @@ export default function RegisterPage() {
         </div>
 
         {isCompany && (
-          <div className="mt-4 space-y-3 rounded-md border p-3">
+          <div className="app-inset mt-4 space-y-3">
             <h2 className="text-sm font-semibold">{t("companyInfo")}</h2>
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-1">
                 <label className="block text-sm font-medium">{t("taxOffice")}</label>
                 <input
-                  className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                  className="mt-1 app-input"
                   value={form.companyTaxOffice}
                   onChange={e => updateField("companyTaxOffice", e.target.value)}
                 />
@@ -140,7 +140,7 @@ export default function RegisterPage() {
               <div className="space-y-1">
                 <label className="block text-sm font-medium">{t("taxNumber")}</label>
                 <input
-                  className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                  className="mt-1 app-input"
                   value={form.companyTaxNumber}
                   onChange={e => updateField("companyTaxNumber", e.target.value)}
                 />
@@ -148,7 +148,7 @@ export default function RegisterPage() {
               <div className="space-y-1">
                 <label className="block text-sm font-medium">{t("authorizedName")}</label>
                 <input
-                  className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                  className="mt-1 app-input"
                   value={form.authorizedPersonName}
                   onChange={e => updateField("authorizedPersonName", e.target.value)}
                 />
@@ -156,7 +156,7 @@ export default function RegisterPage() {
               <div className="space-y-1">
                 <label className="block text-sm font-medium">{t("authorizedPhone")}</label>
                 <input
-                  className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                  className="mt-1 app-input"
                   value={form.authorizedPersonPhone}
                   onChange={e => updateField("authorizedPersonPhone", e.target.value)}
                 />
@@ -175,13 +175,13 @@ export default function RegisterPage() {
           />
         )}
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {success && <p className="text-sm text-emerald-600">{success}</p>}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+        {success && <p className="text-sm text-emerald-600 dark:text-emerald-400">{success}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 w-full rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+          className="mt-2 w-full rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {loading ? `${t("submit")}...` : t("submit")}
         </button>

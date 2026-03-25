@@ -13,22 +13,60 @@
   --card-foreground: 222 84% 4%;
   --muted: 215 16% 90%;
   --muted-foreground: 222 10% 35%;
+  --border: 214 20% 88%;
 }
 
 .dark {
-  --background: 222 84% 6%;
-  --foreground: 210 40% 98%;
-  --primary: 222 84% 56%;
-  --primary-foreground: 210 40% 98%;
+  --background: 222 47% 8%;
+  --foreground: 210 40% 97%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 47% 8%;
   --secondary: 25 95% 53%;
   --secondary-foreground: 222 84% 4%;
-  --card: 222 47% 11%;
-  --card-foreground: 210 40% 98%;
-  --muted: 222 24% 9%;
-  --muted-foreground: 215 20% 65%;
+  --card: 222 41% 12%;
+  --card-foreground: 210 40% 97%;
+  --muted: 222 32% 16%;
+  --muted-foreground: 215 16% 62%;
+  --border: 222 26% 22%;
 }
 
 body {
   @apply bg-background text-foreground;
+}
+
+@layer components {
+  .app-page {
+    @apply mx-auto max-w-6xl px-4 py-8;
+  }
+
+  .app-page-narrow {
+    @apply mx-auto max-w-3xl px-4 py-8;
+  }
+
+  /** Primary surface — matches contract detail cards */
+  .app-card {
+    @apply rounded-2xl border border-border/70 bg-card shadow-md shadow-black/[0.04] dark:border-border/60 dark:shadow-black/25;
+  }
+
+  .app-card-sm {
+    @apply rounded-xl border border-border/60 bg-card shadow-sm dark:border-border/50;
+  }
+
+  /** Nested panels / form sections */
+  .app-inset {
+    @apply rounded-xl border border-border/50 bg-muted/10 p-4 dark:bg-background/25;
+  }
+
+  .app-input {
+    @apply w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground;
+  }
+
+  .app-hero-placeholder {
+    @apply bg-muted/40 dark:bg-muted/20;
+  }
+
+  .app-hero-placeholder-inner {
+    @apply flex h-full items-center justify-center bg-muted/25 dark:bg-muted/15;
+  }
 }
 

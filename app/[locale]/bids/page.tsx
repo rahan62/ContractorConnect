@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { formatBidMoney, type BidCurrency } from "@/lib/bid-display";
 
 interface BidItem {
   id: string;
   amount: number;
+  currency?: BidCurrency;
   message: string | null;
   documentUrl: string | null;
   createdAt: string;
@@ -25,6 +27,7 @@ interface BidItem {
 export default function MyBidsPage() {
   const router = useRouter();
   const locale = useLocale();
+  const intlLocale = locale === "tr" ? "tr-TR" : "en-US";
   const t = useTranslations("myBids");
   const { data: session, status } = useSession();
   const [bids, setBids] = useState<BidItem[]>([]);
@@ -60,7 +63,7 @@ export default function MyBidsPage() {
 
   if (status === "loading" || !session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -68,21 +71,21 @@ export default function MyBidsPage() {
 
   if (isForbidden) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
-        <div className="rounded-xl border bg-card p-5 text-sm text-muted-foreground">{t("forbidden")}</div>
+      <section className="app-page">
+        <div className="app-card-sm p-5 text-sm text-muted-foreground">{t("forbidden")}</div>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-4">
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+    <section className="app-page">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
       </div>
 
       <div className="space-y-4">
         {bids.map(bid => (
-          <div key={bid.id} className="rounded-2xl border bg-card p-5 shadow-sm">
+          <div key={bid.id} className="app-card p-5 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -112,10 +115,16 @@ export default function MyBidsPage() {
               </Link>
             </div>
 
-            <div className="mt-4 grid gap-4 rounded-xl bg-slate-50 p-4 text-sm sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 rounded-xl border border-border/50 bg-muted/15 p-4 text-sm sm:grid-cols-2 dark:bg-background/30">
               <div>
                 <p className="text-xs text-muted-foreground">{t("amount")}</p>
-                <p className="mt-1 text-lg font-semibold">{bid.amount}</p>
+                <p className="mt-1 text-lg font-semibold tabular-nums">
+                  {formatBidMoney(
+                    Number(bid.amount),
+                    bid.currency ?? "TRY",
+                    intlLocale
+                  )}
+                </p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">{t("submittedAt")}</p>
@@ -131,7 +140,7 @@ export default function MyBidsPage() {
                     href={bid.documentUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center rounded-lg border px-4 py-2 text-sm font-medium hover:bg-white"
+                    className="inline-flex items-center rounded-lg border border-border/60 px-4 py-2 text-sm font-medium hover:bg-muted/40"
                   >
                     {t("openDocument")}
                   </a>

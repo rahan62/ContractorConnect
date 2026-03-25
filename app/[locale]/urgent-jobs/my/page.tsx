@@ -57,7 +57,7 @@ export default function MyUrgentJobsPage() {
 
   if (!session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -65,24 +65,24 @@ export default function MyUrgentJobsPage() {
 
   if ((session.user as any).userType !== "CONTRACTOR") {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("notContractorAccount")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <section className="app-page">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">{t("myListTitleForContractor")}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t("myListTitleForContractor")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {t("myListDescriptionForContractor")}
           </p>
         </div>
         <Link
           href={`/${locale}/urgent-jobs/new`}
-          className="inline-flex w-full items-center justify-center rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground sm:w-auto"
+          className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 sm:w-auto"
         >
           {t("newUrgentFromList")}
         </Link>
@@ -91,17 +91,17 @@ export default function MyUrgentJobsPage() {
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
       ) : items.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("noUrgentJobsForContractor")}</p>
       ) : (
         <div className="space-y-3">
           {items.map(item => (
-            <article key={item.id} className="rounded-lg border bg-card p-4 text-sm">
+            <article key={item.id} className="app-card-sm p-4 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <h2 className="font-semibold">{item.title}</h2>
                 {item.totalDays != null && (
-                  <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-700">
+                  <span className="rounded-md bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
                     {t("badges.urgent")}
                   </span>
                 )}

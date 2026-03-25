@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { formatBidMoney, type BidCurrency } from "@/lib/bid-display";
+import { amountInTry } from "@/lib/exchange-rates";
 
 interface Bid {
   id: string;
   bidderName: string;
   amount: number | null;
+  currency?: string | null;
   message?: string | null;
   documentUrl?: string | null;
   createdAt?: string;
@@ -24,11 +27,13 @@ export default function CompareOffersPage() {
   const id = params?.id as string;
   const locale = (params?.locale as string) ?? "tr";
   const t = useTranslations("compareOffers");
+  const intlLocale = locale === "tr" ? "tr-TR" : "en-US";
 
   const [contract, setContract] = useState<Contract | null>(null);
   const [bids, setBids] = useState<Bid[]>([]);
   const [canViewBidDetails, setCanViewBidDetails] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [tryPerUnit, setTryPerUnit] = useState<Record<BidCurrency, number> | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -46,6 +51,20 @@ export default function CompareOffersPage() {
     }
     if (id) void load();
   }, [id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadFx() {
+      const res = await fetch("/api/exchange-rates");
+      if (!res.ok) return;
+      const data = (await res.json()) as { tryPerUnit?: Record<BidCurrency, number> };
+      if (!cancelled && data.tryPerUnit) setTryPerUnit(data.tryPerUnit);
+    }
+    void loadFx();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -96,7 +115,22 @@ export default function CompareOffersPage() {
     {
       key: "amount",
       label: t("fields.amount"),
-      render: (b: Bid) => (b.amount != null ? b.amount.toLocaleString() : "-")
+      render: (b: Bid) => {
+        if (b.amount == null) return "-";
+        const cur = (b.currency ?? "TRY") as BidCurrency;
+        return formatBidMoney(Number(b.amount), cur, intlLocale);
+      }
+    },
+    {
+      key: "approxTry",
+      label: t("fields.approxTry"),
+      render: (b: Bid) => {
+        if (b.amount == null || !tryPerUnit) return "-";
+        const cur = (b.currency ?? "TRY") as BidCurrency;
+        if (cur === "TRY") return formatBidMoney(Number(b.amount), "TRY", intlLocale);
+        const approx = amountInTry(Number(b.amount), cur, tryPerUnit);
+        return formatBidMoney(approx, "TRY", intlLocale);
+      }
     },
     {
       key: "message",
@@ -145,10 +179,10 @@ export default function CompareOffersPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border bg-card">
+      <div className="overflow-x-auto rounded-xl border border-border/60 bg-card">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="border-b bg-muted/50">
+            <tr className="border-b border-border/50 bg-muted/35">
               <th className="px-4 py-3 text-left font-medium">{t("fields.field")}</th>
               {bids.map(bid => (
                 <th key={bid.id} className="px-4 py-3 text-left font-medium">
@@ -171,6 +205,9 @@ export default function CompareOffersPage() {
           </tbody>
         </table>
       </div>
+      {tryPerUnit && (
+        <p className="text-[11px] leading-relaxed text-muted-foreground">{t("fxDisclaimer")}</p>
+      )}
     </section>
   );
 }

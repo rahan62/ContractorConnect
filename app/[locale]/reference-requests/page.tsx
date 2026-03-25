@@ -67,7 +67,7 @@ export default function ReferenceRequestsPage() {
 
   if (status === "loading" || !session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -75,16 +75,16 @@ export default function ReferenceRequestsPage() {
 
   if (!["CONTRACTOR", "SUBCONTRACTOR"].includes(userType ?? "")) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
-        <div className="rounded-xl border bg-card p-5 text-sm text-muted-foreground">{t("forbidden")}</div>
+      <section className="app-page">
+        <div className="app-card-sm p-5 text-sm text-muted-foreground">{t("forbidden")}</div>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl space-y-6 px-4 py-8">
+    <section className="app-page space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
 
@@ -93,7 +93,7 @@ export default function ReferenceRequestsPage() {
       ) : (
         <div className="space-y-4">
           {items.map(item => (
-            <div key={item.id} className="rounded-xl border bg-card p-5 shadow-sm">
+            <div key={item.id} className="app-card p-5 sm:p-6">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="text-lg font-semibold">{item.title}</h2>
@@ -103,7 +103,7 @@ export default function ReferenceRequestsPage() {
                 </div>
                 <a
                   href={`/${locale}/company/${item.owner.id}`}
-                  className="inline-flex items-center rounded-lg border px-4 py-2 text-sm hover:bg-muted"
+                  className="inline-flex items-center rounded-lg border border-border/60 bg-muted/15 px-4 py-2 text-sm transition-colors hover:bg-muted/35"
                 >
                   {t("openCompany")}
                 </a>
@@ -117,7 +117,7 @@ export default function ReferenceRequestsPage() {
               </div>
 
               {item.evidenceUrl && (
-                <a href={item.evidenceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-blue-600 hover:underline">
+                <a href={item.evidenceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs font-medium text-primary hover:underline">
                   {t("openEvidence")}
                 </a>
               )}
@@ -126,7 +126,7 @@ export default function ReferenceRequestsPage() {
                 <label className="block text-sm font-medium">{t("noteLabel")}</label>
                 <textarea
                   rows={3}
-                  className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                  className="mt-1 app-input"
                   value={notes[item.id] ?? ""}
                   onChange={e => setNotes(prev => ({ ...prev, [item.id]: e.target.value }))}
                 />
@@ -142,7 +142,7 @@ export default function ReferenceRequestsPage() {
                 </button>
                 <button
                   type="button"
-                  className="rounded-lg border px-4 py-2 text-sm font-medium text-red-600"
+                  className="rounded-lg border border-border/60 bg-background px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-muted/40 dark:text-red-400"
                   onClick={() => void updateRequest(item.id, "reject")}
                 >
                   {t("reject")}

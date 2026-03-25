@@ -74,7 +74,9 @@ export async function GET(request: Request) {
         }, 0) / user.bids.length
       : null;
     const averageQuoteValue = user.bids.length
-      ? Math.round(user.bids.reduce((total, bid) => total + bid.amount, 0) / user.bids.length)
+      ? Math.round(
+          user.bids.reduce((total, bid) => total + Number(bid.amount), 0) / user.bids.length
+        )
       : null;
     const trustedUserType =
       user.userType === "CONTRACTOR" ||

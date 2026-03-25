@@ -211,23 +211,23 @@ export default function CompanyPage() {
 
   if (loading) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
+    <section className="app-page space-y-6">
+      <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border bg-card p-4">
-        <div className="space-y-3 rounded-md border p-3">
+      <form onSubmit={handleSubmit} className="app-card space-y-4 p-4 sm:p-6">
+        <div className="app-inset space-y-3">
           <h2 className="text-sm font-semibold">{t("brandingTitle")}</h2>
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("companyName")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.companyName}
               onChange={e => update("companyName", e.target.value)}
             />
@@ -235,7 +235,7 @@ export default function CompanyPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("bio")}</label>
             <textarea
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 min-h-[6rem] app-input"
               rows={4}
               value={form.bio}
               onChange={e => update("bio", e.target.value)}
@@ -271,7 +271,7 @@ export default function CompanyPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("taxOffice")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.companyTaxOffice}
               onChange={e => update("companyTaxOffice", e.target.value)}
             />
@@ -279,7 +279,7 @@ export default function CompanyPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("taxNumber")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.companyTaxNumber}
               onChange={e => update("companyTaxNumber", e.target.value)}
             />
@@ -290,7 +290,7 @@ export default function CompanyPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("authorizedName")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.authorizedPersonName}
               onChange={e => update("authorizedPersonName", e.target.value)}
             />
@@ -298,14 +298,14 @@ export default function CompanyPage() {
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("authorizedPhone")}</label>
             <input
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={form.authorizedPersonPhone}
               onChange={e => update("authorizedPersonPhone", e.target.value)}
             />
           </div>
         </div>
 
-        <div className="space-y-3 rounded-md border p-3">
+        <div className="app-inset space-y-3">
           <h2 className="text-sm font-semibold">{t("documentsTitle")}</h2>
           <p className="text-xs text-muted-foreground">{t("documentsHint")}</p>
           <div className="space-y-3">
@@ -338,7 +338,7 @@ export default function CompanyPage() {
                 ...
               </p>
             )}
-            {uploadError && <p className="text-xs text-red-600">{uploadError}</p>}
+            {uploadError && <p className="text-xs text-red-600 dark:text-red-400">{uploadError}</p>}
           </div>
         </div>
 
@@ -353,7 +353,7 @@ export default function CompanyPage() {
       </form>
 
       {userType === "CONTRACTOR" && (
-        <section className="space-y-4 rounded-lg border bg-card p-4">
+        <section className="app-card space-y-4 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold">{t("contracts.title")}</h2>
             <p className="text-sm text-muted-foreground">
@@ -370,12 +370,12 @@ export default function CompanyPage() {
                 const isEditing = editingContractId === contract.id;
 
                 return (
-                  <div key={contract.id} className="overflow-hidden rounded-xl border">
-                    <div className="h-40 w-full overflow-hidden border-b bg-slate-100">
+                  <div key={contract.id} className="app-card-sm overflow-hidden">
+                    <div className="h-40 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
                       {hero ? (
                         <img src={hero} alt={contract.title} className="h-full w-full object-cover" />
                       ) : (
-                        <div className="flex h-full items-center justify-center bg-slate-50">
+                        <div className="app-hero-placeholder-inner h-full">
                           <img src="/taseron_logo.png" alt="Taseron" className="h-16 w-16 rounded-md opacity-70" />
                         </div>
                       )}
@@ -386,7 +386,7 @@ export default function CompanyPage() {
                           <div className="space-y-1 md:col-span-2">
                             <label className="block text-sm font-medium">{t("contracts.fields.title")}</label>
                             <input
-                              className="w-full rounded border px-3 py-2 text-sm"
+                              className="app-input"
                               value={contractForm.title}
                               onChange={e => setContractForm(prev => ({ ...prev, title: e.target.value }))}
                             />
@@ -395,7 +395,7 @@ export default function CompanyPage() {
                             <label className="block text-sm font-medium">{t("contracts.fields.description")}</label>
                             <textarea
                               rows={4}
-                              className="w-full rounded border px-3 py-2 text-sm"
+                              className="min-h-[6rem] app-input"
                               value={contractForm.description}
                               onChange={e => setContractForm(prev => ({ ...prev, description: e.target.value }))}
                             />
@@ -404,7 +404,7 @@ export default function CompanyPage() {
                             <label className="block text-sm font-medium">{t("contracts.fields.startDate")}</label>
                             <input
                               type="date"
-                              className="w-full rounded border px-3 py-2 text-sm"
+                              className="app-input"
                               value={contractForm.startsAt}
                               onChange={e => setContractForm(prev => ({ ...prev, startsAt: e.target.value }))}
                             />
@@ -414,7 +414,7 @@ export default function CompanyPage() {
                             <input
                               type="number"
                               min="1"
-                              className="w-full rounded border px-3 py-2 text-sm"
+                              className="app-input"
                               value={contractForm.totalDays}
                               onChange={e => setContractForm(prev => ({ ...prev, totalDays: e.target.value }))}
                             />
@@ -422,7 +422,7 @@ export default function CompanyPage() {
                           <div className="space-y-1">
                             <label className="block text-sm font-medium">{t("contracts.fields.status")}</label>
                             <select
-                              className="w-full rounded border px-3 py-2 text-sm"
+                              className="app-input"
                               value={contractForm.status}
                               onChange={e => setContractForm(prev => ({ ...prev, status: e.target.value }))}
                             >
@@ -461,11 +461,11 @@ export default function CompanyPage() {
                               </p>
                             </div>
                             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                              <button
-                                type="button"
-                                onClick={() => startEditing(contract)}
-                                className="w-full rounded border px-3 py-2 text-sm font-medium hover:bg-slate-50 sm:w-auto"
-                              >
+                            <button
+                              type="button"
+                              onClick={() => startEditing(contract)}
+                              className="w-full rounded-lg border border-border/60 bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted/40 sm:w-auto"
+                            >
                                 {t("contracts.actions.edit")}
                               </button>
                               <button

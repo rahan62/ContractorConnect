@@ -2,6 +2,7 @@
   "navbar": {
     "home": "Firma Sayfası",
     "contracts": "Sözleşmeler",
+    "myContracts": "Sözleşmelerim",
     "findContractor": "Yüklenici Bul",
     "findSubcontractor": "Alt Yüklenici Bul",
     "findTeam": "Ekip Bul",
@@ -147,6 +148,42 @@
     "dark": "Koyu",
     "system": "Sistem"
   },
+  "urgentJobs": {
+    "newTitle": "Acil iş oluştur",
+    "newDescription": "Takımların hızlıca görebilmesi ve yanıt verebilmesi için acil bir sözleşme yayınlayın. Aşağıdaki temel bilgileri doldurun.",
+    "fields": {
+      "title": "Başlık",
+      "description": "Açıklama",
+      "startDate": "Başlangıç tarihi",
+      "totalDays": "Toplam gün",
+      "capabilities": "Gerekli yetkinlikler"
+    },
+    "submit": "Acil iş oluştur",
+    "creating": "Oluşturuluyor...",
+    "loading": "Yükleniyor...",
+    "notContractorAccount": "Yalnızca yükleniciler acil iş oluşturabilir.",
+    "notTeamAccountForUrgent": "Yalnızca ekipler bu acil iş listesini görebilir.",
+    "listTitleForTeams": "Acil işler",
+    "listDescriptionForTeams": "Yüklenicilerin yayınladığı acil sözleşmeleri inceleyin ve hızlıca yanıt verin.",
+    "noUrgentJobs": "Şu anda acil iş bulunmuyor.",
+    "myListTitleForContractor": "Acil işlerim",
+    "myListDescriptionForContractor": "Yayınladığınız acil sözleşmeleri yönetin.",
+    "newUrgentFromList": "Yeni acil iş",
+    "noUrgentJobsForContractor": "Henüz acil iş yayınlamadınız.",
+    "badges": {
+      "urgent": "Acil",
+      "totalDays": "{count} gün"
+    },
+    "labels": {
+      "fromContractor": "Yüklenici:",
+      "startsAt": "Başlangıç: {date}"
+    },
+    "errors": {
+      "eligibility": "Henüz sözleşme oluşturamazsınız. Lütfen önce firma evraklarınızı tamamlayın.",
+      "create": "Acil iş oluşturulamadı",
+      "generic": "Bir şeyler ters gitti"
+    }
+  },
   "directory": {
     "contractorsTitle": "Yüklenici rehberi",
     "subcontractorsTitle": "Alt yüklenici rehberi",
@@ -189,9 +226,13 @@
   },
   "contracts": {
     "title": "Sözleşmeler",
+    "myContracts": "Sözleşmelerim",
     "loading": "Sözleşmeler yükleniyor...",
     "new": "Yeni sözleşme",
     "empty": "Henüz sözleşme yok.",
+    "expand": "Teklifleri göster",
+    "collapse": "Teklifleri gizle",
+    "viewFullPage": "Sözleşme sayfasını aç →",
     "startLabel": "Başlangıç",
     "days": "gün",
     "noStartDate": "Başlangıç tarihi yok",
@@ -235,14 +276,42 @@
     "noFiles": "Henüz proje dosyası yüklenmedi.",
     "bidsTitle": "Teklifler",
     "compareOffers": "Teklifleri karşılaştır",
+    "openForBids": "Tekliflere aç",
+    "openingForBids": "Açılıyor...",
+    "acceptBid": "Kabul et",
+    "accepting": "Kabul ediliyor...",
+    "bidAccepted": "Kabul edildi",
+    "bidRejected": "Reddedildi",
+    "completeContract": "Sözleşmeyi tamamla",
     "bidsPublicHint": "Teklif tutarlarını yalnızca sözleşme sahibi görebilir. Herkese açık listede sadece teklif veren alt yükleniciler gösterilir.",
     "commentsTitle": "Yorumlar",
     "noBids": "Henüz teklif yok.",
     "noComments": "Henüz yorum yok.",
+    "statuses": {
+      "DRAFT": "Taslak",
+      "OPEN_FOR_BIDS": "Teklife açık",
+      "ACTIVE": "Aktif",
+      "COMPLETED": "Tamamlandı",
+      "CANCELLED": "İptal edildi"
+    },
+    "completeModal": {
+      "title": "Sözleşmeyi tamamla",
+      "description": "Tamamlamadan önce alt yükleniciyi veya ekibi puanlayın. Bu puanlama platformdaki güveni artırır.",
+      "ratingLabel": "Puan (zorunlu)",
+      "ratingHint": "{rating} / 5 yıldız",
+      "commentLabel": "Yorum (isteğe bağlı)",
+      "commentPlaceholder": "Onlarla çalışma deneyiminizi paylaşın...",
+      "cancel": "İptal",
+      "submit": "Tamamla ve puanla",
+      "submitting": "Tamamlanıyor..."
+    },
     "bid": {
       "title": "Teklif ver",
       "hint": "Alt yükleniciler, yükleniciye tutar ve kısa bir mesaj ile teklif gönderebilir.",
       "amount": "Tutar",
+      "currency": "Para birimi",
+      "tryPreview": "Yaklaşık TL: {amount}",
+      "fxDisclaimer": "Çevrim, gösterge amaçlı ECB tabanlı kurlara göredir; ödeme için bağlayıcı değildir.",
       "message": "Mesaj",
       "document": "Teklif belgesi",
       "documentHint": "İsteğe bağlı. Teklifinizi desteklemek için PDF, tablo veya teklif dosyası yükleyin.",
@@ -258,7 +327,10 @@
     "errors": {
       "placeBid": "Teklif verilemedi",
       "addComment": "Yorum eklenemedi",
-      "uploadBidDocument": "Teklif belgesi yüklenemedi"
+      "uploadBidDocument": "Teklif belgesi yüklenemedi",
+      "acceptBid": "Teklif kabul edilemedi",
+      "completeContract": "Sözleşme tamamlanamadı",
+      "generic": "Bir şeyler ters gitti"
     }
   },
   "compareOffers": {
@@ -273,11 +345,13 @@
       "field": "Alan",
       "bidder": "Teklif veren",
       "amount": "Tutar",
+      "approxTry": "Yakl. TL",
       "message": "Mesaj",
       "document": "Belge",
       "submitted": "Gönderim tarihi"
     },
-    "openDocument": "Belgeyi aç"
+    "openDocument": "Belgeyi aç",
+    "fxDisclaimer": "Yaklaşık TL, gösterge amaçlı ECB tabanlı kurlara göredir."
   },
   "company": {
     "title": "Firma bilgileri",

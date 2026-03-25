@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { normalizeBidForResponse } from "@/lib/bid-display";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export async function GET() {
       id: true,
       amount: true,
       currency: true,
+      message: true,
       documentUrl: true,
       createdAt: true,
       contract: {
@@ -50,24 +52,28 @@ export async function GET() {
   });
 
   return NextResponse.json(
-    bids.map(bid => ({
-      id: bid.id,
-      amount: bid.amount,
-      message: bid.currency ?? null,
-      documentUrl: bid.documentUrl ?? null,
-      createdAt: bid.createdAt,
-      contract: {
-        id: bid.contract.id,
-        title: bid.contract.title,
-        status: bid.contract.status,
-        startsAt: bid.contract.startsAt,
-        totalDays: bid.contract.totalDays,
-        contractorName:
-          bid.contract.contractor?.companyName ??
-          bid.contract.contractor?.name ??
-          bid.contract.contractor?.email ??
-          "-"
-      }
-    }))
+    bids.map(bid => {
+      const norm = normalizeBidForResponse(bid);
+      return {
+        id: bid.id,
+        amount: norm.amount,
+        currency: norm.currency,
+        message: norm.message,
+        documentUrl: bid.documentUrl ?? null,
+        createdAt: bid.createdAt,
+        contract: {
+          id: bid.contract.id,
+          title: bid.contract.title,
+          status: bid.contract.status,
+          startsAt: bid.contract.startsAt,
+          totalDays: bid.contract.totalDays,
+          contractorName:
+            bid.contract.contractor?.companyName ??
+            bid.contract.contractor?.name ??
+            bid.contract.contractor?.email ??
+            "-"
+        }
+      };
+    })
   );
 }

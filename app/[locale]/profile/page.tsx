@@ -44,16 +44,16 @@ export default function ProfilePage() {
 
   if (!session || !user) {
     return (
-      <section className="mx-auto max-w-3xl px-4 py-8">
+      <section className="app-page-narrow">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("title")}</h1>
-      <div className="space-y-2 rounded-lg border bg-card p-4">
+    <section className="app-page-narrow">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("title")}</h1>
+      <div className="app-card space-y-3 p-5 sm:p-6">
         <p>
           <span className="font-medium">{t("fields.email")}:</span> {user.email}
         </p>

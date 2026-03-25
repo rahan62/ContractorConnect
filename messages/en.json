@@ -2,6 +2,7 @@
   "navbar": {
     "home": "Home",
     "contracts": "Contracts",
+    "myContracts": "My contracts",
     "findContractor": "Find Contractor",
     "findSubcontractor": "Find Sub-contractor",
     "findTeam": "Find Team",
@@ -147,6 +148,42 @@
     "dark": "Dark",
     "system": "System"
   },
+  "urgentJobs": {
+    "newTitle": "Create urgent job",
+    "newDescription": "Post an urgent contract so teams can quickly see and respond. Fill in the basics below.",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "startDate": "Start date",
+      "totalDays": "Total days",
+      "capabilities": "Required capabilities"
+    },
+    "submit": "Create urgent job",
+    "creating": "Creating...",
+    "loading": "Loading...",
+    "notContractorAccount": "Only contractors can create urgent jobs.",
+    "notTeamAccountForUrgent": "Only teams can view this list of urgent jobs.",
+    "listTitleForTeams": "Urgent jobs",
+    "listDescriptionForTeams": "Browse urgent contracts posted by contractors and respond quickly.",
+    "noUrgentJobs": "No urgent jobs at the moment.",
+    "myListTitleForContractor": "My urgent jobs",
+    "myListDescriptionForContractor": "Manage your posted urgent contracts.",
+    "newUrgentFromList": "New urgent job",
+    "noUrgentJobsForContractor": "You have not posted any urgent jobs yet.",
+    "badges": {
+      "urgent": "Urgent",
+      "totalDays": "{count} days"
+    },
+    "labels": {
+      "fromContractor": "From contractor:",
+      "startsAt": "Starts: {date}"
+    },
+    "errors": {
+      "eligibility": "You are not allowed to create contracts yet. Please complete your company documents.",
+      "create": "Failed to create urgent job",
+      "generic": "Something went wrong"
+    }
+  },
   "directory": {
     "contractorsTitle": "Contractors directory",
     "subcontractorsTitle": "Sub-contractors directory",
@@ -189,9 +226,13 @@
   },
   "contracts": {
     "title": "Contracts",
+    "myContracts": "My contracts",
     "loading": "Loading contracts...",
     "new": "New contract",
     "empty": "No contracts yet.",
+    "expand": "Show bids",
+    "collapse": "Hide bids",
+    "viewFullPage": "Open contract page →",
     "startLabel": "Start",
     "days": "days",
     "noStartDate": "Start date not set",
@@ -235,14 +276,42 @@
     "noFiles": "No project files uploaded yet.",
     "bidsTitle": "Bids",
     "compareOffers": "Compare offers",
+    "openForBids": "Open for bids",
+    "openingForBids": "Opening...",
+    "acceptBid": "Accept",
+    "accepting": "Accepting...",
+    "bidAccepted": "Accepted",
+    "bidRejected": "Rejected",
+    "completeContract": "Complete contract",
     "bidsPublicHint": "Only the contract owner can view offer amounts. Publicly, only bidding subcontractors are listed.",
     "commentsTitle": "Comments",
     "noBids": "No bids yet.",
     "noComments": "No comments yet.",
+    "statuses": {
+      "DRAFT": "Draft",
+      "OPEN_FOR_BIDS": "Open for bids",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "completeModal": {
+      "title": "Complete contract",
+      "description": "Rate the sub-contractor or team before completing. This rating helps build trust in the platform.",
+      "ratingLabel": "Rating (required)",
+      "ratingHint": "{rating} of 5 stars",
+      "commentLabel": "Comment (optional)",
+      "commentPlaceholder": "Share your experience working with them...",
+      "cancel": "Cancel",
+      "submit": "Complete & rate",
+      "submitting": "Completing..."
+    },
     "bid": {
       "title": "Place a bid",
       "hint": "Sub-contractors can submit an amount and a short message for the contractor.",
       "amount": "Amount",
+      "currency": "Currency",
+      "tryPreview": "Approx. in TRY: {amount}",
+      "fxDisclaimer": "Conversion uses indicative ECB-linked rates for reference only; not for settlement.",
       "message": "Message",
       "document": "Offer document",
       "documentHint": "Optional. Upload a PDF, spreadsheet or proposal file to support your offer.",
@@ -258,7 +327,10 @@
     "errors": {
       "placeBid": "Failed to place bid",
       "addComment": "Failed to add comment",
-      "uploadBidDocument": "Failed to upload offer document"
+      "uploadBidDocument": "Failed to upload offer document",
+      "acceptBid": "Failed to accept bid",
+      "completeContract": "Failed to complete contract",
+      "generic": "Something went wrong"
     }
   },
   "compareOffers": {
@@ -273,11 +345,13 @@
       "field": "Field",
       "bidder": "Bidder",
       "amount": "Amount",
+      "approxTry": "Approx. TRY",
       "message": "Message",
       "document": "Document",
       "submitted": "Submitted"
     },
-    "openDocument": "Open document"
+    "openDocument": "Open document",
+    "fxDisclaimer": "Approx. TRY uses indicative ECB-linked rates for reference only."
   },
   "company": {
     "title": "Company information",

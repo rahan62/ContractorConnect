@@ -57,17 +57,17 @@ export default function CompanyPublicPage() {
 
   if (loading || !data) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8 space-y-4">
-      <div className="overflow-hidden rounded-lg border bg-card">
+    <section className="app-page space-y-6">
+      <div className="app-card overflow-hidden">
         {data.bannerUrl && (
-          <div className="h-32 w-full overflow-hidden border-b bg-muted sm:h-40">
+          <div className="h-32 w-full overflow-hidden border-b border-border/50 bg-muted/40 sm:h-40">
             <img
               src={data.bannerUrl}
               alt={data.companyName}
@@ -87,7 +87,7 @@ export default function CompanyPublicPage() {
             <h1 className="text-2xl font-semibold break-words">
               {data.companyName}
               {data.isVerified && (
-                <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
+                <span className="ml-2 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                   {t("verified")}
                 </span>
               )}
@@ -104,19 +104,19 @@ export default function CompanyPublicPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        <div className="rounded-lg border bg-card p-4 text-center">
+        <div className="app-card-sm p-4 text-center">
           <p className="text-xs text-muted-foreground">{t("metrics.completed")}</p>
           <p className="mt-1 text-2xl font-semibold">
             {data.metrics.completedContracts}
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-4 text-center">
+        <div className="app-card-sm p-4 text-center">
           <p className="text-xs text-muted-foreground">{t("metrics.total")}</p>
           <p className="mt-1 text-2xl font-semibold">
             {data.metrics.totalContracts}
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-4 text-center">
+        <div className="app-card-sm p-4 text-center">
           <p className="text-xs text-muted-foreground">{t("metrics.references")}</p>
           <p className="mt-1 text-2xl font-semibold">
             {data.metrics.references}
@@ -130,18 +130,16 @@ export default function CompanyPublicPage() {
           <p className="mt-1 text-sm text-muted-foreground">{t("contractsHint")}</p>
         </div>
         {data.contracts.length === 0 ? (
-          <div className="rounded-lg border bg-card p-4 text-sm text-muted-foreground">
-            {t("noContracts")}
-          </div>
+          <div className="app-card-sm p-4 text-sm text-muted-foreground">{t("noContracts")}</div>
         ) : (
           <div className="grid gap-4 lg:grid-cols-2">
             {data.contracts.map(contract => (
               <a
                 key={contract.id}
                 href={`/${locale}/contracts/${contract.id}`}
-                className="overflow-hidden rounded-xl border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                className="app-card-sm overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
               >
-                <div className="h-40 w-full overflow-hidden border-b bg-slate-100">
+                <div className="h-40 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
                   {contract.imageUrl ? (
                     <img
                       src={contract.imageUrl}
@@ -149,7 +147,7 @@ export default function CompanyPublicPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center bg-slate-50">
+                    <div className="app-hero-placeholder-inner h-full">
                       <img
                         src="/taseron_logo.png"
                         alt="Taseron"

@@ -44,12 +44,12 @@ export default function SubcontractorsDirectoryPage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-semibold">{t("subcontractorsTitle")}</h1>
+    <section className="app-page">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("subcontractorsTitle")}</h1>
         <Link
           href={selectedIds.length >= 2 ? `/${locale}/compare?ids=${selectedIds.join(",")}` : "#"}
-          className="inline-flex items-center justify-center rounded-lg border px-4 py-2 text-sm font-medium hover:bg-muted"
+          className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-muted/20 px-4 py-2 text-sm font-medium transition-colors hover:bg-muted/40"
         >
           {t("compareAction", { count: selectedIds.length })}
         </Link>
@@ -61,49 +61,46 @@ export default function SubcontractorsDirectoryPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {items.map(item => (
-            <Link
+            <div
               key={item.id}
-              href={`/${locale}/company/${item.id}`}
-              className="rounded-lg border bg-card p-4 text-sm hover:bg-muted"
+              className="app-card-sm flex items-start gap-3 p-4 text-sm transition-colors hover:bg-muted/30"
             >
-              <div
-                className="mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs"
-                onClick={event => {
-                  event.preventDefault();
-                  toggleSelected(item.id);
-                }}
+              <Link
+                href={`/${locale}/company/${item.id}`}
+                className="min-w-0 flex-1 rounded-sm text-foreground no-underline outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary/50"
               >
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(item.id)}
-                  onChange={() => undefined}
-                />
-                <span>{t("comparePick")}</span>
-              </div>
-              <h2 className="font-semibold">
-                {item.companyName || item.email}
-                {item.isVerified && (
-                  <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
-                    {t("verified")}
-                  </span>
+                <h2 className="font-semibold">
+                  {item.companyName || item.email}
+                  {item.isVerified && (
+                    <span className="ml-2 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                      {t("verified")}
+                    </span>
+                  )}
+                </h2>
+                <p className="mt-1 text-xs text-muted-foreground">{item.email}</p>
+                {item.location && <p className="mt-1 text-xs text-muted-foreground">{item.location}</p>}
+                {item.trustScore != null && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t("trustLabel")}: {item.trustScore} / {item.trustGrade}
+                  </p>
                 )}
-              </h2>
-              <p className="mt-1 text-xs text-muted-foreground">{item.email}</p>
-              {item.location && <p className="mt-1 text-xs text-muted-foreground">{item.location}</p>}
-              {item.trustScore != null && (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {t("trustLabel")}: {item.trustScore} / {item.trustGrade}
-                </p>
-              )}
-              {item.specialties && item.specialties.length > 0 && (
-                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{item.specialties.join(", ")}</p>
-              )}
-              {item.phone && (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {t("phoneLabel")}: {item.phone}
-                </p>
-              )}
-            </Link>
+                {item.specialties && item.specialties.length > 0 && (
+                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{item.specialties.join(", ")}</p>
+                )}
+                {item.phone && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t("phoneLabel")}: {item.phone}
+                  </p>
+                )}
+              </Link>
+              <input
+                type="checkbox"
+                checked={selectedIds.includes(item.id)}
+                onChange={() => toggleSelected(item.id)}
+                aria-label={t("comparePick")}
+                className="mt-0.5 size-3 shrink-0 cursor-pointer rounded border border-border bg-background accent-primary"
+              />
+            </div>
           ))}
         </div>
       )}

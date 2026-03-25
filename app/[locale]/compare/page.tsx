@@ -43,7 +43,7 @@ export default function ComparePage() {
 
   if (loading) {
     return (
-      <section className="mx-auto max-w-6xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -51,8 +51,8 @@ export default function ComparePage() {
 
   if (items.length < 2) {
     return (
-      <section className="mx-auto max-w-6xl px-4 py-8">
-        <div className="rounded-xl border bg-card p-5 text-sm text-muted-foreground">{t("empty")}</div>
+      <section className="app-page">
+        <div className="app-card-sm p-5 text-sm text-muted-foreground">{t("empty")}</div>
       </section>
     );
   }
@@ -113,16 +113,16 @@ export default function ComparePage() {
   ];
 
   return (
-    <section className="mx-auto max-w-6xl space-y-6 px-4 py-8">
+    <section className="app-page space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">{t("title")}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border bg-card">
+      <div className="overflow-x-auto rounded-xl border border-border/60 bg-card shadow-sm dark:border-border/50">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="border-b bg-muted/50">
+            <tr className="border-b border-border/50 bg-muted/35">
               <th className="px-4 py-3 text-left font-medium">{t("fields.field")}</th>
               {items.map(item => (
                 <th key={item.id} className="px-4 py-3 text-left font-medium">

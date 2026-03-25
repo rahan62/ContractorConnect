@@ -34,8 +34,8 @@ export default function ContractorsDirectoryPage() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("contractorsTitle")}</h1>
+    <section className="app-page">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("contractorsTitle")}</h1>
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loadingContractors")}</p>
       ) : items.length === 0 ? (
@@ -46,12 +46,12 @@ export default function ContractorsDirectoryPage() {
             <Link
               key={item.id}
               href={`/${locale}/company/${item.id}`}
-              className="rounded-lg border bg-card p-4 text-sm hover:bg-muted"
+              className="app-card-sm p-4 text-sm transition-colors hover:bg-muted/30"
             >
               <h2 className="font-semibold">
                 {item.companyName || item.email}
                 {item.isVerified && (
-                  <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
+                  <span className="ml-2 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                     {t("verified")}
                   </span>
                 )}

@@ -105,6 +105,7 @@ export async function POST(request: Request) {
           title,
           description,
           contractorId: user.id,
+          status: "OPEN_FOR_BIDS",
           isUrgent: Boolean(isUrgent),
           startsAt: startsAt ? new Date(startsAt) : null,
           totalDays: totalDays ?? null,

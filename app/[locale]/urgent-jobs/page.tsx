@@ -61,7 +61,7 @@ export default function UrgentJobsForTeamsPage() {
 
   if (!session) {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -69,30 +69,30 @@ export default function UrgentJobsForTeamsPage() {
 
   if ((session.user as any).userType !== "TEAM") {
     return (
-      <section className="mx-auto max-w-5xl px-4 py-8">
+      <section className="app-page">
         <p className="text-sm text-muted-foreground">{t("notTeamAccountForUrgent")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("listTitleForTeams")}</h1>
+    <section className="app-page">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("listTitleForTeams")}</h1>
       <p className="mb-4 text-sm text-muted-foreground">{t("listDescriptionForTeams")}</p>
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       ) : error ? (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
       ) : items.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("noUrgentJobs")}</p>
       ) : (
         <div className="space-y-3">
           {items.map(item => (
-            <article key={item.id} className="rounded-lg border bg-card p-4 text-sm">
+            <article key={item.id} className="app-card-sm p-4 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <h2 className="font-semibold">{item.title}</h2>
                 {item.totalDays != null && (
-                  <span className="rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
+                  <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-200">
                     {t("badges.totalDays", { count: item.totalDays })}
                   </span>
                 )}

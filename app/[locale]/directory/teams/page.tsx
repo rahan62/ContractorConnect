@@ -33,8 +33,8 @@ export default function TeamsDirectoryPage() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("teamsTitle")}</h1>
+    <section className="app-page">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("teamsTitle")}</h1>
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loadingTeams")}</p>
       ) : items.length === 0 ? (
@@ -45,7 +45,7 @@ export default function TeamsDirectoryPage() {
             <Link
               key={item.id}
               href={`/${locale}/company/${item.leaderId}`}
-              className="rounded-lg border bg-card p-4 text-sm hover:bg-muted"
+              className="app-card-sm p-4 text-sm transition-colors hover:bg-muted/30"
             >
               <h2 className="font-semibold">{item.name}</h2>
               {item.leaderName && (

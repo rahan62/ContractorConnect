@@ -101,6 +101,8 @@ model User {
   contractsCreated  Contract[]               @relation("UserContractsCreated")
   contractsAsClient Contract[]               @relation("UserContractsAsClient")
   bids              Bid[]
+  ratingsGiven      ContractRating[]         @relation("RatingRater")
+  ratingsReceived   ContractRating[]         @relation("RatingReceiver")
   messagesSent      Message[]                @relation("MessagesSent")
   messagesReceived  Message[]                @relation("MessagesReceived")
   complaints        Complaint[]
@@ -188,6 +190,10 @@ model Contract {
   client   User?  @relation("UserContractsAsClient", fields: [clientId], references: [id])
   clientId String?
 
+  // Accepted bid (when contractor selects a sub-contractor/team)
+  acceptedBid   Bid?    @relation("AcceptedBid", fields: [acceptedBidId], references: [id])
+  acceptedBidId String? @unique
+
   // Business fields (simplified)
   budget   Int?
   currency String?
@@ -205,6 +211,7 @@ model Contract {
   complaints Complaint[]
   payments   Payment[]
   capabilities ContractCapability[]
+  rating     ContractRating?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -224,11 +231,12 @@ model MonetizationConfig {
 }
 
 model Bid {
-  id       String    @id @default(cuid())
-  amount   Int
-  currency String?
+  id          String    @id @default(cuid())
+  amount      Decimal   @db.Decimal(16, 2)
+  currency    String    @default("TRY")
+  message     String?
   documentUrl String?
-  status   BidStatus @default(PENDING)
+  status      BidStatus @default(PENDING)
 
   contract   Contract @relation(fields: [contractId], references: [id])
   contractId String
@@ -236,8 +244,29 @@ model Bid {
   bidder   User   @relation(fields: [bidderId], references: [id])
   bidderId String
 
+  contractAsAccepted Contract? @relation("AcceptedBid")
+  rating             ContractRating?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ContractRating {
+  id         String   @id @default(cuid())
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contractId String   @unique
+  bid        Bid      @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  bidId      String   @unique
+  rater      User     @relation("RatingRater", fields: [raterId], references: [id], onDelete: Cascade)
+  raterId    String
+  ratedUser  User     @relation("RatingReceiver", fields: [ratedUserId], references: [id], onDelete: Cascade)
+  ratedUserId String
+  rating     Int      // 1-5
+  comment    String?
+
+  createdAt DateTime @default(now())
+
+  @@index([ratedUserId])
 }
 
 model CompanyReference {

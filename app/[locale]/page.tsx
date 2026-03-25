@@ -65,7 +65,7 @@ export default async function HomePage({ params }: HomePageProps) {
   });
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10">
+    <section className="app-page">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">{t("signedIn.title")}</h1>
@@ -80,9 +80,7 @@ export default async function HomePage({ params }: HomePageProps) {
       </div>
 
       {contracts.length === 0 ? (
-        <div className="rounded-2xl border bg-card p-8 text-sm text-muted-foreground">
-          {t("signedIn.empty")}
-        </div>
+        <div className="app-card p-8 text-sm text-muted-foreground">{t("signedIn.empty")}</div>
       ) : (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {contracts.map(contract => {
@@ -91,13 +89,13 @@ export default async function HomePage({ params }: HomePageProps) {
               <Link
                 key={contract.id}
                 href={`${basePath}/contracts/${contract.id}`}
-                className="overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                className="app-card overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg dark:hover:shadow-black/30"
               >
-                <div className="h-48 w-full overflow-hidden border-b bg-slate-100">
+                <div className="h-48 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
                   {hero ? (
                     <img src={hero} alt={contract.title} className="h-full w-full object-cover" />
                   ) : (
-                    <div className="flex h-full items-center justify-center bg-slate-50">
+                    <div className="app-hero-placeholder-inner h-full min-h-[12rem]">
                       <img src="/taseron_logo.png" alt="Taseron" className="h-16 w-16 rounded-md opacity-70" />
                     </div>
                   )}

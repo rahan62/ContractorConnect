@@ -88,7 +88,7 @@ export default function NewUrgentJobPage() {
 
   if (!session) {
     return (
-      <section className="mx-auto max-w-3xl px-4 py-8">
+      <section className="app-page-narrow">
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       </section>
     );
@@ -97,21 +97,21 @@ export default function NewUrgentJobPage() {
   // Only contractors can create urgent jobs
   if ((session.user as any).userType !== "CONTRACTOR") {
     return (
-      <section className="mx-auto max-w-3xl px-4 py-8">
+      <section className="app-page-narrow">
         <p className="text-sm text-muted-foreground">{t("notContractorAccount")}</p>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">{t("newTitle")}</h1>
+    <section className="app-page-narrow">
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("newTitle")}</h1>
       <p className="mb-4 text-sm text-muted-foreground">{t("newDescription")}</p>
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border bg-card p-4">
+      <form onSubmit={handleSubmit} className="app-card space-y-4 p-4 sm:p-6">
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.title")}</label>
           <input
-            className="mt-1 w-full rounded border px-3 py-2 text-sm"
+            className="mt-1 app-input"
             value={title}
             onChange={e => setTitle(e.target.value)}
             required
@@ -120,7 +120,7 @@ export default function NewUrgentJobPage() {
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.description")}</label>
           <textarea
-            className="mt-1 w-full rounded border px-3 py-2 text-sm"
+            className="mt-1 min-h-[8rem] app-input"
             rows={6}
             value={description}
             onChange={e => setDescription(e.target.value)}
@@ -132,7 +132,7 @@ export default function NewUrgentJobPage() {
             <label className="block text-sm font-medium">{t("fields.startDate")}</label>
             <input
               type="date"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={startsAt}
               onChange={e => setStartsAt(e.target.value)}
             />
@@ -142,7 +142,7 @@ export default function NewUrgentJobPage() {
             <input
               type="number"
               min="1"
-              className="mt-1 w-full rounded border px-3 py-2 text-sm"
+              className="mt-1 app-input"
               value={totalDays}
               onChange={e => setTotalDays(e.target.value)}
             />
@@ -150,7 +150,7 @@ export default function NewUrgentJobPage() {
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.capabilities")}</label>
-          <div className="mt-2 space-y-3 rounded-lg border p-3">
+          <div className="app-inset mt-2 space-y-3">
             {capabilities.map(group => (
               <div key={group.id} className="space-y-2">
                 <p className="text-sm font-medium">{group.name}</p>
@@ -170,11 +170,11 @@ export default function NewUrgentJobPage() {
             ))}
           </div>
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+          className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {loading ? t("creating") : t("submit")}
         </button>

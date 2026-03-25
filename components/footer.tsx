@@ -6,7 +6,7 @@ export async function Footer({ locale }: { locale: string }) {
   const basePath = `/${locale}`;
 
   return (
-    <footer className="border-t bg-card">
+    <footer className="border-t border-border/60 bg-card/80 backdrop-blur-sm dark:bg-card/90">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <h2 className="text-lg font-semibold">Taseron</h2>
@@ -59,7 +59,7 @@ export async function Footer({ locale }: { locale: string }) {
           </div>
         </div>
       </div>
-      <div className="border-t px-4 py-4 text-center text-xs text-muted-foreground">
+      <div className="border-t border-border/60 px-4 py-4 text-center text-xs text-muted-foreground">
         {t("copyright")}
       </div>
     </footer>
