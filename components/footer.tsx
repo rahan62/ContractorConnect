@@ -9,7 +9,7 @@ export async function Footer({ locale }: { locale: string }) {
     <footer className="border-t border-border/60 bg-card/80 backdrop-blur-sm dark:bg-card/90">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <h2 className="text-lg font-semibold">Taseron</h2>
+          <h2 className="text-lg font-semibold">Yüklenicim</h2>
           <p className="mt-3 text-sm text-muted-foreground">{t("tagline")}</p>
         </div>
         <div>
@@ -27,8 +27,8 @@ export async function Footer({ locale }: { locale: string }) {
             <Link href={`${basePath}/directory/subcontractors`} className="block hover:text-foreground">
               {t("links.subcontractors")}
             </Link>
-            <Link href={`${basePath}/directory/teams`} className="block hover:text-foreground">
-              {t("links.teams")}
+            <Link href={`${basePath}/directory/field-crews`} className="block hover:text-foreground">
+              {t("links.fieldCrews")}
             </Link>
           </div>
         </div>
@@ -52,8 +52,8 @@ export async function Footer({ locale }: { locale: string }) {
         <div>
           <h3 className="text-sm font-semibold">{t("sections.contact")}</h3>
           <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <a href="mailto:info@taseron.org" className="block hover:text-foreground">
-              info@taseron.org
+            <a href="mailto:info@yuklenicim.com" className="block hover:text-foreground">
+              info@yuklenicim.com
             </a>
             <p>{t("contactText")}</p>
           </div>

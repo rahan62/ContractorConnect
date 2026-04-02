@@ -376,7 +376,7 @@ export default function CompanyPage() {
                         <img src={hero} alt={contract.title} className="h-full w-full object-cover" />
                       ) : (
                         <div className="app-hero-placeholder-inner h-full">
-                          <img src="/taseron_logo.png" alt="Taseron" className="h-16 w-16 rounded-md opacity-70" />
+                          <img src="/favicon.svg" alt="" className="h-16 w-16 rounded-md opacity-90" aria-hidden />
                         </div>
                       )}
                     </div>

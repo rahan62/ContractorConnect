@@ -149,9 +149,10 @@ export default function CompanyPublicPage() {
                   ) : (
                     <div className="app-hero-placeholder-inner h-full">
                       <img
-                        src="/taseron_logo.png"
-                        alt="Taseron"
-                        className="h-14 w-14 rounded-md opacity-70"
+                        src="/favicon.svg"
+                        alt=""
+                        aria-hidden
+                        className="h-14 w-14 rounded-md opacity-90"
                       />
                     </div>
                   )}

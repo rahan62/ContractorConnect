@@ -5,9 +5,9 @@
     "myContracts": "Sözleşmelerim",
     "findContractor": "Yüklenici Bul",
     "findSubcontractor": "Alt Yüklenici Bul",
-    "findTeam": "Ekip Bul",
+    "findFieldCrew": "Saha ekibi bul",
     "newUrgentJob": "Acil iş oluştur",
-    "urgentJobsForTeams": "Acil işler",
+    "urgentJobsForFieldCrews": "Acil işler",
     "myUrgentJobs": "Acil işlerim",
     "login": "Giriş Yap",
     "register": "Kayıt Ol",
@@ -18,7 +18,8 @@
     "referenceRequests": "Referans talepleri",
     "settings": "Ayarlar",
     "logout": "Çıkış Yap",
-    "toggleNavigation": "Gezinmeyi aç veya kapat"
+    "toggleNavigation": "Gezinmeyi aç veya kapat",
+    "guestExplainer": "Yüklenicileri, rehberi, sözleşmeleri ve daha fazlasını görmek için giriş yapın."
   },
   "auth": {
     "signin": {
@@ -26,6 +27,8 @@
       "email": "E-posta",
       "password": "Şifre",
       "submit": "Giriş Yap",
+      "redirectNotice": "Açmaya çalıştığınız sayfaya devam etmek için giriş yapın.",
+      "loading": "Yükleniyor…",
       "errors": {
         "turnstileRequired": "Lütfen güvenlik doğrulamasını tamamlayın.",
         "turnstileFailed": "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
@@ -39,25 +42,68 @@
       "userType": "Kullanıcı tipi",
       "contractor": "Yüklenici",
       "subcontractor": "Alt Yüklenici",
-      "team": "Ekip",
+      "fieldCrew": "Saha ekibi",
       "submit": "Kayıt Ol",
       "companyInfo": "Firma bilgileri",
       "taxOffice": "Vergi dairesi",
       "taxNumber": "Vergi numarası",
       "authorizedName": "Yetkili kişi adı",
       "authorizedPhone": "Yetkili kişi telefonu",
+      "subPrimaryCategory": "Birincil iş grubu",
+      "subPrimaryCategoryHint": "Alt yükleniciler için zorunludur. İşinize en uygun ana kategoriyi seçin.",
+      "loadingCategories": "İş grupları yükleniyor…",
+      "crewPrimarySection": "Birincil Ekip Uzmanlığı (bölüm)",
+      "crewPrimarySectionHint": "Saha ekipleri için zorunludur. Ekibinize en uygun bölümü seçin.",
+      "loadingCrewSections": "Ekip uzmanlığı bölümleri yükleniyor…",
       "success": "Kayıt başarılı. Hesabınızı doğrulamak için lütfen e-postanızı kontrol edin.",
       "errors": {
         "failed": "Kayıt işlemi başarısız oldu",
         "turnstileRequired": "Lütfen güvenlik doğrulamasını tamamlayın.",
-        "turnstileFailed": "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
+        "turnstileFailed": "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin.",
+        "subPrimaryCategoryRequired": "Alt yüklenici için birincil iş grubunu seçin.",
+        "crewPrimarySectionRequired": "Saha ekibi için birincil Ekip Uzmanlığı bölümünü seçin."
       }
     }
   },
   "dashboard": {
     "title": "Panel",
     "welcome": "Tekrar hoş geldiniz, {email}.",
-    "loading": "Panel yükleniyor..."
+    "loading": "Panel yükleniyor...",
+    "loadError": "Panel verileri yüklenemedi.",
+    "contractor": {
+      "metricsTitle": "Özet",
+      "totalContracts": "Toplam sözleşme",
+      "totalUrgentJobs": "Yayınlanan acil iş",
+      "totalBudget": "Sözleşme bütçeleri toplamı",
+      "settledSubs": "Tamamlanan işte yer alan alt yüklenici",
+      "avgTrust": "Ort. güven puanı (iş ortakları)",
+      "latestTitle": "En güncel teklif olan sözleşmeler",
+      "noLatestOffers": "Henüz sözleşmelerinize teklif yok.",
+      "viewContract": "Aç",
+      "lastBid": "Son teklif",
+      "budgetHint": "Yalnızca bütçe girilmiş sözleşmeler toplanır."
+    },
+    "subcontractor": {
+      "metricsTitle": "Özet",
+      "completedContracts": "Tamamlanan sözleşme",
+      "activeContracts": "Aktif sözleşme",
+      "pendingBids": "Açık teklif (bekleyen)",
+      "fieldCrewsYouBelongTo": "Üye olduğunuz saha ekibi sayısı",
+      "verifiedReferences": "Doğrulanmış referans"
+    },
+    "fieldCrew": {
+      "metricsTitle": "Özet",
+      "completedJobs": "Tamamlanan iş",
+      "urgentCompleted": "Tamamlanan acil iş",
+      "activeJobs": "Aktif iş",
+      "pendingBids": "Açık teklif (bekleyen)",
+      "crewsYouLead": "Lider olduğunuz saha ekibi",
+      "rosterMembers": "Saha ekiplerinizdeki üye",
+      "crewLabel": "Ana saha ekibi"
+    },
+    "generic": {
+      "hint": "Platformu kullandıkça panelinizde daha fazla bilgi görünür."
+    }
   },
   "profile": {
     "title": "Profil",
@@ -150,7 +196,7 @@
   },
   "urgentJobs": {
     "newTitle": "Acil iş oluştur",
-    "newDescription": "Takımların hızlıca görebilmesi ve yanıt verebilmesi için acil bir sözleşme yayınlayın. Aşağıdaki temel bilgileri doldurun.",
+    "newDescription": "Saha ekiplerinin hızlıca görebilmesi ve yanıt verebilmesi için acil bir sözleşme yayınlayın. Aşağıdaki temel bilgileri doldurun.",
     "fields": {
       "title": "Başlık",
       "description": "Açıklama",
@@ -162,9 +208,9 @@
     "creating": "Oluşturuluyor...",
     "loading": "Yükleniyor...",
     "notContractorAccount": "Yalnızca yükleniciler acil iş oluşturabilir.",
-    "notTeamAccountForUrgent": "Yalnızca ekipler bu acil iş listesini görebilir.",
-    "listTitleForTeams": "Acil işler",
-    "listDescriptionForTeams": "Yüklenicilerin yayınladığı acil sözleşmeleri inceleyin ve hızlıca yanıt verin.",
+    "notFieldCrewAccountForUrgent": "Yalnızca saha ekibi hesapları bu acil iş listesini görebilir.",
+    "listTitleForFieldCrews": "Acil işler",
+    "listDescriptionForFieldCrews": "Yüklenicilerin yayınladığı acil sözleşmeleri inceleyin ve hızlıca yanıt verin.",
     "noUrgentJobs": "Şu anda acil iş bulunmuyor.",
     "myListTitleForContractor": "Acil işlerim",
     "myListDescriptionForContractor": "Yayınladığınız acil sözleşmeleri yönetin.",
@@ -184,19 +230,46 @@
       "generic": "Bir şeyler ters gitti"
     }
   },
+  "teamAvailability": {
+    "title": "Saha ekibi müsaitlik ilanı",
+    "loading": "Yükleniyor…",
+    "notFieldCrewAccount": "Müsaitlik ilanı yalnızca saha ekibi hesaplarına açıktır.",
+    "submit": "Yayınla",
+    "creating": "Yayınlanıyor…",
+    "fields": {
+      "title": "Başlık",
+      "description": "Açıklama",
+      "profession": "Meslek",
+      "professionPlaceholder": "Seçin…",
+      "availableFrom": "Müsait başlangıç",
+      "availableTo": "Müsait bitiş",
+      "totalDays": "Toplam gün"
+    },
+    "errors": {
+      "create": "Müsaitlik oluşturulamadı",
+      "generic": "Bir şeyler ters gitti"
+    }
+  },
   "directory": {
     "contractorsTitle": "Yüklenici rehberi",
     "subcontractorsTitle": "Alt yüklenici rehberi",
-    "teamsTitle": "Ekip rehberi",
+    "fieldCrewsTitle": "Saha ekibi rehberi",
     "loadingContractors": "Yükleniciler yükleniyor...",
     "loadingSubcontractors": "Alt yükleniciler yükleniyor...",
-    "loadingTeams": "Ekipler yükleniyor...",
+    "loadingFieldCrews": "Saha ekipleri yükleniyor...",
     "noContractors": "Henüz yüklenici bulunamadı.",
     "noSubcontractors": "Henüz alt yüklenici bulunamadı.",
-    "noTeams": "Henüz ekip bulunamadı.",
+    "noFieldCrews": "Henüz saha ekibi bulunamadı.",
     "verified": "Doğrulandı",
     "phoneLabel": "Telefon",
-    "teamLeaderLabel": "Ekip lideri",
+    "locationLabel": "Konum",
+    "projectSectorsHeading": "Proje sektörleri",
+    "tradeGroupsHeading": "İş grupları",
+    "noProjectSectors": "Henüz onaylı proje sektörü yok. Yine de iş ilanı açabilir ve teklif verebilirsiniz.",
+    "noTradeGroups": "Kayıtlı iş grubu yok.",
+    "fieldCrewLeaderLabel": "Ekip lideri",
+    "crewSpecializationHeading": "Ekip uzmanlığı",
+    "noCrewSpecialization": "Kayıtlı ekip uzmanlığı bölümü yok.",
     "compareAction": "Secilenleri karsilastir ({count})",
     "comparePick": "Karsilastir",
     "trustLabel": "Guven skoru"
@@ -251,6 +324,9 @@
       "totalDaysPlaceholder": "örn. 30",
       "capabilities": "Gerekli yetkinlikler",
       "capabilitiesHint": "Bu is icin gereken uzmanlik alanlarini secin.",
+      "requiredSubcontractorCategories": "Gerekli alt yüklenici iş grupları (isteğe bağlı)",
+      "requiredSubcontractorCategoriesHint":
+        "Seçilirse, yalnızca işaretlenen tüm ana iş gruplarına sahip firmalar teklif verebilir.",
       "dwgFiles": "DWG dosyaları",
       "images": "Sözleşme görselleri",
       "imagesHint": "Projeyi tanıtmak için bir veya daha fazla görsel yükleyin. Görsel yüklenmezse yer tutucu kullanılacaktır."
@@ -455,9 +531,9 @@
   },
   "homePage": {
     "hero": {
-      "badge": "Modern inşaat ekipleri için tasarlandı",
+      "badge": "Modern inşaat saha ekipleri için tasarlandı",
       "title": "Doğru iş ortaklarını bulun ve her projeyi güvenle ileri taşıyın.",
-      "description": "Taseron; yüklenicilerin, alt yüklenicilerin ve ekiplerin doğrulanmış firma profilleri, proje dosyaları ve şeffaf sözleşme süreçleri etrafında buluşmasını sağlar.",
+      "description": "Yüklenicim; yüklenicilerin, alt yüklenicilerin ve saha ekiplerinin doğrulanmış firma profilleri, proje dosyaları ve şeffaf sözleşme süreçleri etrafında buluşmasını sağlar.",
       "primaryCta": "Hesap oluştur",
       "secondaryCta": "Giriş yap"
     },
@@ -492,14 +568,14 @@
       "contracts": "Sözleşmeler",
       "contractors": "Yüklenici Bul",
       "subcontractors": "Alt Yüklenici Bul",
-      "teams": "Ekip Bul",
+      "fieldCrews": "Saha ekibi bul",
       "signin": "Giriş yap",
       "register": "Kayıt ol",
       "company": "Firma bilgileri",
       "settings": "Ayarlar"
     },
     "contactText": "İş birlikleri, destek talepleri veya platform kurulumu için bize ulaşın.",
-    "copyright": "© 2026 Taseron. Tüm hakları saklıdır."
+    "copyright": "© 2026 Yüklenicim. Tüm hakları saklıdır."
   }
 }
 

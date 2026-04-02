@@ -1,14 +1,20 @@
 "use client";
 
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { TurnstileWidget } from "@/components/turnstile-widget";
+import { taxonomyLabel } from "@/lib/taxonomy-label";
+
+type MainCategoryOption = { id: string; slug: string; nameEn: string; nameTr: string };
 
 export default function RegisterPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("auth.register");
+  const [mainCategories, setMainCategories] = useState<MainCategoryOption[]>([]);
+  const [crewSections, setCrewSections] = useState<MainCategoryOption[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [form, setForm] = useState({
     companyName: "",
     email: "",
@@ -17,7 +23,9 @@ export default function RegisterPage() {
     companyTaxOffice: "",
     companyTaxNumber: "",
     authorizedPersonName: "",
-    authorizedPersonPhone: ""
+    authorizedPersonPhone: "",
+    subcontractorPrimaryCategoryId: "",
+    crewPrimarySectionId: ""
   });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -41,6 +49,31 @@ export default function RegisterPage() {
     setError(t("errors.turnstileFailed"));
   }, [t]);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function loadCats() {
+      setCategoriesLoading(true);
+      try {
+        const [subRes, crewRes] = await Promise.all([
+          fetch("/api/subcontractor-main-categories"),
+          fetch("/api/crew-specialization-sections")
+        ]);
+        if (subRes.ok && !cancelled) {
+          setMainCategories((await subRes.json()) as MainCategoryOption[]);
+        }
+        if (crewRes.ok && !cancelled) {
+          setCrewSections((await crewRes.json()) as MainCategoryOption[]);
+        }
+      } finally {
+        if (!cancelled) setCategoriesLoading(false);
+      }
+    }
+    void loadCats();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm(prev => ({ ...prev, [key]: value }));
   }
@@ -55,12 +88,28 @@ export default function RegisterPage() {
       return;
     }
 
+    if (form.userType === "SUBCONTRACTOR" && !form.subcontractorPrimaryCategoryId) {
+      setError(t("errors.subPrimaryCategoryRequired"));
+      return;
+    }
+
+    if (form.userType === "TEAM" && !form.crewPrimarySectionId) {
+      setError(t("errors.crewPrimarySectionRequired"));
+      return;
+    }
+
     setLoading(true);
 
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, turnstileToken })
+      body: JSON.stringify({
+        ...form,
+        subcontractorPrimaryCategoryId:
+          form.userType === "SUBCONTRACTOR" ? form.subcontractorPrimaryCategoryId : undefined,
+        crewPrimarySectionId: form.userType === "TEAM" ? form.crewPrimarySectionId : undefined,
+        turnstileToken
+      })
     });
 
     setLoading(false);
@@ -75,7 +124,10 @@ export default function RegisterPage() {
     setTimeout(() => router.push(`/${locale}/auth/signin`), 2500);
   }
 
-  const isCompany = form.userType === "CONTRACTOR" || form.userType === "SUBCONTRACTOR";
+  const isCompany =
+    form.userType === "CONTRACTOR" ||
+    form.userType === "SUBCONTRACTOR" ||
+    form.userType === "TEAM";
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center px-4">
@@ -116,14 +168,65 @@ export default function RegisterPage() {
             <select
               className="mt-1 app-input"
               value={form.userType}
-              onChange={e => updateField("userType", e.target.value)}
+              onChange={e => {
+                const v = e.target.value;
+                updateField("userType", v);
+                if (v !== "SUBCONTRACTOR") updateField("subcontractorPrimaryCategoryId", "");
+                if (v !== "TEAM") updateField("crewPrimarySectionId", "");
+              }}
             >
               <option value="CONTRACTOR">{t("contractor")}</option>
               <option value="SUBCONTRACTOR">{t("subcontractor")}</option>
-              <option value="TEAM">{t("team")}</option>
+              <option value="TEAM">{t("fieldCrew")}</option>
             </select>
           </div>
         </div>
+
+        {form.userType === "TEAM" && (
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">{t("crewPrimarySection")}</label>
+            <select
+              className="mt-1 app-input"
+              required
+              value={form.crewPrimarySectionId}
+              onChange={e => updateField("crewPrimarySectionId", e.target.value)}
+              disabled={categoriesLoading || crewSections.length === 0}
+            >
+              <option value="">
+                {categoriesLoading ? t("loadingCrewSections") : "—"}
+              </option>
+              {crewSections.map(c => (
+                <option key={c.id} value={c.id}>
+                  {taxonomyLabel(locale, c)}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-muted-foreground">{t("crewPrimarySectionHint")}</p>
+          </div>
+        )}
+
+        {form.userType === "SUBCONTRACTOR" && (
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">{t("subPrimaryCategory")}</label>
+            <select
+              className="mt-1 app-input"
+              required
+              value={form.subcontractorPrimaryCategoryId}
+              onChange={e => updateField("subcontractorPrimaryCategoryId", e.target.value)}
+              disabled={categoriesLoading || mainCategories.length === 0}
+            >
+              <option value="">
+                {categoriesLoading ? t("loadingCategories") : "—"}
+              </option>
+              {mainCategories.map(c => (
+                <option key={c.id} value={c.id}>
+                  {taxonomyLabel(locale, c)}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-muted-foreground">{t("subPrimaryCategoryHint")}</p>
+          </div>
+        )}
 
         {isCompany && (
           <div className="app-inset mt-4 space-y-3">

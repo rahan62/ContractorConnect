@@ -40,6 +40,24 @@ interface SimpleContract {
   contractorId?: string | null;
 }
 
+function ContractsLoadingSpinner({ label }: { label: string }) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center gap-4 py-16"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <span className="sr-only">{label}</span>
+      <div
+        className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent"
+        aria-hidden
+      />
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
 export default function ContractsPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -187,7 +205,7 @@ export default function ContractsPage() {
   if (status === "loading" || !session) {
     return (
       <section className="app-page">
-        <p className="text-sm text-muted-foreground">{t("loading")}</p>
+        <ContractsLoadingSpinner label={t("loading")} />
       </section>
     );
   }
@@ -196,40 +214,44 @@ export default function ContractsPage() {
     return (
       <section className="app-page">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("title")}</h1>
-        <div className="space-y-3">
-          {simpleContracts.map(c => (
-            <Link
-              key={c.id}
-              href={`/${locale}/contracts/${c.id}`}
-              className="app-card-sm block overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
-            >
-              <div className="h-44 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
-                {c.imageUrls?.split(";").filter(Boolean)[0] ? (
-                  <img
-                    src={c.imageUrls.split(";").filter(Boolean)[0]}
-                    alt={c.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="app-hero-placeholder-inner h-full">
-                    <img src="/taseron_logo.png" alt="Taseron" className="h-16 w-16 rounded-md opacity-70" />
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <h2 className="font-medium">{c.title}</h2>
-                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.description ?? ""}</p>
-                <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
-                  <span>{c.startsAt ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}` : t("noStartDate")}</span>
-                  <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
+        {loading ? (
+          <ContractsLoadingSpinner label={t("loading")} />
+        ) : (
+          <div className="space-y-3">
+            {simpleContracts.map(c => (
+              <Link
+                key={c.id}
+                href={`/${locale}/contracts/${c.id}`}
+                className="app-card-sm block overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
+              >
+                <div className="h-44 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
+                  {c.imageUrls?.split(";").filter(Boolean)[0] ? (
+                    <img
+                      src={c.imageUrls.split(";").filter(Boolean)[0]}
+                      alt={c.title}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="app-hero-placeholder-inner h-full">
+                      <img src="/favicon.svg" alt="" className="h-16 w-16 rounded-md opacity-90" aria-hidden />
+                    </div>
+                  )}
                 </div>
-              </div>
-            </Link>
-          ))}
-          {simpleContracts.length === 0 && (
-            <p className="text-sm text-muted-foreground">{t("empty")}</p>
-          )}
-        </div>
+                <div className="p-4">
+                  <h2 className="font-medium">{c.title}</h2>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.description ?? ""}</p>
+                  <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
+                    <span>{c.startsAt ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}` : t("noStartDate")}</span>
+                    <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+            {simpleContracts.length === 0 && (
+              <p className="text-sm text-muted-foreground">{t("empty")}</p>
+            )}
+          </div>
+        )}
       </section>
     );
   }
@@ -251,7 +273,7 @@ export default function ContractsPage() {
       {error && <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">{t("loading")}</p>
+        <ContractsLoadingSpinner label={t("loading")} />
       ) : (
         <div className="space-y-3">
           {displayContracts.map(c => {
@@ -277,7 +299,7 @@ export default function ContractsPage() {
                         <img src={imageUrl} alt={c.title} className="h-full w-full object-cover" />
                       ) : (
                         <div className="app-hero-placeholder-inner h-full min-h-[100px]">
-                          <img src="/taseron_logo.png" alt="Taseron" className="h-12 w-12 rounded-md opacity-70" />
+                          <img src="/favicon.svg" alt="" className="h-12 w-12 rounded-md opacity-90" aria-hidden />
                         </div>
                       )}
                     </div>

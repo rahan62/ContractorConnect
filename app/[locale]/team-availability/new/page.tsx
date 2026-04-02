@@ -94,7 +94,7 @@ export default function NewTeamAvailabilityPage() {
   if ((session.user as any).userType !== "TEAM") {
     return (
       <section className="app-page-narrow">
-        <p className="text-sm text-muted-foreground">{t("notTeamAccount")}</p>
+        <p className="text-sm text-muted-foreground">{t("notFieldCrewAccount")}</p>
       </section>
     );
   }

@@ -1,9 +1,11 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 
+/** Tab icon is served from `app/icon.svg` (Next.js metadata file convention). */
 export const metadata = {
-  icons: {
-    icon: "/favicon.svg"
+  title: {
+    default: "Yüklenicim",
+    template: "%s · Yüklenicim"
   }
 };
 

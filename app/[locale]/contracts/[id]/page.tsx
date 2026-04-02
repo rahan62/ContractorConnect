@@ -279,7 +279,7 @@ export default function ContractDetailPage() {
             <img src={imageUrls[0]} alt={contract.title} className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center bg-muted/25 dark:bg-muted/15">
-              <img src="/taseron_logo.png" alt="Taseron" className="h-24 w-24 rounded-xl opacity-70" />
+              <img src="/favicon.svg" alt="" className="h-24 w-24 rounded-xl opacity-90" aria-hidden />
             </div>
           )}
         </div>

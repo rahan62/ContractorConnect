@@ -5,9 +5,9 @@
     "myContracts": "My contracts",
     "findContractor": "Find Contractor",
     "findSubcontractor": "Find Sub-contractor",
-    "findTeam": "Find Team",
+    "findFieldCrew": "Find field crew",
     "newUrgentJob": "New urgent job",
-    "urgentJobsForTeams": "Urgent jobs",
+    "urgentJobsForFieldCrews": "Urgent jobs",
     "myUrgentJobs": "My urgent jobs",
     "login": "Login",
     "register": "Register",
@@ -18,7 +18,8 @@
     "referenceRequests": "Reference requests",
     "settings": "Settings",
     "logout": "Logout",
-    "toggleNavigation": "Toggle navigation"
+    "toggleNavigation": "Toggle navigation",
+    "guestExplainer": "Sign in to browse contractors, directories, contracts, and more."
   },
   "auth": {
     "signin": {
@@ -26,6 +27,8 @@
       "email": "Email",
       "password": "Password",
       "submit": "Sign in",
+      "redirectNotice": "Sign in to continue to the page you tried to open.",
+      "loading": "Loading…",
       "errors": {
         "turnstileRequired": "Please complete the security verification.",
         "turnstileFailed": "Security verification failed. Please try again."
@@ -39,25 +42,68 @@
       "userType": "User type",
       "contractor": "Contractor",
       "subcontractor": "Sub-contractor",
-      "team": "Team",
+      "fieldCrew": "Field crew",
       "submit": "Register",
       "companyInfo": "Company information",
       "taxOffice": "Company tax office",
       "taxNumber": "Company tax number",
       "authorizedName": "Authorized person name",
       "authorizedPhone": "Authorized person phone",
+      "subPrimaryCategory": "Primary trade group",
+      "subPrimaryCategoryHint": "Required for sub-contractors. Choose the main category that best matches your work.",
+      "loadingCategories": "Loading trade categories…",
+      "crewPrimarySection": "Primary Crew Specialization (section)",
+      "crewPrimarySectionHint": "Required for field crews. Pick the section that best matches your crew.",
+      "loadingCrewSections": "Loading Crew Specialization sections…",
       "success": "Registration successful. Please check your email to verify your account.",
       "errors": {
         "failed": "Registration failed",
         "turnstileRequired": "Please complete the security verification.",
-        "turnstileFailed": "Security verification failed. Please try again."
+        "turnstileFailed": "Security verification failed. Please try again.",
+        "subPrimaryCategoryRequired": "Please select a primary trade group for sub-contractors.",
+        "crewPrimarySectionRequired": "Please select a primary Crew Specialization section for field crews."
       }
     }
   },
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back, {email}.",
-    "loading": "Loading dashboard..."
+    "loading": "Loading dashboard...",
+    "loadError": "Could not load dashboard data.",
+    "contractor": {
+      "metricsTitle": "Overview",
+      "totalContracts": "Total contracts",
+      "totalUrgentJobs": "Urgent jobs posted",
+      "totalBudget": "Sum of contract budgets",
+      "settledSubs": "Sub-contractors (completed work)",
+      "avgTrust": "Avg. trust score (partners)",
+      "latestTitle": "Contracts with the latest offers",
+      "noLatestOffers": "No bids on your contracts yet.",
+      "viewContract": "Open",
+      "lastBid": "Latest bid",
+      "budgetHint": "Only contracts with a budget set are included."
+    },
+    "subcontractor": {
+      "metricsTitle": "Overview",
+      "completedContracts": "Completed contracts",
+      "activeContracts": "Active contracts",
+      "pendingBids": "Open bids (pending)",
+      "fieldCrewsYouBelongTo": "Field crews you belong to",
+      "verifiedReferences": "Verified references"
+    },
+    "fieldCrew": {
+      "metricsTitle": "Overview",
+      "completedJobs": "Completed jobs",
+      "urgentCompleted": "Urgent jobs completed",
+      "activeJobs": "Active jobs",
+      "pendingBids": "Open bids (pending)",
+      "crewsYouLead": "Field crews you lead",
+      "rosterMembers": "Members on your field crews",
+      "crewLabel": "Primary field crew"
+    },
+    "generic": {
+      "hint": "Your dashboard will show more as you use the platform."
+    }
   },
   "profile": {
     "title": "Profile",
@@ -150,7 +196,7 @@
   },
   "urgentJobs": {
     "newTitle": "Create urgent job",
-    "newDescription": "Post an urgent contract so teams can quickly see and respond. Fill in the basics below.",
+    "newDescription": "Post an urgent contract so field crews can quickly see and respond. Fill in the basics below.",
     "fields": {
       "title": "Title",
       "description": "Description",
@@ -162,9 +208,9 @@
     "creating": "Creating...",
     "loading": "Loading...",
     "notContractorAccount": "Only contractors can create urgent jobs.",
-    "notTeamAccountForUrgent": "Only teams can view this list of urgent jobs.",
-    "listTitleForTeams": "Urgent jobs",
-    "listDescriptionForTeams": "Browse urgent contracts posted by contractors and respond quickly.",
+    "notFieldCrewAccountForUrgent": "Only field crew accounts can view this list of urgent jobs.",
+    "listTitleForFieldCrews": "Urgent jobs",
+    "listDescriptionForFieldCrews": "Browse urgent contracts posted by contractors and respond quickly.",
     "noUrgentJobs": "No urgent jobs at the moment.",
     "myListTitleForContractor": "My urgent jobs",
     "myListDescriptionForContractor": "Manage your posted urgent contracts.",
@@ -184,19 +230,46 @@
       "generic": "Something went wrong"
     }
   },
+  "teamAvailability": {
+    "title": "Post field crew availability",
+    "loading": "Loading…",
+    "notFieldCrewAccount": "Only field crew accounts can post availability.",
+    "submit": "Publish",
+    "creating": "Publishing…",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "profession": "Profession",
+      "professionPlaceholder": "Select…",
+      "availableFrom": "Available from",
+      "availableTo": "Available to",
+      "totalDays": "Total days"
+    },
+    "errors": {
+      "create": "Could not create availability post",
+      "generic": "Something went wrong"
+    }
+  },
   "directory": {
     "contractorsTitle": "Contractors directory",
     "subcontractorsTitle": "Sub-contractors directory",
-    "teamsTitle": "Teams directory",
+    "fieldCrewsTitle": "Field crews directory",
     "loadingContractors": "Loading contractors...",
     "loadingSubcontractors": "Loading sub-contractors...",
-    "loadingTeams": "Loading teams...",
+    "loadingFieldCrews": "Loading field crews...",
     "noContractors": "No contractors found.",
     "noSubcontractors": "No sub-contractors found.",
-    "noTeams": "No teams found.",
+    "noFieldCrews": "No field crews found.",
     "verified": "Verified",
     "phoneLabel": "Phone",
-    "teamLeaderLabel": "Team leader",
+    "locationLabel": "Location",
+    "projectSectorsHeading": "Project sectors",
+    "tradeGroupsHeading": "Trade groups",
+    "noProjectSectors": "No operator-approved project sectors yet. You can still post jobs and bid.",
+    "noTradeGroups": "No trade groups on file.",
+    "fieldCrewLeaderLabel": "Crew leader",
+    "crewSpecializationHeading": "Crew Specialization",
+    "noCrewSpecialization": "No Crew Specialization details on file.",
     "compareAction": "Compare selected ({count})",
     "comparePick": "Compare",
     "trustLabel": "Trust score"
@@ -251,6 +324,9 @@
       "totalDaysPlaceholder": "e.g. 30",
       "capabilities": "Required capabilities",
       "capabilitiesHint": "Select the trade capabilities required for this job.",
+      "requiredSubcontractorCategories": "Required sub-contractor trade groups (optional)",
+      "requiredSubcontractorCategoriesHint":
+        "If selected, only companies that have every chosen main trade group may place a bid.",
       "dwgFiles": "DWG files",
       "images": "Contract images",
       "imagesHint": "Upload one or more images to present the project. If none are uploaded, a placeholder will be used."
@@ -296,7 +372,7 @@
     },
     "completeModal": {
       "title": "Complete contract",
-      "description": "Rate the sub-contractor or team before completing. This rating helps build trust in the platform.",
+      "description": "Rate the sub-contractor or field crew before completing. This rating helps build trust in the platform.",
       "ratingLabel": "Rating (required)",
       "ratingHint": "{rating} of 5 stars",
       "commentLabel": "Comment (optional)",
@@ -455,9 +531,9 @@
   },
   "homePage": {
     "hero": {
-      "badge": "Built for modern construction teams",
+      "badge": "Built for modern construction field crews",
       "title": "Find the right partners and move every project forward with confidence.",
-      "description": "Taseron helps contractors, sub-contractors and teams connect around verified company profiles, project files and transparent contract workflows.",
+      "description": "Yüklenicim helps contractors, sub-contractors and field crews connect around verified company profiles, project files and transparent contract workflows.",
       "primaryCta": "Create account",
       "secondaryCta": "Sign in"
     },
@@ -492,14 +568,14 @@
       "contracts": "Contracts",
       "contractors": "Find Contractor",
       "subcontractors": "Find Sub-contractor",
-      "teams": "Find Team",
+      "fieldCrews": "Find field crew",
       "signin": "Sign in",
       "register": "Register",
       "company": "Company information",
       "settings": "Settings"
     },
     "contactText": "Reach out for partnerships, support requests or platform onboarding.",
-    "copyright": "© 2026 Taseron. All rights reserved."
+    "copyright": "© 2026 Yüklenicim. All rights reserved."
   }
 }
 

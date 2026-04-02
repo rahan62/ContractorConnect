@@ -3,11 +3,19 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { taxonomyLabel } from "@/lib/taxonomy-label";
 
 interface CapabilityNode {
   id: string;
   name: string;
   children: CapabilityNode[];
+}
+
+interface MainCategoryRow {
+  id: string;
+  slug: string;
+  nameEn: string;
+  nameTr: string;
 }
 
 export default function NewContractPage() {
@@ -22,6 +30,8 @@ export default function NewContractPage() {
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [capabilities, setCapabilities] = useState<CapabilityNode[]>([]);
   const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
+  const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
+  const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,11 +43,25 @@ export default function NewContractPage() {
       setCapabilities(data);
     }
 
+    async function loadMainCategories() {
+      const res = await fetch("/api/subcontractor-main-categories");
+      if (!res.ok) return;
+      const data = await res.json();
+      setMainCategories(data);
+    }
+
     void loadCapabilities();
+    void loadMainCategories();
   }, []);
 
   function toggleCapability(id: string) {
     setSelectedCapabilities(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]));
+  }
+
+  function toggleRequiredMainCategory(id: string) {
+    setSelectedRequiredMainCategories(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -95,7 +119,9 @@ export default function NewContractPage() {
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
           dwgFiles: uploadedPaths,
           imageUrls: uploadedImages,
-          capabilityIds: selectedCapabilities
+          capabilityIds: selectedCapabilities,
+          requiredSubcontractorMainCategoryIds:
+            selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined
         })
       });
 
@@ -180,6 +206,24 @@ export default function NewContractPage() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground">{t("fields.capabilitiesHint")}</p>
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">{t("fields.requiredSubcontractorCategories")}</label>
+          <div className="app-inset mt-2 max-h-48 overflow-y-auto">
+            <div className="grid gap-2 sm:grid-cols-2">
+              {mainCategories.map(row => (
+                <label key={row.id} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={selectedRequiredMainCategories.includes(row.id)}
+                    onChange={() => toggleRequiredMainCategory(row.id)}
+                  />
+                  <span>{taxonomyLabel(locale, row)}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">{t("fields.requiredSubcontractorCategoriesHint")}</p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.dwgFiles")}</label>

@@ -70,15 +70,15 @@ export default function UrgentJobsForTeamsPage() {
   if ((session.user as any).userType !== "TEAM") {
     return (
       <section className="app-page">
-        <p className="text-sm text-muted-foreground">{t("notTeamAccountForUrgent")}</p>
+        <p className="text-sm text-muted-foreground">{t("notFieldCrewAccountForUrgent")}</p>
       </section>
     );
   }
 
   return (
     <section className="app-page">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("listTitleForTeams")}</h1>
-      <p className="mb-4 text-sm text-muted-foreground">{t("listDescriptionForTeams")}</p>
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{t("listTitleForFieldCrews")}</h1>
+      <p className="mb-4 text-sm text-muted-foreground">{t("listDescriptionForFieldCrews")}</p>
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
       ) : error ? (

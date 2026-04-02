@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { DirectoryEntityCard } from "@/components/directory-entity-card";
+import type { LocalizedTaxonomy } from "@/lib/taxonomy-label";
 
 interface DirectoryUser {
   id: string;
@@ -11,10 +13,11 @@ interface DirectoryUser {
   phone: string | null;
   isVerified: boolean;
   location?: string | null;
+  logoUrl?: string | null;
   trustScore?: number | null;
   trustGrade?: string | null;
   specialties?: string[];
-  notes?: string | null;
+  subcontractorMainCategories?: LocalizedTaxonomy[];
 }
 
 export default function SubcontractorsDirectoryPage() {
@@ -40,7 +43,9 @@ export default function SubcontractorsDirectoryPage() {
   }, []);
 
   function toggleSelected(id: string) {
-    setSelectedIds(prev => (prev.includes(id) ? prev.filter(item => item !== id) : prev.length < 4 ? [...prev, id] : prev));
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : prev.length < 4 ? [...prev, id] : prev
+    );
   }
 
   return (
@@ -60,51 +65,60 @@ export default function SubcontractorsDirectoryPage() {
         <p className="text-sm text-muted-foreground">{t("noSubcontractors")}</p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {items.map(item => (
-            <div
-              key={item.id}
-              className="app-card-sm flex items-start gap-3 p-4 text-sm transition-colors hover:bg-muted/30"
-            >
-              <Link
+          {items.map(item => {
+            const tags = item.subcontractorMainCategories?.length
+              ? item.subcontractorMainCategories
+              : undefined;
+            return (
+              <DirectoryEntityCard
+                key={item.id}
                 href={`/${locale}/company/${item.id}`}
-                className="min-w-0 flex-1 rounded-sm text-foreground no-underline outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary/50"
-              >
-                <h2 className="font-semibold">
-                  {item.companyName || item.email}
-                  {item.isVerified && (
-                    <span className="ml-2 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                      {t("verified")}
-                    </span>
-                  )}
-                </h2>
-                <p className="mt-1 text-xs text-muted-foreground">{item.email}</p>
-                {item.location && <p className="mt-1 text-xs text-muted-foreground">{item.location}</p>}
-                {item.trustScore != null && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {t("trustLabel")}: {item.trustScore} / {item.trustGrade}
-                  </p>
-                )}
-                {item.specialties && item.specialties.length > 0 && (
-                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{item.specialties.join(", ")}</p>
-                )}
-                {item.phone && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {t("phoneLabel")}: {item.phone}
-                  </p>
-                )}
-              </Link>
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(item.id)}
-                onChange={() => toggleSelected(item.id)}
-                aria-label={t("comparePick")}
-                className="mt-0.5 size-3 shrink-0 cursor-pointer rounded border border-border bg-background accent-primary"
+                locale={locale}
+                title={item.companyName || item.email}
+                subtitle={item.email}
+                logoUrl={item.logoUrl}
+                location={item.location}
+                isVerified={item.isVerified}
+                verifiedLabel={t("verified")}
+                locationLabel={t("locationLabel")}
+                tags={tags}
+                tagsHeading={t("tradeGroupsHeading")}
+                metaLines={
+                  <>
+                    {item.trustScore != null && (
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {t("trustLabel")}: {item.trustScore} / {item.trustGrade}
+                      </p>
+                    )}
+                    {item.specialties && item.specialties.length > 0 && (
+                      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                        {item.specialties.join(", ")}
+                      </p>
+                    )}
+                    {item.phone && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {t("phoneLabel")}: {item.phone}
+                      </p>
+                    )}
+                    {!tags?.length && (
+                      <p className="mt-2 text-xs italic text-muted-foreground">{t("noTradeGroups")}</p>
+                    )}
+                  </>
+                }
+                aside={
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(item.id)}
+                    onChange={() => toggleSelected(item.id)}
+                    aria-label={t("comparePick")}
+                    className="mt-2 size-3 shrink-0 cursor-pointer self-start rounded border border-border bg-background accent-primary"
+                  />
+                }
               />
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
   );
 }
-
