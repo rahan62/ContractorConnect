@@ -3,10 +3,14 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { getMonetizationConfig } from "@/lib/monetization";
+import { requireSession } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const auth = await requireSession();
+  if (!auth.ok) return auth.response;
+
   // Regular contracts list excludes urgent jobs to keep "Contracts" and "Urgent jobs" as separate sections
   const contracts = await prisma.contract.findMany({
     where: { isUrgent: false },
@@ -64,7 +68,17 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, description, dwgFiles, imageUrls, startsAt, totalDays, capabilityIds, isUrgent } = body as {
+  const {
+    title,
+    description,
+    dwgFiles,
+    imageUrls,
+    startsAt,
+    totalDays,
+    capabilityIds,
+    requiredSubcontractorMainCategoryIds,
+    isUrgent
+  } = body as {
     title: string;
     description: string;
     dwgFiles?: string[];
@@ -72,8 +86,22 @@ export async function POST(request: Request) {
     startsAt?: string;
     totalDays?: number;
     capabilityIds?: string[];
+    requiredSubcontractorMainCategoryIds?: string[];
     isUrgent?: boolean;
   };
+
+  let requiredCategoryRows: { mainCategoryId: string }[] | undefined;
+  if (requiredSubcontractorMainCategoryIds?.length) {
+    const uniq = [...new Set(requiredSubcontractorMainCategoryIds)];
+    const found = await prisma.subcontractorMainCategory.findMany({
+      where: { id: { in: uniq } },
+      select: { id: true }
+    });
+    if (found.length !== uniq.length) {
+      return NextResponse.json({ message: "One or more trade category IDs are invalid" }, { status: 400 });
+    }
+    requiredCategoryRows = uniq.map(mainCategoryId => ({ mainCategoryId }));
+  }
 
   if (!title || !description) {
     return NextResponse.json({ message: "Title and description are required" }, { status: 400 });
@@ -117,6 +145,9 @@ export async function POST(request: Request) {
                   capabilityId
                 }))
               }
+            : undefined,
+          requiredSubcontractorMainCategories: requiredCategoryRows?.length
+            ? { create: requiredCategoryRows }
             : undefined
         },
         include: {

@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-// List urgent contracts that are meant for teams – only visible to team accounts
+// Urgent jobs for field crews (UserType.TEAM)
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -21,7 +21,10 @@ export async function GET() {
   });
 
   if (!user || user.userType !== "TEAM") {
-    return NextResponse.json({ message: "Only teams can view urgent jobs for teams" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Only field crew accounts can view this urgent jobs list" },
+      { status: 403 }
+    );
   }
 
   const contracts = await prisma.contract.findMany({

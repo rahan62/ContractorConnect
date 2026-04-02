@@ -17,6 +17,8 @@ export async function POST(request: Request) {
       companyTaxNumber,
       authorizedPersonName,
       authorizedPersonPhone,
+      subcontractorPrimaryCategoryId,
+      crewPrimarySectionId,
       turnstileToken
     } = body;
 
@@ -46,22 +48,68 @@ export async function POST(request: Request) {
       }
     }
 
+    if (userType === "SUBCONTRACTOR") {
+      if (!subcontractorPrimaryCategoryId || typeof subcontractorPrimaryCategoryId !== "string") {
+        return NextResponse.json(
+          { message: "Sub-contractors must select a primary trade category" },
+          { status: 400 }
+        );
+      }
+      const cat = await prisma.subcontractorMainCategory.findUnique({
+        where: { id: subcontractorPrimaryCategoryId }
+      });
+      if (!cat) {
+        return NextResponse.json({ message: "Invalid trade category" }, { status: 400 });
+      }
+    }
+
+    if (userType === "TEAM") {
+      if (!crewPrimarySectionId || typeof crewPrimarySectionId !== "string") {
+        return NextResponse.json(
+          { message: "Field crews must select a primary Crew Specialization section" },
+          { status: 400 }
+        );
+      }
+      const sec = await prisma.crewSpecializationSection.findUnique({
+        where: { id: crewPrimarySectionId }
+      });
+      if (!sec) {
+        return NextResponse.json({ message: "Invalid crew specialization section" }, { status: 400 });
+      }
+    }
+
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-        userType,
-        companyName,
-        companyTaxOffice,
-        companyTaxNumber,
-        authorizedPersonName,
-        authorizedPersonPhone
+    const user = await prisma.$transaction(async tx => {
+      const created = await tx.user.create({
+        data: {
+          email,
+          passwordHash,
+          userType,
+          companyName,
+          companyTaxOffice,
+          companyTaxNumber,
+          authorizedPersonName,
+          authorizedPersonPhone,
+          subcontractorPrimaryCategoryId:
+            userType === "SUBCONTRACTOR" ? subcontractorPrimaryCategoryId : undefined,
+          crewPrimarySectionId: userType === "TEAM" ? crewPrimarySectionId : undefined
+        }
+      });
+
+      if (userType === "SUBCONTRACTOR" && subcontractorPrimaryCategoryId) {
+        await tx.userSubcontractorMainCategory.create({
+          data: {
+            userId: created.id,
+            mainCategoryId: subcontractorPrimaryCategoryId
+          }
+        });
       }
+
+      return created;
     });
 
-    // If this is a team leader, create an initial Team record
+    // Field crew leader: initial roster record (Team table)
     if (userType === "TEAM") {
       await prisma.team.create({
         data: {

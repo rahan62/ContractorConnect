@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { computeTrustScore } from "@/lib/trust-score";
+import { requireSession } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
+  const auth = await requireSession();
+  if (!auth.ok) return auth.response;
+
   const { searchParams } = new URL(request.url);
   const ids = (searchParams.get("ids") ?? "")
     .split(",")

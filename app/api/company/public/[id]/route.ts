@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { computeTrustScore } from "@/lib/trust-score";
+import { requireSession } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,9 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
+  const auth = await requireSession();
+  if (!auth.ok) return auth.response;
+
   const user = await prisma.user.findUnique({
     where: { id: params.id },
     select: {

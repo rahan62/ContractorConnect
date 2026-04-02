@@ -61,7 +61,10 @@ export async function POST(request: Request) {
   });
 
   if (!user || user.userType !== "TEAM") {
-    return NextResponse.json({ message: "Only team accounts can create availability posts" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Only field crew accounts can create availability posts" },
+      { status: 403 }
+    );
   }
 
   const body = await request.json();
@@ -86,7 +89,7 @@ export async function POST(request: Request) {
 
   if (!team) {
     return NextResponse.json(
-      { message: "You must be a team leader to create availability posts" },
+      { message: "You must lead a field crew roster to create availability posts" },
       { status: 403 }
     );
   }

@@ -21,7 +21,10 @@ export async function POST(request: Request, { params }: Params) {
   });
 
   if (!user || (user.userType !== "SUBCONTRACTOR" && user.userType !== "TEAM")) {
-    return NextResponse.json({ message: "Only sub-contractors and teams can bid" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Only sub-contractors and field crews can bid" },
+      { status: 403 }
+    );
   }
 
   const body = await request.json();
@@ -43,13 +46,38 @@ export async function POST(request: Request, { params }: Params) {
 
   const contract = await prisma.contract.findUnique({
     where: { id: params.id },
-    select: { id: true, status: true }
+    select: {
+      id: true,
+      status: true,
+      requiredSubcontractorMainCategories: {
+        select: { mainCategoryId: true }
+      }
+    }
   });
   if (!contract) {
     return NextResponse.json({ message: "Contract not found" }, { status: 404 });
   }
   if (contract.status !== "OPEN_FOR_BIDS") {
     return NextResponse.json({ message: "This contract is not open for bids" }, { status: 400 });
+  }
+
+  const requiredIds = contract.requiredSubcontractorMainCategories.map(r => r.mainCategoryId);
+  if (requiredIds.length > 0) {
+    const bidderLinks = await prisma.userSubcontractorMainCategory.findMany({
+      where: { userId: user.id },
+      select: { mainCategoryId: true }
+    });
+    const have = new Set(bidderLinks.map(b => b.mainCategoryId));
+    const missing = requiredIds.filter(id => !have.has(id));
+    if (missing.length > 0) {
+      return NextResponse.json(
+        {
+          message:
+            "This job requires trade categories you have not been assigned. You must cover every required main trade group to bid."
+        },
+        { status: 400 }
+      );
+    }
   }
 
   const monetization = await getMonetizationConfig();

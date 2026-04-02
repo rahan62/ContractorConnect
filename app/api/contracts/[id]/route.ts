@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { normalizeBidForResponse } from "@/lib/bid-display";
+import { requireSession } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,10 @@ interface Params {
 }
 
 export async function GET(_req: Request, { params }: Params) {
-  const session = await getServerSession(authOptions);
+  const auth = await requireSession();
+  if (!auth.ok) return auth.response;
+  const session = auth.session;
+
   const contract = await prisma.contract.findUnique({
     where: { id: params.id },
     select: {
