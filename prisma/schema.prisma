@@ -55,6 +55,12 @@ enum PenaltyType {
   OTHER
 }
 
+enum ProfessionRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -117,8 +123,170 @@ model User {
   referencesToCheck CompanyReference[]         @relation("ReferenceVerifier")
   capabilities      UserCapability[]
 
+  // Sub-contractor: primary trade group (SubcontractorMainCategory) chosen at registration
+  subcontractorPrimaryCategory   SubcontractorMainCategory? @relation("SubPrimaryCategory", fields: [subcontractorPrimaryCategoryId], references: [id])
+  subcontractorPrimaryCategoryId String?
+  // Sub-contractor: all approved main trade groups (primary + future)
+  subcontractorMainCategories    UserSubcontractorMainCategory[]
+
+  // Contractor: operator-approved project sectors (rail, dams, residential, …)
+  contractorProjectTypes         UserContractorProjectType[]
+  contractorProjectTypeRequests  ContractorProjectTypeRequest[]
+
+  // Field crew (UserType TEAM): Crew Specialization — distinct from subcontractor trades
+  crewPrimarySection   CrewSpecializationSection? @relation("CrewPrimarySection", fields: [crewPrimarySectionId], references: [id])
+  crewPrimarySectionId String?
+  userCrewSpecializations UserCrewSpecialization[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Contractor project sectors (rail, dams, residential, …)
+model ContractorProjectType {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int      @default(0)
+
+  userAssignments UserContractorProjectType[]
+  requests        ContractorProjectTypeRequest[]
+}
+
+// Operator-approved contractor ↔ project type
+model UserContractorProjectType {
+  userId        String
+  projectTypeId String
+
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectType ContractorProjectType @relation(fields: [projectTypeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, projectTypeId])
+}
+
+// Contractor application for a project type (documents + operator review)
+model ContractorProjectTypeRequest {
+  id            String                   @id @default(cuid())
+  userId        String
+  projectTypeId String
+  documentUrls  String
+  status        ProfessionRequestStatus  @default(PENDING)
+  reviewerNote  String?
+  reviewedAt    DateTime?
+
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectType ContractorProjectType @relation(fields: [projectTypeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, projectTypeId])
+  @@index([status])
+}
+
+// Sub-contractor main filter groups (Siteworks, Concrete, …) — distinct from contractor types
+model SubcontractorMainCategory {
+  id        String @id @default(cuid())
+  slug      String @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  usersPrimary User[]                         @relation("SubPrimaryCategory")
+  userLinks    UserSubcontractorMainCategory[]
+  contracts    ContractRequiredSubcontractorCategory[]
+}
+
+// Detailed trade sections (e.g. site prep, foundations)
+model SubcontractorTradeSection {
+  id        String @id @default(cuid())
+  slug      String @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  trades SubcontractorTrade[]
+}
+
+// Leaf trade specializations under a section
+model SubcontractorTrade {
+  id        String @id @default(cuid())
+  slug      String @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  section   SubcontractorTradeSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String
+
+  @@index([sectionId])
+}
+
+// Sub-contractor ↔ main trade group (registration + approvals)
+model UserSubcontractorMainCategory {
+  userId          String
+  mainCategoryId  String
+
+  user         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mainCategory SubcontractorMainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, mainCategoryId])
+}
+
+// Contract: required sub trade groups for bidding
+model ContractRequiredSubcontractorCategory {
+  contractId     String
+  mainCategoryId String
+
+  contract     Contract                  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  mainCategory SubcontractorMainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+
+  @@id([contractId, mainCategoryId])
+}
+
+// Field crew taxonomy (Crew Specialization) — sections + leaf crew types; separate from subcontractor
+model CrewSpecializationSection {
+  id        String @id @default(cuid())
+  slug      String @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  specializations CrewSpecialization[]
+  usersPrimary    User[]               @relation("CrewPrimarySection")
+}
+
+model CrewSpecialization {
+  id        String @id @default(cuid())
+  slug      String @unique
+  nameEn    String
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  section   CrewSpecializationSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String
+
+  userAssignments UserCrewSpecialization[]
+
+  @@index([sectionId])
+}
+
+// Operator-approved leaf specializations for a field crew account (primary section is on User)
+model UserCrewSpecialization {
+  userId               String
+  crewSpecializationId String
+
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  crewSpecialization CrewSpecialization @relation(fields: [crewSpecializationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, crewSpecializationId])
 }
 
 model Penalty {
@@ -212,6 +380,8 @@ model Contract {
   payments   Payment[]
   capabilities ContractCapability[]
   rating     ContractRating?
+
+  requiredSubcontractorMainCategories ContractRequiredSubcontractorCategory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
