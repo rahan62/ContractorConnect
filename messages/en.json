@@ -56,6 +56,8 @@
       "crewPrimarySectionHint": "Required for field crews. Pick the section that best matches your crew.",
       "loadingCrewSections": "Loading Crew Specialization sections…",
       "success": "Registration successful. Please check your email to verify your account.",
+      "turnstileTimingHint":
+        "Complete the security check right before you register — it expires after a few minutes if you fill the form slowly.",
       "errors": {
         "failed": "Registration failed",
         "turnstileRequired": "Please complete the security verification.",
@@ -361,6 +363,9 @@
       "startDate": "Start date",
       "totalDays": "Total days",
       "totalDaysPlaceholder": "e.g. 30",
+      "initialStatus": "When to list this job",
+      "initialStatusHint":
+        "Draft stays private until you open it for bids (e.g. from My contracts). Open for bids appears on the contracts list for subcontractors.",
       "jobTradeBranch": "Job trade / branch",
       "jobTradeBranchHint":
         "Pick the main trade groups that match this job (same list as sub-contractor registration). If you select any, only companies that cover every selected group may bid.",

@@ -17,6 +17,7 @@ export default function NewContractPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("contractCreate");
+  const tDetail = useTranslations("contractDetail");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startsAt, setStartsAt] = useState("");
@@ -26,6 +27,7 @@ export default function NewContractPage() {
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
   const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
+  const [initialStatus, setInitialStatus] = useState<"DRAFT" | "OPEN_FOR_BIDS">("OPEN_FOR_BIDS");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -109,7 +111,8 @@ export default function NewContractPage() {
           documentUrls: uploadedDocuments.length > 0 ? uploadedDocuments : undefined,
           imageUrls: uploadedImages,
           requiredSubcontractorMainCategoryIds:
-            selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined
+            selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined,
+          status: initialStatus
         })
       });
 
@@ -149,6 +152,18 @@ export default function NewContractPage() {
             onChange={e => setDescription(e.target.value)}
             required
           />
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">{t("fields.initialStatus")}</label>
+          <select
+            className="mt-1 app-input"
+            value={initialStatus}
+            onChange={e => setInitialStatus(e.target.value as "DRAFT" | "OPEN_FOR_BIDS")}
+          >
+            <option value="DRAFT">{tDetail("statuses.DRAFT")}</option>
+            <option value="OPEN_FOR_BIDS">{tDetail("statuses.OPEN_FOR_BIDS")}</option>
+          </select>
+          <p className="mt-1 text-xs text-muted-foreground">{t("fields.initialStatusHint")}</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-1">

@@ -11,9 +11,9 @@ export async function GET() {
   const auth = await requireSession();
   if (!auth.ok) return auth.response;
 
-  // Regular contracts list excludes urgent jobs to keep "Contracts" and "Urgent jobs" as separate sections
+  // Regular contracts list: no drafts (contractors publish when ready), no urgent jobs (separate section)
   const contracts = await prisma.contract.findMany({
-    where: { isUrgent: false },
+    where: { isUrgent: false, status: { not: "DRAFT" } },
     select: {
       id: true,
       title: true,
@@ -78,7 +78,8 @@ export async function POST(request: Request) {
     totalDays,
     capabilityIds,
     requiredSubcontractorMainCategoryIds,
-    isUrgent
+    isUrgent,
+    status: initialStatus
   } = body as {
     title: string;
     description: string;
@@ -90,6 +91,8 @@ export async function POST(request: Request) {
     capabilityIds?: string[];
     requiredSubcontractorMainCategoryIds?: string[];
     isUrgent?: boolean;
+    /** Only DRAFT or OPEN_FOR_BIDS when creating a normal contract */
+    status?: "DRAFT" | "OPEN_FOR_BIDS";
   };
 
   let requiredCategoryRows: { mainCategoryId: string }[] | undefined;
@@ -108,6 +111,12 @@ export async function POST(request: Request) {
   if (!title || !description) {
     return NextResponse.json({ message: "Title and description are required" }, { status: 400 });
   }
+
+  const resolvedStatus = Boolean(isUrgent)
+    ? "OPEN_FOR_BIDS"
+    : initialStatus === "DRAFT" || initialStatus === "OPEN_FOR_BIDS"
+      ? initialStatus
+      : "OPEN_FOR_BIDS";
 
   const monetization = await getMonetizationConfig();
   const cost = Boolean(isUrgent) ? monetization.tokensPerUrgentJob : monetization.tokensPerContract;
@@ -135,7 +144,7 @@ export async function POST(request: Request) {
           title,
           description,
           contractorId: user.id,
-          status: "OPEN_FOR_BIDS",
+          status: resolvedStatus,
           isUrgent: Boolean(isUrgent),
           startsAt: startsAt ? new Date(startsAt) : null,
           totalDays: totalDays ?? null,

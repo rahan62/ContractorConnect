@@ -56,6 +56,8 @@
       "crewPrimarySectionHint": "Saha ekipleri için zorunludur. Ekibinize en uygun bölümü seçin.",
       "loadingCrewSections": "Ekip uzmanlığı bölümleri yükleniyor…",
       "success": "Kayıt başarılı. Hesabınızı doğrulamak için lütfen e-postanızı kontrol edin.",
+      "turnstileTimingHint":
+        "Güvenlik doğrulamasını kayıt düğmesine basmadan hemen önce tamamlayın; formu uzun süre doldurursanız süresi dolabilir.",
       "errors": {
         "failed": "Kayıt işlemi başarısız oldu",
         "turnstileRequired": "Lütfen güvenlik doğrulamasını tamamlayın.",
@@ -361,6 +363,9 @@
       "startDate": "Başlangıç tarihi",
       "totalDays": "Toplam gün",
       "totalDaysPlaceholder": "örn. 30",
+      "initialStatus": "İlanın görünürlüğü",
+      "initialStatusHint":
+        "Taslak, teklife açılana kadar (ör. Sözleşmelerim’den) yalnızca size özel kalır. Teklife açık, alt yüklenicilerin gördüğü sözleşmeler listesinde yayınlanır.",
       "jobTradeBranch": "İş kolu / ana iş grubu",
       "jobTradeBranchHint":
         "Bu işe uygun ana iş gruplarını seçin (alt yüklenici kaydındaki liste ile aynıdır). En az bir grup seçerseniz, yalnızca işaretlenen tüm grupları kapsayan firmalar teklif verebilir.",

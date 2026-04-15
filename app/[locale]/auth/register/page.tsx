@@ -28,6 +28,7 @@ export default function RegisterPage() {
     crewPrimarySectionId: ""
   });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileMountKey, setTurnstileMountKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -116,7 +117,12 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.message ?? t("errors.failed"));
+      const msg = (data.message as string) ?? t("errors.failed");
+      setError(msg);
+      if (typeof msg === "string" && msg.toLowerCase().includes("turnstile")) {
+        setTurnstileToken(null);
+        setTurnstileMountKey(k => k + 1);
+      }
       return;
     }
 
@@ -268,18 +274,22 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {turnstileEnabled && siteKey && (
-          <TurnstileWidget
-            siteKey={siteKey}
-            onSuccess={handleTurnstileSuccess}
-            onExpired={handleTurnstileExpired}
-            onError={handleTurnstileError}
-            className="mt-2 min-h-[65px]"
-          />
-        )}
-
         {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
         {success && <p className="text-sm text-emerald-600 dark:text-emerald-400">{success}</p>}
+
+        {turnstileEnabled && siteKey && (
+          <div className="space-y-2 border-t border-border/60 pt-4">
+            <p className="text-xs text-muted-foreground">{t("turnstileTimingHint")}</p>
+            <TurnstileWidget
+              key={turnstileMountKey}
+              siteKey={siteKey}
+              onSuccess={handleTurnstileSuccess}
+              onExpired={handleTurnstileExpired}
+              onError={handleTurnstileError}
+              className="min-h-[65px]"
+            />
+          </div>
+        )}
 
         <button
           type="submit"

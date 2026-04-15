@@ -52,6 +52,7 @@ export default async function HomePage({ params }: HomePageProps) {
   }
 
   const contracts = await prisma.contract.findMany({
+    where: { isUrgent: false, status: { not: "DRAFT" } },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
