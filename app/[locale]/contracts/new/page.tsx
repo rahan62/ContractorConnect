@@ -6,12 +6,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { taxonomyLabel } from "@/lib/taxonomy-label";
 import { uploadFileToStorage } from "@/lib/upload-client";
 
-interface CapabilityNode {
-  id: string;
-  name: string;
-  children: CapabilityNode[];
-}
-
 interface MainCategoryRow {
   id: string;
   slug: string;
@@ -29,21 +23,12 @@ export default function NewContractPage() {
   const [totalDays, setTotalDays] = useState("");
   const [dwgFiles, setDwgFiles] = useState<FileList | null>(null);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-  const [capabilities, setCapabilities] = useState<CapabilityNode[]>([]);
-  const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
   const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
   const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function loadCapabilities() {
-      const res = await fetch("/api/capabilities");
-      if (!res.ok) return;
-      const data = await res.json();
-      setCapabilities(data);
-    }
-
     async function loadMainCategories() {
       const res = await fetch("/api/subcontractor-main-categories");
       if (!res.ok) return;
@@ -51,13 +36,8 @@ export default function NewContractPage() {
       setMainCategories(data);
     }
 
-    void loadCapabilities();
     void loadMainCategories();
   }, []);
-
-  function toggleCapability(id: string) {
-    setSelectedCapabilities(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]));
-  }
 
   function toggleRequiredMainCategory(id: string) {
     setSelectedRequiredMainCategories(prev =>
@@ -114,7 +94,6 @@ export default function NewContractPage() {
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
           dwgFiles: uploadedPaths,
           imageUrls: uploadedImages,
-          capabilityIds: selectedCapabilities,
           requiredSubcontractorMainCategoryIds:
             selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined
         })
@@ -180,30 +159,7 @@ export default function NewContractPage() {
           </div>
         </div>
         <div className="space-y-1">
-          <label className="block text-sm font-medium">{t("fields.capabilities")}</label>
-          <div className="app-inset mt-2 space-y-3">
-            {capabilities.map(group => (
-              <div key={group.id} className="space-y-2">
-                <p className="text-sm font-medium">{group.name}</p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {group.children.map(item => (
-                    <label key={item.id} className="flex items-center gap-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={selectedCapabilities.includes(item.id)}
-                        onChange={() => toggleCapability(item.id)}
-                      />
-                      <span>{item.name}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground">{t("fields.capabilitiesHint")}</p>
-        </div>
-        <div className="space-y-1">
-          <label className="block text-sm font-medium">{t("fields.requiredSubcontractorCategories")}</label>
+          <label className="block text-sm font-medium">{t("fields.jobTradeBranch")}</label>
           <div className="app-inset mt-2 max-h-48 overflow-y-auto">
             <div className="grid gap-2 sm:grid-cols-2">
               {mainCategories.map(row => (
@@ -218,7 +174,7 @@ export default function NewContractPage() {
               ))}
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">{t("fields.requiredSubcontractorCategoriesHint")}</p>
+          <p className="text-xs text-muted-foreground">{t("fields.jobTradeBranchHint")}</p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.dwgFiles")}</label>

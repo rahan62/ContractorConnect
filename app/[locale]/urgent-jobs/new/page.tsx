@@ -4,11 +4,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { taxonomyLabel } from "@/lib/taxonomy-label";
 
-interface CapabilityNode {
+interface MainCategoryRow {
   id: string;
-  name: string;
-  children: CapabilityNode[];
+  slug: string;
+  nameEn: string;
+  nameTr: string;
 }
 
 export default function NewUrgentJobPage() {
@@ -21,8 +23,8 @@ export default function NewUrgentJobPage() {
   const [description, setDescription] = useState("");
   const [startsAt, setStartsAt] = useState("");
   const [totalDays, setTotalDays] = useState("");
-  const [capabilities, setCapabilities] = useState<CapabilityNode[]>([]);
-  const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
+  const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
+  const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,18 +35,20 @@ export default function NewUrgentJobPage() {
   }, [status, router, locale]);
 
   useEffect(() => {
-    async function loadCapabilities() {
-      const res = await fetch("/api/capabilities");
+    async function loadMainCategories() {
+      const res = await fetch("/api/subcontractor-main-categories");
       if (!res.ok) return;
       const data = await res.json();
-      setCapabilities(data);
+      setMainCategories(data);
     }
 
-    void loadCapabilities();
+    void loadMainCategories();
   }, []);
 
-  function toggleCapability(id: string) {
-    setSelectedCapabilities(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]));
+  function toggleRequiredMainCategory(id: string) {
+    setSelectedRequiredMainCategories(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -67,7 +71,8 @@ export default function NewUrgentJobPage() {
           description,
           startsAt: startsAt || undefined,
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
-          capabilityIds: selectedCapabilities,
+          requiredSubcontractorMainCategoryIds:
+            selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined,
           isUrgent: true
         })
       });
@@ -149,26 +154,22 @@ export default function NewUrgentJobPage() {
           </div>
         </div>
         <div className="space-y-1">
-          <label className="block text-sm font-medium">{t("fields.capabilities")}</label>
-          <div className="app-inset mt-2 space-y-3">
-            {capabilities.map(group => (
-              <div key={group.id} className="space-y-2">
-                <p className="text-sm font-medium">{group.name}</p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {group.children.map(item => (
-                    <label key={item.id} className="flex items-center gap-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={selectedCapabilities.includes(item.id)}
-                        onChange={() => toggleCapability(item.id)}
-                      />
-                      <span>{item.name}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <label className="block text-sm font-medium">{t("fields.jobTradeBranch")}</label>
+          <div className="app-inset mt-2 max-h-48 overflow-y-auto">
+            <div className="grid gap-2 sm:grid-cols-2">
+              {mainCategories.map(row => (
+                <label key={row.id} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={selectedRequiredMainCategories.includes(row.id)}
+                    onChange={() => toggleRequiredMainCategory(row.id)}
+                  />
+                  <span>{taxonomyLabel(locale, row)}</span>
+                </label>
+              ))}
+            </div>
           </div>
+          <p className="text-xs text-muted-foreground">{t("fields.jobTradeBranchHint")}</p>
         </div>
         {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button

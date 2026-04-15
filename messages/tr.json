@@ -202,7 +202,9 @@
       "description": "Açıklama",
       "startDate": "Başlangıç tarihi",
       "totalDays": "Toplam gün",
-      "capabilities": "Gerekli yetkinlikler"
+      "jobTradeBranch": "İş kolu / ana iş grubu",
+      "jobTradeBranchHint":
+        "Bu işe uygun ana iş gruplarını seçin (alt yüklenici kaydındaki liste ile aynıdır). En az bir grup seçerseniz, yalnızca işaretlenen tüm grupları kapsayan firmalar teklif verebilir."
     },
     "submit": "Acil iş oluştur",
     "creating": "Oluşturuluyor...",
@@ -300,6 +302,10 @@
   "contracts": {
     "title": "Sözleşmeler",
     "myContracts": "Sözleşmelerim",
+    "browseDescription": "Açık fırsatlara göz atın. Detaylar, belgeler ve teklifler için bir sözleşmeyi açın.",
+    "minePageDescription": "Şirketinizin oluşturduğu sözleşmeler. Düzenleme, yayınlama, teklif yönetimi ve kapatma burada.",
+    "browseAllContracts": "Tüm sözleşmeler",
+    "mineEmpty": "Henüz sözleşme oluşturmadınız.",
     "loading": "Sözleşmeler yükleniyor...",
     "new": "Yeni sözleşme",
     "empty": "Henüz sözleşme yok.",
@@ -345,11 +351,9 @@
       "startDate": "Başlangıç tarihi",
       "totalDays": "Toplam gün",
       "totalDaysPlaceholder": "örn. 30",
-      "capabilities": "Gerekli yetkinlikler",
-      "capabilitiesHint": "Bu is icin gereken uzmanlik alanlarini secin.",
-      "requiredSubcontractorCategories": "Gerekli alt yüklenici iş grupları (isteğe bağlı)",
-      "requiredSubcontractorCategoriesHint":
-        "Seçilirse, yalnızca işaretlenen tüm ana iş gruplarına sahip firmalar teklif verebilir.",
+      "jobTradeBranch": "İş kolu / ana iş grubu",
+      "jobTradeBranchHint":
+        "Bu işe uygun ana iş gruplarını seçin (alt yüklenici kaydındaki liste ile aynıdır). En az bir grup seçerseniz, yalnızca işaretlenen tüm grupları kapsayan firmalar teklif verebilir.",
       "dwgFiles": "DWG dosyaları",
       "images": "Sözleşme görselleri",
       "imagesHint": "Projeyi tanıtmak için bir veya daha fazla görsel yükleyin. Görsel yüklenmezse yer tutucu kullanılacaktır."
@@ -371,6 +375,7 @@
     "noDuration": "Süre belirtilmemiş",
     "downloadableFiles": "İndirilebilir Dosyalar",
     "requiredCapabilities": "Gerekli yetkinlikler",
+    "requiredTradeGroups": "Gerekli ana iş grupları",
     "download": "İndir",
     "noFiles": "Henüz proje dosyası yüklenmedi.",
     "bidsTitle": "Teklifler",

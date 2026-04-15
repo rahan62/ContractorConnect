@@ -32,7 +32,7 @@ export default function EditContractPage() {
     if (status !== "authenticated" || !id) return;
     const userType = (session?.user as { userType?: string })?.userType;
     if (userType && userType !== "CONTRACTOR") {
-      router.replace(`/${locale}/contracts`);
+      router.replace(`/${locale}/contracts/mine`);
       return;
     }
 
@@ -58,7 +58,7 @@ export default function EditContractPage() {
         const uid = (session?.user as { id?: string })?.id;
         if (!uid) return;
         if (c.contractorId !== uid) {
-          router.replace(`/${locale}/contracts`);
+          router.replace(`/${locale}/contracts/mine`);
           return;
         }
         if (cancelled) return;
@@ -128,7 +128,7 @@ export default function EditContractPage() {
     return (
       <section className="app-page-narrow">
         <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-        <Link href={`/${locale}/contracts`} className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
+        <Link href={`/${locale}/contracts/mine`} className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
           {t("back")}
         </Link>
       </section>
@@ -139,7 +139,7 @@ export default function EditContractPage() {
     <section className="app-page-narrow">
       <div className="mb-6">
         <Link
-          href={`/${locale}/contracts`}
+          href={`/${locale}/contracts/mine`}
           className="text-sm font-medium text-primary hover:underline"
         >
           ← {t("back")}

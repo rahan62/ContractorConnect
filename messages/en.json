@@ -202,7 +202,9 @@
       "description": "Description",
       "startDate": "Start date",
       "totalDays": "Total days",
-      "capabilities": "Required capabilities"
+      "jobTradeBranch": "Job trade / branch",
+      "jobTradeBranchHint":
+        "Pick the main trade groups that match this job (same list as sub-contractor registration). If you select any, only companies that cover every selected group may bid."
     },
     "submit": "Create urgent job",
     "creating": "Creating...",
@@ -300,6 +302,10 @@
   "contracts": {
     "title": "Contracts",
     "myContracts": "My contracts",
+    "browseDescription": "Browse open opportunities. Open a contract to view details, documents, and bids.",
+    "minePageDescription": "Contracts your company created. Edit, publish, manage bids, and complete jobs here.",
+    "browseAllContracts": "All contracts",
+    "mineEmpty": "You have not created any contracts yet.",
     "loading": "Loading contracts...",
     "new": "New contract",
     "empty": "No contracts yet.",
@@ -345,11 +351,9 @@
       "startDate": "Start date",
       "totalDays": "Total days",
       "totalDaysPlaceholder": "e.g. 30",
-      "capabilities": "Required capabilities",
-      "capabilitiesHint": "Select the trade capabilities required for this job.",
-      "requiredSubcontractorCategories": "Required sub-contractor trade groups (optional)",
-      "requiredSubcontractorCategoriesHint":
-        "If selected, only companies that have every chosen main trade group may place a bid.",
+      "jobTradeBranch": "Job trade / branch",
+      "jobTradeBranchHint":
+        "Pick the main trade groups that match this job (same list as sub-contractor registration). If you select any, only companies that cover every selected group may bid.",
       "dwgFiles": "DWG files",
       "images": "Contract images",
       "imagesHint": "Upload one or more images to present the project. If none are uploaded, a placeholder will be used."
@@ -371,6 +375,7 @@
     "noDuration": "Duration not set",
     "downloadableFiles": "Downloadable Files",
     "requiredCapabilities": "Required capabilities",
+    "requiredTradeGroups": "Required trade groups",
     "download": "Download",
     "noFiles": "No project files uploaded yet.",
     "bidsTitle": "Bids",

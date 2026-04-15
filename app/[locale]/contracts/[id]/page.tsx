@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { BID_CURRENCIES, formatBidMoney, type BidCurrency } from "@/lib/bid-display";
 import { amountInTry } from "@/lib/exchange-rates";
 import { uploadFileToStorage } from "@/lib/upload-client";
+import { taxonomyLabel } from "@/lib/taxonomy-label";
 
 interface Contract {
   id: string;
@@ -22,6 +23,14 @@ interface Contract {
     capability: {
       id: string;
       name: string;
+    };
+  }>;
+  requiredSubcontractorMainCategories?: Array<{
+    mainCategory: {
+      id: string;
+      slug: string;
+      nameEn: string;
+      nameTr: string;
     };
   }>;
 }
@@ -313,6 +322,22 @@ export default function ContractDetailPage() {
                 </div>
               </div>
             )}
+            {contract.requiredSubcontractorMainCategories &&
+              contract.requiredSubcontractorMainCategories.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-xs font-medium text-muted-foreground">{t("requiredTradeGroups")}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {contract.requiredSubcontractorMainCategories.map(row => (
+                      <span
+                        key={row.mainCategory.id}
+                        className="rounded-full border border-border/50 bg-muted/20 px-3 py-1 text-xs text-muted-foreground"
+                      >
+                        {taxonomyLabel(locale, row.mainCategory)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
           </div>
           <aside className="rounded-xl border border-border/60 bg-muted/20 p-4 dark:bg-card/70 dark:ring-1 dark:ring-inset dark:ring-white/[0.06]">
             <h2 className="text-sm font-semibold">{t("downloadableFiles")}</h2>

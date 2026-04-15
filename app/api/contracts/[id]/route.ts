@@ -40,6 +40,18 @@ export async function GET(_req: Request, { params }: Params) {
             }
           }
         }
+      },
+      requiredSubcontractorMainCategories: {
+        select: {
+          mainCategory: {
+            select: {
+              id: true,
+              slug: true,
+              nameEn: true,
+              nameTr: true
+            }
+          }
+        }
       }
     }
   });

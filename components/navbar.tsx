@@ -28,6 +28,9 @@ export function Navbar() {
     if (!session) return [];
     const items: NavTrackItem[] = [
       { href: `${basePath}/contracts`, label: tNav("contracts") },
+      ...(userType === "CONTRACTOR"
+        ? [{ href: `${basePath}/contracts/mine`, label: tNav("myContracts") } as NavTrackItem]
+        : []),
       { href: `${basePath}/directory/contractors`, label: tNav("findContractor") },
       { href: `${basePath}/directory/subcontractors`, label: tNav("findSubcontractor") },
       { href: `${basePath}/directory/field-crews`, label: tNav("findFieldCrew") }
@@ -167,8 +170,17 @@ export function Navbar() {
                     className={dropdownItemClass}
                     onClick={() => setMenuOpen(false)}
                   >
-                    {tNav("myContracts")}
+                    {tNav("contracts")}
                   </Link>
+                  {userType === "CONTRACTOR" && (
+                    <Link
+                      href={`${basePath}/contracts/mine`}
+                      className={dropdownItemClass}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("myContracts")}
+                    </Link>
+                  )}
                   {userType === "CONTRACTOR" && (
                     <>
                       <Link
@@ -296,8 +308,17 @@ export function Navbar() {
                   className={mobileLinkClass}
                   onClick={() => setMobileOpen(false)}
                 >
-                  {tNav("myContracts")}
+                  {tNav("contracts")}
                 </Link>
+                {userType === "CONTRACTOR" && (
+                  <Link
+                    href={`${basePath}/contracts/mine`}
+                    className={mobileLinkClass}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {tNav("myContracts")}
+                  </Link>
+                )}
                 {userType === "CONTRACTOR" && (
                   <>
                     <Link
