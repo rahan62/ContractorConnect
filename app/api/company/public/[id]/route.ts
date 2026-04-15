@@ -28,19 +28,6 @@ export async function GET(
       signatureAuthDocUrl: true,
       taxCertificateDocUrl: true,
       tradeRegistryGazetteDocUrl: true,
-      contractsCreated: {
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          status: true,
-          imageUrls: true,
-          startsAt: true,
-          totalDays: true,
-          createdAt: true
-        },
-      },
       comments: {
         select: { id: true },
       },
@@ -94,13 +81,19 @@ export async function GET(
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
 
-  const completedContracts = user.contractsCreated.filter(
-    (c) => c.status === "COMPLETED"
-  ).length;
-  const activeContracts = user.contractsCreated.filter(
-    (c) => c.status === "ACTIVE" || c.status === "OPEN_FOR_BIDS"
-  ).length;
-  const totalContracts = user.contractsCreated.length;
+  let completedContracts = 0;
+  let activeContracts = 0;
+  let totalContracts = 0;
+  if (user.userType === "CONTRACTOR") {
+    const uid = user.id;
+    [completedContracts, activeContracts, totalContracts] = await Promise.all([
+      prisma.contract.count({ where: { contractorId: uid, status: "COMPLETED" } }),
+      prisma.contract.count({
+        where: { contractorId: uid, status: { in: ["ACTIVE", "OPEN_FOR_BIDS"] } }
+      }),
+      prisma.contract.count({ where: { contractorId: uid } })
+    ]);
+  }
   const verifiedReferenceCount = user.referencesOwned.length;
   const capabilityNames = user.capabilities.map(item => item.capability.name);
   const responseHours = user.bids.length
@@ -173,16 +166,6 @@ export async function GET(
       evidenceUrl: reference.evidenceUrl,
       verifierName:
         reference.verifier?.companyName ?? reference.verifier?.name ?? reference.verifier?.email ?? null
-    })),
-    contracts: user.contractsCreated.map(contract => ({
-      id: contract.id,
-      title: contract.title,
-      description: contract.description,
-      status: contract.status,
-      imageUrl: contract.imageUrls?.split(";").filter(Boolean)[0] ?? null,
-      startsAt: contract.startsAt,
-      totalDays: contract.totalDays,
-      createdAt: contract.createdAt
     }))
   };
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 interface CompanyPublic {
   id: string;
@@ -19,21 +19,10 @@ interface CompanyPublic {
     totalContracts: number;
     references: number;
   };
-  contracts: Array<{
-    id: string;
-    title: string;
-    description: string | null;
-    status: string;
-    imageUrl: string | null;
-    startsAt: string | null;
-    totalDays: number | null;
-    createdAt: string;
-  }>;
 }
 
 export default function CompanyPublicPage() {
   const params = useParams<{ id: string }>();
-  const locale = useLocale();
   const t = useTranslations("companyPublic");
   const [data, setData] = useState<CompanyPublic | null>(null);
   const [loading, setLoading] = useState(true);
@@ -123,69 +112,6 @@ export default function CompanyPublicPage() {
           </p>
         </div>
       </div>
-
-      <div className="space-y-4">
-        <div>
-          <h2 className="text-xl font-semibold">{t("contractsTitle")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("contractsHint")}</p>
-        </div>
-        {data.contracts.length === 0 ? (
-          <div className="app-card-sm p-4 text-sm text-muted-foreground">{t("noContracts")}</div>
-        ) : (
-          <div className="grid gap-4 lg:grid-cols-2">
-            {data.contracts.map(contract => (
-              <a
-                key={contract.id}
-                href={`/${locale}/contracts/${contract.id}`}
-                className="app-card-sm overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/25"
-              >
-                <div className="h-40 w-full overflow-hidden border-b border-border/50 app-hero-placeholder">
-                  {contract.imageUrl ? (
-                    <img
-                      src={contract.imageUrl}
-                      alt={contract.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="app-hero-placeholder-inner h-full">
-                      <img
-                        src="/favicon.svg"
-                        alt=""
-                        aria-hidden
-                        className="h-14 w-14 rounded-md opacity-90"
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-3 p-4">
-                  <div>
-                    <h3 className="font-semibold">{contract.title}</h3>
-                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                      {contract.description || t("noContractDescription")}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                    <span className="rounded-full border px-2 py-1">
-                      {t("statusLabel")}: {t(`statuses.${contract.status}` as any)}
-                    </span>
-                    <span className="rounded-full border px-2 py-1">
-                      {contract.startsAt
-                        ? `${t("startLabel")}: ${new Date(contract.startsAt).toLocaleDateString()}`
-                        : t("noStartDate")}
-                    </span>
-                    <span className="rounded-full border px-2 py-1">
-                      {contract.totalDays
-                        ? `${contract.totalDays} ${t("daysLabel")}`
-                        : t("noDuration")}
-                    </span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
     </section>
   );
 }
-

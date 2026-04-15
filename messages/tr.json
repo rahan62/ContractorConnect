@@ -310,7 +310,30 @@
     "days": "gün",
     "noStartDate": "Başlangıç tarihi yok",
     "noDuration": "Süre belirtilmemiş",
-    "contractId": "Sözleşme ID"
+    "contractId": "Sözleşme ID",
+    "deleteContract": "Sil",
+    "deleteConfirm": "\"{title}\" silinsin mi? Bu işlem geri alınamaz.",
+    "deleting": "Siliniyor…",
+    "deleteFailed": "Sözleşme silinemedi.",
+    "editContract": "Düzenle"
+  },
+  "contractEdit": {
+    "loading": "Yükleniyor…",
+    "title": "Sözleşmeyi düzenle",
+    "back": "Sözleşmelerime dön",
+    "save": "Değişiklikleri kaydet",
+    "saving": "Kaydediliyor…",
+    "fields": {
+      "title": "Başlık",
+      "description": "Açıklama",
+      "startDate": "Başlangıç tarihi",
+      "totalDays": "Toplam gün"
+    },
+    "errors": {
+      "load": "Sözleşme yüklenemedi.",
+      "save": "Değişiklikler kaydedilemedi.",
+      "forbidden": "Yalnızca kendi sözleşmelerinizi düzenleyebilirsiniz."
+    }
   },
   "contractCreate": {
     "title": "Yeni sözleşme",
@@ -506,22 +529,6 @@
     "loading": "Firma profili yükleniyor...",
     "verified": "Doğrulandı",
     "noDescription": "Bu firma henüz bir açıklama eklemedi.",
-    "contractsTitle": "Firma sözleşmeleri",
-    "contractsHint": "Bu firmanın yayınladığı işleri inceleyin.",
-    "noContracts": "Bu firma henüz sözleşme yayınlamadı.",
-    "noContractDescription": "Sözleşme açıklaması girilmemiş.",
-    "statusLabel": "Durum",
-    "startLabel": "Başlangıç",
-    "daysLabel": "gün",
-    "noStartDate": "Başlangıç tarihi yok",
-    "noDuration": "Süre belirtilmemiş",
-    "statuses": {
-      "DRAFT": "Taslak",
-      "OPEN_FOR_BIDS": "Teklife açık",
-      "ACTIVE": "Aktif",
-      "COMPLETED": "Tamamlandı",
-      "CANCELLED": "İptal edildi"
-    },
     "metrics": {
       "completed": "Tamamlanan işler",
       "active": "Aktif sözleşmeler",

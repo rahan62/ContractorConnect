@@ -77,6 +77,7 @@ export default function ContractsPage() {
   const [isAcceptingBid, setIsAcceptingBid] = useState<string | null>(null);
   const [isCompleting, setIsCompleting] = useState<string | null>(null);
   const [isOpeningForBids, setIsOpeningForBids] = useState<string | null>(null);
+  const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -202,6 +203,29 @@ export default function ContractsPage() {
     }
   }
 
+  async function deleteContract(contractId: string, title: string, e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!confirm(t("deleteConfirm", { title }))) return;
+    setError(null);
+    setIsDeletingId(contractId);
+    try {
+      const res = await fetch(`/api/contracts/${contractId}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError((data.message as string) ?? t("deleteFailed"));
+        return;
+      }
+      setContracts(prev => prev.filter(x => x.id !== contractId));
+      setExpandedId(cur => (cur === contractId ? null : cur));
+      setShowCompleteModal(cur => (cur === contractId ? null : cur));
+    } catch {
+      setError(t("deleteFailed"));
+    } finally {
+      setIsDeletingId(null);
+    }
+  }
+
   if (status === "loading" || !session) {
     return (
       <section className="app-page">
@@ -294,11 +318,11 @@ export default function ContractsPage() {
                   }}
                 >
                   <div className="flex flex-col sm:flex-row">
-                    <div className="h-36 w-48 shrink-0 overflow-hidden app-hero-placeholder sm:h-auto sm:min-h-[140px]">
+                    <div className="h-36 w-full shrink-0 overflow-hidden border-b border-border/50 app-hero-placeholder sm:h-auto sm:w-48 sm:border-b-0 sm:border-r">
                       {imageUrl ? (
-                        <img src={imageUrl} alt={c.title} className="h-full w-full object-cover" />
+                        <img src={imageUrl} alt={c.title} className="h-full w-full object-cover sm:min-h-[140px]" />
                       ) : (
-                        <div className="app-hero-placeholder-inner h-full min-h-[100px]">
+                        <div className="app-hero-placeholder-inner flex h-full min-h-[100px] items-center justify-center sm:min-h-[140px]">
                           <img src="/favicon.svg" alt="" className="h-12 w-12 rounded-md opacity-90" aria-hidden />
                         </div>
                       )}
@@ -311,53 +335,71 @@ export default function ContractsPage() {
                             {tDetail(`statuses.${c.status}` as any)}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          {c.status === "DRAFT" && (
-                            <button
-                              type="button"
-                              onClick={e => openForBids(c.id, e)}
-                              disabled={isOpeningForBids !== null}
-                              className="rounded bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 disabled:opacity-60"
-                            >
-                              {isOpeningForBids === c.id ? tDetail("openingForBids") : tDetail("openForBids")}
-                            </button>
-                          )}
-                          {c.status === "ACTIVE" && (
-                            <button
-                              type="button"
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setShowCompleteModal(c.id);
-                              }}
-                              className="rounded bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700"
-                            >
-                              {tDetail("completeContract")}
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={e => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setExpandedId(isExpanded ? null : c.id);
-                            }}
-                            className="rounded border px-3 py-1.5 text-xs font-medium hover:bg-muted"
-                          >
-                            {isExpanded ? t("collapse") : t("expand")}
-                          </button>
-                        </div>
                       </div>
-                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                        {c.description ?? ""}
-                      </p>
+                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{c.description ?? ""}</p>
                       <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                        <span>{c.startsAt ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}` : t("noStartDate")}</span>
+                        <span>
+                          {c.startsAt
+                            ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}`
+                            : t("noStartDate")}
+                        </span>
                         <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
                       </div>
                     </div>
                   </div>
                 </Link>
+
+                <div className="flex flex-wrap items-center gap-2 border-t border-border/60 bg-muted/10 p-3 dark:bg-background/20">
+                  <Link
+                    href={`/${locale}/contracts/${c.id}/edit`}
+                    className="rounded border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:bg-muted"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    {t("editContract")}
+                  </Link>
+                  {c.status === "DRAFT" && (
+                    <button
+                      type="button"
+                      onClick={e => openForBids(c.id, e)}
+                      disabled={isOpeningForBids !== null}
+                      className="rounded bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 disabled:opacity-60"
+                    >
+                      {isOpeningForBids === c.id ? tDetail("openingForBids") : tDetail("openForBids")}
+                    </button>
+                  )}
+                  {c.status === "ACTIVE" && (
+                    <button
+                      type="button"
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowCompleteModal(c.id);
+                      }}
+                      className="rounded bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700"
+                    >
+                      {tDetail("completeContract")}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setExpandedId(isExpanded ? null : c.id);
+                    }}
+                    className="rounded border border-border/60 px-3 py-1.5 text-xs font-medium hover:bg-muted"
+                  >
+                    {isExpanded ? t("collapse") : t("expand")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={e => deleteContract(c.id, c.title, e)}
+                    disabled={isDeletingId !== null}
+                    className="rounded border border-red-500/50 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-500/10 disabled:opacity-60 dark:text-red-400"
+                  >
+                    {isDeletingId === c.id ? t("deleting") : t("deleteContract")}
+                  </button>
+                </div>
 
                 {isExpanded && (
                   <div className="border-t border-border/60 bg-muted/20 p-4 dark:bg-background/25">

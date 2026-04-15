@@ -43,7 +43,7 @@ export async function GET() {
       },
       bids: {
         orderBy: { createdAt: "desc" },
-        take: 3,
+        take: 50,
         select: {
           id: true,
           amount: true,

@@ -310,7 +310,30 @@
     "days": "days",
     "noStartDate": "Start date not set",
     "noDuration": "Duration not set",
-    "contractId": "Contract ID"
+    "contractId": "Contract ID",
+    "deleteContract": "Delete",
+    "deleteConfirm": "Delete \"{title}\"? This cannot be undone.",
+    "deleting": "Deleting…",
+    "deleteFailed": "Could not delete this contract.",
+    "editContract": "Edit"
+  },
+  "contractEdit": {
+    "loading": "Loading…",
+    "title": "Edit contract",
+    "back": "Back to my contracts",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "startDate": "Start date",
+      "totalDays": "Total days"
+    },
+    "errors": {
+      "load": "Could not load this contract.",
+      "save": "Could not save changes.",
+      "forbidden": "You can only edit your own contracts."
+    }
   },
   "contractCreate": {
     "title": "New contract",
@@ -506,22 +529,6 @@
     "loading": "Loading company profile...",
     "verified": "Verified",
     "noDescription": "This company has not added a description yet.",
-    "contractsTitle": "Company contracts",
-    "contractsHint": "Browse the work published by this company.",
-    "noContracts": "This company has not published any contracts yet.",
-    "noContractDescription": "No contract description provided.",
-    "statusLabel": "Status",
-    "startLabel": "Start",
-    "daysLabel": "days",
-    "noStartDate": "Start date not set",
-    "noDuration": "Duration not set",
-    "statuses": {
-      "DRAFT": "Draft",
-      "OPEN_FOR_BIDS": "Open for bids",
-      "ACTIVE": "Active",
-      "COMPLETED": "Completed",
-      "CANCELLED": "Cancelled"
-    },
     "metrics": {
       "completed": "Completed jobs",
       "active": "Active contracts",
