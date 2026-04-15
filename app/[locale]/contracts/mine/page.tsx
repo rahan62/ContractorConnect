@@ -58,7 +58,6 @@ export default function MyContractsPage() {
   const intlLocale = locale === "tr" ? "tr-TR" : "en-US";
   const t = useTranslations("contracts");
   const tDetail = useTranslations("contractDetail");
-  const userType = (session?.user as { userType?: string } | undefined)?.userType;
 
   const [showCompleteModal, setShowCompleteModal] = useState<string | null>(null);
   const [completeRating, setCompleteRating] = useState(5);
@@ -77,14 +76,19 @@ export default function MyContractsPage() {
 
   useEffect(() => {
     if (status !== "authenticated" || !session) return;
-    if (userType !== "CONTRACTOR") {
-      router.replace(`/${locale}/contracts`);
-      return;
-    }
+
     async function load() {
       setLoading(true);
       try {
         const res = await fetch("/api/contracts/mine");
+        if (res.status === 403) {
+          router.replace(`/${locale}/contracts`);
+          return;
+        }
+        if (res.status === 401) {
+          router.push(`/${locale}/auth/signin`);
+          return;
+        }
         if (!res.ok) {
           router.replace(`/${locale}/contracts`);
           return;
@@ -96,7 +100,7 @@ export default function MyContractsPage() {
       }
     }
     void load();
-  }, [status, session, userType, router, locale]);
+  }, [status, session, router, locale]);
 
   async function acceptBid(contractId: string, bidId: string, e: React.MouseEvent) {
     e.preventDefault();
@@ -215,14 +219,6 @@ export default function MyContractsPage() {
   }
 
   if (status === "loading" || !session) {
-    return (
-      <section className="app-page">
-        <ContractsLoadingSpinner label={t("loading")} />
-      </section>
-    );
-  }
-
-  if (userType !== "CONTRACTOR") {
     return (
       <section className="app-page">
         <ContractsLoadingSpinner label={t("loading")} />

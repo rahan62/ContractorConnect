@@ -26,6 +26,7 @@ export async function GET(_req: Request, { params }: Params) {
       contractorId: true,
       acceptedBidId: true,
       dwgFiles: true,
+      documentUrls: true,
       imageUrls: true,
       startsAt: true,
       totalDays: true,
@@ -134,9 +135,10 @@ export async function GET(_req: Request, { params }: Params) {
       id: comment.id,
       body: comment.content
     })),
-    downloadableFiles: contract.dwgFiles
-      ? contract.dwgFiles.split(";").filter(Boolean)
-      : [],
+    downloadableFiles: [
+      ...(contract.dwgFiles ? contract.dwgFiles.split(";").filter(Boolean) : []),
+      ...(contract.documentUrls ? contract.documentUrls.split(";").filter(Boolean) : [])
+    ],
     imageUrls: contract.imageUrls
       ? contract.imageUrls.split(";").filter(Boolean)
       : []
@@ -156,7 +158,7 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const existing = await prisma.contract.findUnique({
     where: { id: params.id },
-    select: { contractorId: true }
+    select: { contractorId: true, dwgFiles: true, documentUrls: true }
   });
 
   if (!currentUser || !existing || currentUser.userType !== "CONTRACTOR" || existing.contractorId !== currentUser.id) {
@@ -164,13 +166,25 @@ export async function PATCH(request: Request, { params }: Params) {
   }
 
   const body = await request.json();
-  const { title, description, startsAt, totalDays, status } = body as {
+  const { title, description, startsAt, totalDays, status, appendDwgUrls, appendDocumentUrls } = body as {
     title?: string;
     description?: string;
     startsAt?: string | null;
     totalDays?: number | null;
     status?: string;
+    appendDwgUrls?: string[];
+    appendDocumentUrls?: string[];
   };
+
+  const mergePaths = (current: string | null, additions: string[] | undefined) => {
+    if (!additions?.length) return undefined;
+    const base = current ? current.split(";").filter(Boolean) : [];
+    const merged = [...base, ...additions];
+    return merged.length ? merged.join(";") : null;
+  };
+
+  const nextDwg = mergePaths(existing.dwgFiles, appendDwgUrls);
+  const nextDocs = mergePaths(existing.documentUrls, appendDocumentUrls);
 
   const updated = await prisma.contract.update({
     where: { id: params.id },
@@ -179,7 +193,9 @@ export async function PATCH(request: Request, { params }: Params) {
       description,
       startsAt: startsAt ? new Date(startsAt) : startsAt === null ? null : undefined,
       totalDays,
-      status: status as any
+      status: status as any,
+      ...(nextDwg !== undefined ? { dwgFiles: nextDwg } : {}),
+      ...(nextDocs !== undefined ? { documentUrls: nextDocs } : {})
     }
   });
 

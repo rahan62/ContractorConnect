@@ -72,6 +72,7 @@ export async function POST(request: Request) {
     title,
     description,
     dwgFiles,
+    documentUrls: documentUrlsBody,
     imageUrls,
     startsAt,
     totalDays,
@@ -82,6 +83,7 @@ export async function POST(request: Request) {
     title: string;
     description: string;
     dwgFiles?: string[];
+    documentUrls?: string[];
     imageUrls?: string[];
     startsAt?: string;
     totalDays?: number;
@@ -138,6 +140,7 @@ export async function POST(request: Request) {
           startsAt: startsAt ? new Date(startsAt) : null,
           totalDays: totalDays ?? null,
           dwgFiles: dwgFiles?.join(";") ?? null,
+          documentUrls: documentUrlsBody?.length ? documentUrlsBody.join(";") : null,
           imageUrls: imageUrls?.join(";") ?? null,
           capabilities: capabilityIds?.length
             ? {

@@ -5,6 +5,16 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { uploadFileToStorage } from "@/lib/upload-client";
+
+function fileLabel(path: string) {
+  try {
+    const tail = path.split("/").pop() || path;
+    return decodeURIComponent(tail);
+  } catch {
+    return path.split("/").pop() || path;
+  }
+}
 
 export default function EditContractPage() {
   const params = useParams();
@@ -23,6 +33,10 @@ export default function EditContractPage() {
   const [startsAt, setStartsAt] = useState("");
   const [totalDays, setTotalDays] = useState("");
   const [contractStatus, setContractStatus] = useState<string>("DRAFT");
+  const [existingDwgUrls, setExistingDwgUrls] = useState<string[]>([]);
+  const [existingDocumentUrls, setExistingDocumentUrls] = useState<string[]>([]);
+  const [newDwgFiles, setNewDwgFiles] = useState<FileList | null>(null);
+  const [newDocumentFiles, setNewDocumentFiles] = useState<FileList | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -57,6 +71,8 @@ export default function EditContractPage() {
           startsAt: string | null;
           totalDays: number | null;
           status: string;
+          dwgFiles: string | null;
+          documentUrls: string | null;
         };
         const uid = (session?.user as { id?: string })?.id;
         if (!uid) return;
@@ -71,6 +87,8 @@ export default function EditContractPage() {
         setStartsAt(c.startsAt ? new Date(c.startsAt).toISOString().slice(0, 10) : "");
         setTotalDays(c.totalDays != null ? String(c.totalDays) : "");
         setContractStatus(c.status ?? "DRAFT");
+        setExistingDwgUrls(c.dwgFiles?.split(";").filter(Boolean) ?? []);
+        setExistingDocumentUrls(c.documentUrls?.split(";").filter(Boolean) ?? []);
       } catch {
         if (!cancelled) setError(t("errors.load"));
       } finally {
@@ -89,6 +107,30 @@ export default function EditContractPage() {
     setError(null);
     setSaving(true);
     try {
+      const appendDwgUrls: string[] = [];
+      if (newDwgFiles && newDwgFiles.length > 0) {
+        for (const file of Array.from(newDwgFiles)) {
+          try {
+            const data = await uploadFileToStorage(file, "dwg");
+            appendDwgUrls.push(data.url ?? data.key);
+          } catch {
+            throw new Error(t("errors.uploadDwg"));
+          }
+        }
+      }
+
+      const appendDocumentUrls: string[] = [];
+      if (newDocumentFiles && newDocumentFiles.length > 0) {
+        for (const file of Array.from(newDocumentFiles)) {
+          try {
+            const data = await uploadFileToStorage(file, "contract-documents");
+            appendDocumentUrls.push(data.url ?? data.key);
+          } catch {
+            throw new Error(t("errors.uploadDocuments"));
+          }
+        }
+      }
+
       const res = await fetch(`/api/contracts/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -97,7 +139,9 @@ export default function EditContractPage() {
           description: description.trim() || null,
           startsAt: startsAt || null,
           totalDays: totalDays ? parseInt(totalDays, 10) : null,
-          status: contractStatus
+          status: contractStatus,
+          ...(appendDwgUrls.length > 0 ? { appendDwgUrls } : {}),
+          ...(appendDocumentUrls.length > 0 ? { appendDocumentUrls } : {})
         })
       });
       if (!res.ok) {
@@ -210,6 +254,63 @@ export default function EditContractPage() {
           </select>
           <p className="mt-1 text-xs text-muted-foreground">{t("statusHint")}</p>
         </div>
+
+        <div className="app-inset space-y-4 border-t border-border/60 pt-4">
+          {(existingDwgUrls.length > 0 || existingDocumentUrls.length > 0) && (
+            <div className="space-y-3 text-sm">
+              {existingDwgUrls.length > 0 && (
+                <div>
+                  <p className="mb-1 font-medium">{t("existingDwgFiles")}</p>
+                  <ul className="space-y-1 text-muted-foreground">
+                    {existingDwgUrls.map(url => (
+                      <li key={url}>
+                        <a href={url} target="_blank" rel="noreferrer" className="text-primary underline">
+                          {fileLabel(url)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {existingDocumentUrls.length > 0 && (
+                <div>
+                  <p className="mb-1 font-medium">{t("existingDocuments")}</p>
+                  <ul className="space-y-1 text-muted-foreground">
+                    {existingDocumentUrls.map(url => (
+                      <li key={url}>
+                        <a href={url} target="_blank" rel="noreferrer" className="text-primary underline">
+                          {fileLabel(url)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">{t("addDwgFiles")}</label>
+            <input
+              type="file"
+              multiple
+              accept=".dwg"
+              onChange={e => setNewDwgFiles(e.target.files)}
+              className="mt-1 text-sm"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">{t("addContractDocuments")}</label>
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,application/pdf"
+              onChange={e => setNewDocumentFiles(e.target.files)}
+              className="mt-1 text-sm"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">{t("addFilesHint")}</p>
+        </div>
+
         <div className="flex flex-wrap gap-3 pt-2">
           <button
             type="submit"

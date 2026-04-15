@@ -371,6 +371,8 @@ model Contract {
 
   // DWG / project files (semicolon separated paths)
   dwgFiles String?
+  // PDFs, technical sheets, spreadsheets, etc. (semicolon separated paths)
+  documentUrls String?
   imageUrls String?
 
   bids       Bid[]

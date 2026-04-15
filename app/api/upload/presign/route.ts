@@ -10,6 +10,7 @@ const ALLOWED_FOLDERS = new Set([
   "misc",
   "dwg",
   "contract-images",
+  "contract-documents",
   "company-branding",
   "company-documents",
   "bid-documents",

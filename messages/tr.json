@@ -338,10 +338,17 @@
     },
     "statusHint":
       "İşi taslak, teklife açık, aktif, tamamlandı veya iptal arasında taşımak için kullanın. Kabul edilmiş teklifle tamamlamak için değerlendirme bırakmak amacıyla Sözleşmelerim sayfasını kullanmanız önerilir.",
+    "existingDwgFiles": "Bu sözleşmedeki DWG dosyaları",
+    "existingDocuments": "Teknik ve diğer belgeler",
+    "addDwgFiles": "DWG ekle",
+    "addContractDocuments": "Belge ekle",
+    "addFilesHint": "Kaydettiğinizde yeni dosyalar sözleşmeye eklenir.",
     "errors": {
       "load": "Sözleşme yüklenemedi.",
       "save": "Değişiklikler kaydedilemedi.",
-      "forbidden": "Yalnızca kendi sözleşmelerinizi düzenleyebilirsiniz."
+      "forbidden": "Yalnızca kendi sözleşmelerinizi düzenleyebilirsiniz.",
+      "uploadDwg": "DWG dosyası yüklenemedi",
+      "uploadDocuments": "Belge yüklenemedi"
     }
   },
   "contractCreate": {
@@ -358,12 +365,16 @@
       "jobTradeBranchHint":
         "Bu işe uygun ana iş gruplarını seçin (alt yüklenici kaydındaki liste ile aynıdır). En az bir grup seçerseniz, yalnızca işaretlenen tüm grupları kapsayan firmalar teklif verebilir.",
       "dwgFiles": "DWG dosyaları",
+      "contractDocuments": "Teknik ve diğer belgeler",
+      "contractDocumentsHint":
+        "PDF, Office veya teknik şartname vb. dosyalar. İsteğe bağlı.",
       "images": "Sözleşme görselleri",
       "imagesHint": "Projeyi tanıtmak için bir veya daha fazla görsel yükleyin. Görsel yüklenmezse yer tutucu kullanılacaktır."
     },
     "errors": {
       "eligibility": "Henüz sözleşme oluşturamazsınız. Lütfen önce firma evraklarınızı tamamlayın.",
       "uploadDwg": "DWG dosyası yüklenemedi",
+      "uploadDocuments": "Belge yüklenemedi",
       "uploadImage": "Sözleşme görseli yüklenemedi",
       "create": "Sözleşme oluşturulamadı",
       "generic": "Bir şeyler ters gitti"

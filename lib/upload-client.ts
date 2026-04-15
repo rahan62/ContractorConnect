@@ -14,6 +14,7 @@ export async function uploadFileToStorage(
     | "misc"
     | "dwg"
     | "contract-images"
+    | "contract-documents"
     | "company-branding"
     | "company-documents"
     | "bid-documents"

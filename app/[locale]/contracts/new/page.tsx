@@ -22,6 +22,7 @@ export default function NewContractPage() {
   const [startsAt, setStartsAt] = useState("");
   const [totalDays, setTotalDays] = useState("");
   const [dwgFiles, setDwgFiles] = useState<FileList | null>(null);
+  const [documentFiles, setDocumentFiles] = useState<FileList | null>(null);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
   const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
@@ -72,6 +73,18 @@ export default function NewContractPage() {
         }
       }
 
+      const uploadedDocuments: string[] = [];
+      if (documentFiles && documentFiles.length > 0) {
+        for (const file of Array.from(documentFiles)) {
+          try {
+            const data = await uploadFileToStorage(file, "contract-documents");
+            uploadedDocuments.push(data.url ?? data.key);
+          } catch {
+            throw new Error(t("errors.uploadDocuments"));
+          }
+        }
+      }
+
       const uploadedImages: string[] = [];
       if (imageFiles && imageFiles.length > 0) {
         for (const file of Array.from(imageFiles)) {
@@ -93,6 +106,7 @@ export default function NewContractPage() {
           startsAt: startsAt || undefined,
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
           dwgFiles: uploadedPaths,
+          documentUrls: uploadedDocuments.length > 0 ? uploadedDocuments : undefined,
           imageUrls: uploadedImages,
           requiredSubcontractorMainCategoryIds:
             selectedRequiredMainCategories.length > 0 ? selectedRequiredMainCategories : undefined
@@ -185,6 +199,17 @@ export default function NewContractPage() {
             onChange={e => setDwgFiles(e.target.files)}
             className="mt-1 text-sm"
           />
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">{t("fields.contractDocuments")}</label>
+          <input
+            type="file"
+            multiple
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,application/pdf"
+            onChange={e => setDocumentFiles(e.target.files)}
+            className="mt-1 text-sm"
+          />
+          <p className="text-xs text-muted-foreground">{t("fields.contractDocumentsHint")}</p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.images")}</label>

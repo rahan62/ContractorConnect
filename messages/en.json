@@ -338,10 +338,17 @@
     },
     "statusHint":
       "Use this to move the job between draft, open for bids, active, completed, or cancelled. Completing a job with an accepted bid is still best done from My contracts so you can leave a rating.",
+    "existingDwgFiles": "DWG files on this contract",
+    "existingDocuments": "Technical & other documents",
+    "addDwgFiles": "Add DWG files",
+    "addContractDocuments": "Add documents",
+    "addFilesHint": "New files are appended to the contract when you save.",
     "errors": {
       "load": "Could not load this contract.",
       "save": "Could not save changes.",
-      "forbidden": "You can only edit your own contracts."
+      "forbidden": "You can only edit your own contracts.",
+      "uploadDwg": "Failed to upload a DWG file",
+      "uploadDocuments": "Failed to upload a document file"
     }
   },
   "contractCreate": {
@@ -358,12 +365,16 @@
       "jobTradeBranchHint":
         "Pick the main trade groups that match this job (same list as sub-contractor registration). If you select any, only companies that cover every selected group may bid.",
       "dwgFiles": "DWG files",
+      "contractDocuments": "Technical & other documents",
+      "contractDocumentsHint":
+        "PDFs, Office files, or other specs (e.g. technical data sheets). Optional.",
       "images": "Contract images",
       "imagesHint": "Upload one or more images to present the project. If none are uploaded, a placeholder will be used."
     },
     "errors": {
       "eligibility": "You are not allowed to create contracts yet. Please complete your company documents.",
       "uploadDwg": "Failed to upload DWG file",
+      "uploadDocuments": "Failed to upload a document file",
       "uploadImage": "Failed to upload contract image",
       "create": "Failed to create contract",
       "generic": "Something went wrong"
