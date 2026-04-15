@@ -14,6 +14,7 @@
     "profile": "Profile",
     "company": "Company information",
     "myBids": "My bids",
+    "categoryExperience": "Category experience",
     "references": "References",
     "referenceRequests": "Reference requests",
     "settings": "Settings",
@@ -141,6 +142,33 @@
       "COMPLETED": "Completed",
       "CANCELLED": "Cancelled"
     }
+  },
+  "categoryExperience": {
+    "title": "Category experience approval",
+    "description": "Request operator review to add a main trade category to your company profile. Upload past invoices or other evidence for the category you apply for. You can hold several categories—submit a separate request for each one you need.",
+    "forbidden": "This page is available only for contractors, sub-contractors, and field crews.",
+    "loading": "Loading…",
+    "mainCategory": "Main trade category",
+    "selectCategory": "Select a category",
+    "documents": "Evidence (invoices or documents)",
+    "documentsHint": "Upload PDF or image files. At least one file is required.",
+    "applicantNote": "Note to reviewers (optional)",
+    "submit": "Submit request",
+    "submitting": "Submitting…",
+    "success": "Your request was submitted. An operator will review it.",
+    "error": "Something went wrong. Please try again.",
+    "validationCategory": "Select a main trade category.",
+    "validationFiles": "Upload at least one document.",
+    "pendingExists": "You already have a pending request for this category.",
+    "requestsTitle": "Your requests",
+    "emptyRequests": "No requests yet.",
+    "status": {
+      "PENDING": "Pending review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "reviewedAt": "Reviewed",
+    "reviewerNote": "Reviewer note"
   },
   "references": {
     "title": "References",

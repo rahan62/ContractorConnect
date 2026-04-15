@@ -219,6 +219,15 @@ export function Navbar() {
                   )}
                   {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (
                     <Link
+                      href={`${basePath}/category-experience`}
+                      className={dropdownItemClass}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {tNav("categoryExperience")}
+                    </Link>
+                  )}
+                  {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (
+                    <Link
                       href={`${basePath}/references`}
                       className={dropdownItemClass}
                       onClick={() => setMenuOpen(false)}
@@ -353,6 +362,15 @@ export function Navbar() {
                     onClick={() => setMobileOpen(false)}
                   >
                     {tNav("myBids")}
+                  </Link>
+                )}
+                {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (
+                  <Link
+                    href={`${basePath}/category-experience`}
+                    className={mobileLinkClass}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {tNav("categoryExperience")}
                   </Link>
                 )}
                 {["CONTRACTOR", "SUBCONTRACTOR", "TEAM"].includes(userType ?? "") && (

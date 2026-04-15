@@ -14,6 +14,7 @@
     "profile": "Profil",
     "company": "Firma bilgileri",
     "myBids": "Tekliflerim",
+    "categoryExperience": "İş grubu deneyimi",
     "references": "Referanslar",
     "referenceRequests": "Referans talepleri",
     "settings": "Ayarlar",
@@ -141,6 +142,33 @@
       "COMPLETED": "Tamamlandı",
       "CANCELLED": "İptal edildi"
     }
+  },
+  "categoryExperience": {
+    "title": "İş grubu deneyimi onayı",
+    "description": "Firma profilinize ana iş grubu eklemek için operatör incelemesi talep edin. Başvurduğunuz kategori için geçmiş fatura veya diğer kanıtları yükleyin. Birden fazla iş grubunda yer alabilirsiniz—ihtiyacınız olan her kategori için ayrı bir talep gönderin.",
+    "forbidden": "Bu sayfa yalnızca yüklenici, alt yüklenici ve saha ekiplerine açıktır.",
+    "loading": "Yükleniyor…",
+    "mainCategory": "Ana iş grubu",
+    "selectCategory": "Kategori seçin",
+    "documents": "Kanıt (fatura veya belgeler)",
+    "documentsHint": "PDF veya görsel yükleyin. En az bir dosya gereklidir.",
+    "applicantNote": "İnceleyicilere not (isteğe bağlı)",
+    "submit": "Talebi gönder",
+    "submitting": "Gönderiliyor…",
+    "success": "Talebiniz alındı. Bir operatör inceleyecektir.",
+    "error": "Bir sorun oluştu. Lütfen tekrar deneyin.",
+    "validationCategory": "Ana iş grubu seçin.",
+    "validationFiles": "En az bir belge yükleyin.",
+    "pendingExists": "Bu kategori için zaten bekleyen bir talebiniz var.",
+    "requestsTitle": "Talepleriniz",
+    "emptyRequests": "Henüz talep yok.",
+    "status": {
+      "PENDING": "İnceleme bekliyor",
+      "APPROVED": "Onaylandı",
+      "REJECTED": "Reddedildi"
+    },
+    "reviewedAt": "İncelendi",
+    "reviewerNote": "İnceleyici notu"
   },
   "references": {
     "title": "Referanslar",
