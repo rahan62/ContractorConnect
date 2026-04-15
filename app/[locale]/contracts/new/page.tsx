@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { taxonomyLabel } from "@/lib/taxonomy-label";
+import { uploadFileToStorage } from "@/lib/upload-client";
 
 interface CapabilityNode {
   id: string;
@@ -82,30 +83,24 @@ export default function NewContractPage() {
       const uploadedPaths: string[] = [];
       if (dwgFiles && dwgFiles.length > 0) {
         for (const file of Array.from(dwgFiles)) {
-          const fd = new FormData();
-          fd.append("file", file);
-          fd.append("folder", "dwg");
-          const res = await fetch("/api/upload", { method: "POST", body: fd });
-          if (!res.ok) {
+          try {
+            const data = await uploadFileToStorage(file, "dwg");
+            uploadedPaths.push(data.url ?? data.key);
+          } catch {
             throw new Error(t("errors.uploadDwg"));
           }
-          const data = await res.json();
-          uploadedPaths.push(data.url ?? data.key);
         }
       }
 
       const uploadedImages: string[] = [];
       if (imageFiles && imageFiles.length > 0) {
         for (const file of Array.from(imageFiles)) {
-          const fd = new FormData();
-          fd.append("file", file);
-          fd.append("folder", "contract-images");
-          const res = await fetch("/api/upload", { method: "POST", body: fd });
-          if (!res.ok) {
+          try {
+            const data = await uploadFileToStorage(file, "contract-images");
+            uploadedImages.push(data.url ?? data.key);
+          } catch {
             throw new Error(t("errors.uploadImage"));
           }
-          const data = await res.json();
-          uploadedImages.push(data.url ?? data.key);
         }
       }
 

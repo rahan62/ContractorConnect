@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { uploadFileToStorage } from "@/lib/upload-client";
 
 interface CompanyContract {
   id: string;
@@ -91,25 +92,12 @@ export default function CompanyPage() {
     const folder =
       field === "logoUrl" || field === "bannerUrl" ? "company-branding" : "company-documents";
 
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("folder", folder);
-
     setUploadingField(field);
     setUploadError(null);
 
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: fd
-      });
-
-      if (!res.ok) {
-        throw new Error(t("messages.uploadFailed"));
-      }
-
-      const data = await res.json();
-      const url = data.url ?? data.path ?? data.key;
+      const data = await uploadFileToStorage(file, folder);
+      const url = data.url ?? data.key;
       if (!url) {
         throw new Error(t("messages.uploadFailed"));
       }

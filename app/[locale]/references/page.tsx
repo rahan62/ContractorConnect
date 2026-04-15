@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { uploadFileToStorage } from "@/lib/upload-client";
 
 interface VerifierOption {
   id: string;
@@ -84,20 +85,7 @@ export default function ReferencesPage() {
     setMessage(null);
 
     try {
-      const fd = new FormData();
-      fd.append("file", fileList[0]);
-      fd.append("folder", "reference-evidence");
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: fd
-      });
-
-      if (!res.ok) {
-        throw new Error(t("messages.uploadFailed"));
-      }
-
-      const data = await res.json();
+      const data = await uploadFileToStorage(fileList[0], "reference-evidence");
       const url = data.url ?? data.key;
       if (!url) {
         throw new Error(t("messages.uploadFailed"));

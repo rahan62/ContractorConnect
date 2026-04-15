@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { BID_CURRENCIES, formatBidMoney, type BidCurrency } from "@/lib/bid-display";
 import { amountInTry } from "@/lib/exchange-rates";
+import { uploadFileToStorage } from "@/lib/upload-client";
 
 interface Contract {
   id: string;
@@ -110,22 +111,13 @@ export default function ContractDetailPage() {
       let documentUrl: string | undefined;
 
       if (bidDocument) {
-        const fd = new FormData();
-        fd.append("file", bidDocument);
-        fd.append("folder", "bid-documents");
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: fd
-        });
-
-        if (!uploadRes.ok) {
+        try {
+          const uploadData = await uploadFileToStorage(bidDocument, "bid-documents");
+          documentUrl = uploadData.url ?? uploadData.key;
+        } catch {
           setError(t("errors.uploadBidDocument"));
           return;
         }
-
-        const uploadData = await uploadRes.json();
-        documentUrl = uploadData.url ?? uploadData.path ?? uploadData.key;
 
         if (!documentUrl) {
           setError(t("errors.uploadBidDocument"));
