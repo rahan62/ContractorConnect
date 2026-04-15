@@ -333,8 +333,11 @@
       "title": "Başlık",
       "description": "Açıklama",
       "startDate": "Başlangıç tarihi",
-      "totalDays": "Toplam gün"
+      "totalDays": "Toplam gün",
+      "status": "Sözleşme durumu"
     },
+    "statusHint":
+      "İşi taslak, teklife açık, aktif, tamamlandı veya iptal arasında taşımak için kullanın. Kabul edilmiş teklifle tamamlamak için değerlendirme bırakmak amacıyla Sözleşmelerim sayfasını kullanmanız önerilir.",
     "errors": {
       "load": "Sözleşme yüklenemedi.",
       "save": "Değişiklikler kaydedilemedi.",
@@ -487,47 +490,6 @@
       "uploadFailed": "Dosya yüklenemedi",
       "saved": "Kaydedildi",
       "saveFailed": "Kaydetme başarısız oldu"
-    },
-    "contracts": {
-      "title": "Sözleşmelerim",
-      "hint": "Firmanızın oluşturduğu sözleşmeleri izleyin, güncelleyin ve silin.",
-      "empty": "Henüz sözleşme oluşturulmadı.",
-      "noDescription": "Açıklama yok",
-      "fields": {
-        "title": "Başlık",
-        "description": "Açıklama",
-        "startDate": "Başlangıç tarihi",
-        "totalDays": "Toplam gün",
-        "status": "Durum"
-      },
-      "actions": {
-        "save": "Sözleşmeyi kaydet",
-        "cancel": "İptal",
-        "edit": "Düzenle",
-        "delete": "Sil"
-      },
-      "badges": {
-        "status": "Durum",
-        "start": "Başlangıç",
-        "days": "gün",
-        "noStart": "Başlangıç tarihi yok",
-        "noDuration": "Süre belirtilmemiş"
-      },
-      "statuses": {
-        "DRAFT": "Taslak",
-        "OPEN_FOR_BIDS": "Teklife açık",
-        "ACTIVE": "Aktif",
-        "COMPLETED": "Tamamlandı",
-        "CANCELLED": "İptal edildi"
-      },
-      "messages": {
-        "saving": "Kaydediliyor...",
-        "updateFailed": "Sözleşme güncellenemedi",
-        "updated": "Sözleşme başarıyla güncellendi.",
-        "confirmDelete": "Bu sözleşme silinsin mi?",
-        "deleteFailed": "Sözleşme silinemedi",
-        "deleted": "Sözleşme başarıyla silindi."
-      }
     }
   },
   "companyPublic": {

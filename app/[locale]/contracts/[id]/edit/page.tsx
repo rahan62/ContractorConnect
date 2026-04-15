@@ -13,6 +13,7 @@ export default function EditContractPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const t = useTranslations("contractEdit");
+  const tDetail = useTranslations("contractDetail");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -21,6 +22,7 @@ export default function EditContractPage() {
   const [description, setDescription] = useState("");
   const [startsAt, setStartsAt] = useState("");
   const [totalDays, setTotalDays] = useState("");
+  const [contractStatus, setContractStatus] = useState<string>("DRAFT");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -54,6 +56,7 @@ export default function EditContractPage() {
           description: string | null;
           startsAt: string | null;
           totalDays: number | null;
+          status: string;
         };
         const uid = (session?.user as { id?: string })?.id;
         if (!uid) return;
@@ -67,6 +70,7 @@ export default function EditContractPage() {
         setDescription(c.description ?? "");
         setStartsAt(c.startsAt ? new Date(c.startsAt).toISOString().slice(0, 10) : "");
         setTotalDays(c.totalDays != null ? String(c.totalDays) : "");
+        setContractStatus(c.status ?? "DRAFT");
       } catch {
         if (!cancelled) setError(t("errors.load"));
       } finally {
@@ -92,7 +96,8 @@ export default function EditContractPage() {
           title: title.trim(),
           description: description.trim() || null,
           startsAt: startsAt || null,
-          totalDays: totalDays ? parseInt(totalDays, 10) : null
+          totalDays: totalDays ? parseInt(totalDays, 10) : null,
+          status: contractStatus
         })
       });
       if (!res.ok) {
@@ -189,6 +194,21 @@ export default function EditContractPage() {
               placeholder="30"
             />
           </div>
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">{t("fields.status")}</label>
+          <select
+            className="mt-1 app-input"
+            value={contractStatus}
+            onChange={e => setContractStatus(e.target.value)}
+          >
+            <option value="DRAFT">{tDetail("statuses.DRAFT")}</option>
+            <option value="OPEN_FOR_BIDS">{tDetail("statuses.OPEN_FOR_BIDS")}</option>
+            <option value="ACTIVE">{tDetail("statuses.ACTIVE")}</option>
+            <option value="COMPLETED">{tDetail("statuses.COMPLETED")}</option>
+            <option value="CANCELLED">{tDetail("statuses.CANCELLED")}</option>
+          </select>
+          <p className="mt-1 text-xs text-muted-foreground">{t("statusHint")}</p>
         </div>
         <div className="flex flex-wrap gap-3 pt-2">
           <button

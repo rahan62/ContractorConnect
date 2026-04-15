@@ -24,20 +24,7 @@ export async function GET() {
       authorizedPersonPhone: true,
       signatureAuthDocUrl: true,
       taxCertificateDocUrl: true,
-      tradeRegistryGazetteDocUrl: true,
-      contractsCreated: {
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          status: true,
-          startsAt: true,
-          totalDays: true,
-          imageUrls: true,
-          createdAt: true
-        }
-      }
+      tradeRegistryGazetteDocUrl: true
     }
   });
 

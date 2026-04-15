@@ -333,8 +333,11 @@
       "title": "Title",
       "description": "Description",
       "startDate": "Start date",
-      "totalDays": "Total days"
+      "totalDays": "Total days",
+      "status": "Contract status"
     },
+    "statusHint":
+      "Use this to move the job between draft, open for bids, active, completed, or cancelled. Completing a job with an accepted bid is still best done from My contracts so you can leave a rating.",
     "errors": {
       "load": "Could not load this contract.",
       "save": "Could not save changes.",
@@ -487,47 +490,6 @@
       "uploadFailed": "File upload failed",
       "saved": "Saved",
       "saveFailed": "Failed to save"
-    },
-    "contracts": {
-      "title": "My contracts",
-      "hint": "Monitor, update and delete the contracts created by your company.",
-      "empty": "No contracts created yet.",
-      "noDescription": "No description",
-      "fields": {
-        "title": "Title",
-        "description": "Description",
-        "startDate": "Start date",
-        "totalDays": "Total days",
-        "status": "Status"
-      },
-      "actions": {
-        "save": "Save contract",
-        "cancel": "Cancel",
-        "edit": "Edit",
-        "delete": "Delete"
-      },
-      "badges": {
-        "status": "Status",
-        "start": "Start",
-        "days": "days",
-        "noStart": "Start date not set",
-        "noDuration": "Duration not set"
-      },
-      "statuses": {
-        "DRAFT": "Draft",
-        "OPEN_FOR_BIDS": "Open for bids",
-        "ACTIVE": "Active",
-        "COMPLETED": "Completed",
-        "CANCELLED": "Cancelled"
-      },
-      "messages": {
-        "saving": "Saving...",
-        "updateFailed": "Failed to update contract",
-        "updated": "Contract updated successfully.",
-        "confirmDelete": "Delete this contract?",
-        "deleteFailed": "Failed to delete contract",
-        "deleted": "Contract deleted successfully."
-      }
     }
   },
   "companyPublic": {
