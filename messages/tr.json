@@ -358,7 +358,20 @@
     "deleteConfirm": "\"{title}\" silinsin mi? Bu işlem geri alınamaz.",
     "deleting": "Siliniyor…",
     "deleteFailed": "Sözleşme silinemedi.",
-    "editContract": "Düzenle"
+    "editContract": "Düzenle",
+    "listSearchPlaceholder": "Başlık, firma veya konuma göre ara…",
+    "sortLabel": "Sırala",
+    "sortCreatedNew": "İlan tarihi: en yeni",
+    "sortCreatedOld": "İlan tarihi: en eski",
+    "sortTitle": "Başlık A–Z",
+    "sortStartSoon": "Başlangıç: en yakın",
+    "bidsCount": "{count} teklif",
+    "tradeBadgesHeading": "İş grupları",
+    "listPosted": "Yayın",
+    "listStart": "Başlangıç",
+    "listOpenDetail": "Sözleşmeyi aç",
+    "listDocuments": "Belgeler ve dosyalar",
+    "listComments": "Tartışma"
   },
   "contractEdit": {
     "loading": "Yükleniyor…",

@@ -358,7 +358,20 @@
     "deleteConfirm": "Delete \"{title}\"? This cannot be undone.",
     "deleting": "Deleting…",
     "deleteFailed": "Could not delete this contract.",
-    "editContract": "Edit"
+    "editContract": "Edit",
+    "listSearchPlaceholder": "Search by title, company, or location…",
+    "sortLabel": "Sort",
+    "sortCreatedNew": "Posted: newest",
+    "sortCreatedOld": "Posted: oldest",
+    "sortTitle": "Title A–Z",
+    "sortStartSoon": "Start date: soonest",
+    "bidsCount": "{count} bids",
+    "tradeBadgesHeading": "Trades",
+    "listPosted": "Posted",
+    "listStart": "Starts",
+    "listOpenDetail": "Open contract",
+    "listDocuments": "Documents & files",
+    "listComments": "Discussion"
   },
   "contractEdit": {
     "loading": "Loading…",

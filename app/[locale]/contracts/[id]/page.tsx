@@ -401,7 +401,10 @@ export default function ContractDetailPage() {
                 </div>
               )}
           </div>
-          <aside className="rounded-xl border border-border/60 bg-muted/20 p-4 dark:bg-card/70 dark:ring-1 dark:ring-inset dark:ring-white/[0.06]">
+          <aside
+            id="documents"
+            className="scroll-mt-24 rounded-xl border border-border/60 bg-muted/20 p-4 dark:bg-card/70 dark:ring-1 dark:ring-inset dark:ring-white/[0.06]"
+          >
             <h2 className="text-sm font-semibold">{t("downloadableFiles")}</h2>
             <div className="mt-4 space-y-2 text-sm text-muted-foreground">
               {downloadableFiles.length > 0 ? (
@@ -665,7 +668,10 @@ export default function ContractDetailPage() {
           )}
       </article>
 
-      <article className="rounded-2xl border border-border/70 bg-card p-4 shadow-md shadow-black/[0.04] dark:border-border/60 dark:shadow-black/25 sm:p-6">
+      <article
+        id="comments"
+        className="scroll-mt-24 rounded-2xl border border-border/70 bg-card p-4 shadow-md shadow-black/[0.04] dark:border-border/60 dark:shadow-black/25 sm:p-6"
+      >
         <h2 className="mb-3 text-lg font-semibold tracking-tight">{t("commentsTitle")}</h2>
         <form onSubmit={submitComment} className="mb-6 space-y-3">
           <p className="text-xs text-muted-foreground">{t("comment.hint")}</p>

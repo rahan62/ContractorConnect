@@ -18,14 +18,32 @@ export async function GET() {
       id: true,
       title: true,
       description: true,
-      imageUrls: true,
+      status: true,
       startsAt: true,
+      endsAt: true,
       totalDays: true,
       contractorId: true,
-      createdAt: true
+      createdAt: true,
+      contractor: {
+        select: {
+          companyName: true,
+          location: true
+        }
+      },
+      requiredSubcontractorMainCategories: {
+        take: 4,
+        select: {
+          mainCategory: {
+            select: { nameEn: true, nameTr: true }
+          }
+        }
+      },
+      _count: {
+        select: { bids: true }
+      }
     },
     orderBy: { createdAt: "desc" },
-    take: 50
+    take: 100
   });
   return NextResponse.json(contracts);
 }

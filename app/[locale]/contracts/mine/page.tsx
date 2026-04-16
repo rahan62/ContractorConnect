@@ -23,9 +23,9 @@ interface Contract {
   description: string | null;
   status: string;
   acceptedBidId?: string | null;
-  imageUrls?: string | null;
   startsAt?: string | null;
   totalDays?: number | null;
+  createdAt?: string;
   capabilities?: Array<{ capability: { id: string; name: string } }>;
   bids: Bid[];
 }
@@ -257,50 +257,65 @@ export default function MyContractsPage() {
         <div className="space-y-3">
           {contracts.map(c => {
             const isExpanded = expandedId === c.id;
-            const imageUrl = c.imageUrls?.split(";").filter(Boolean)[0];
+            const createdFmt = c.createdAt
+              ? new Intl.DateTimeFormat(intlLocale, {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric"
+                }).format(new Date(c.createdAt))
+              : null;
             return (
               <div
                 key={c.id}
-                className="app-card-sm overflow-hidden transition hover:shadow-md dark:hover:shadow-black/25"
+                className="overflow-hidden rounded-xl border border-border/60 bg-card transition hover:bg-muted/20"
               >
                 <Link
                   href={`/${locale}/contracts/${c.id}`}
-                  className="block"
+                  className="block px-4 py-3"
                   onClick={e => {
                     if ((e.target as HTMLElement).closest("button")) {
                       e.preventDefault();
                     }
                   }}
                 >
-                  <div className="flex flex-col sm:flex-row">
-                    <div className="h-36 w-full shrink-0 overflow-hidden border-b border-border/50 app-hero-placeholder sm:h-auto sm:w-48 sm:border-b-0 sm:border-r">
-                      {imageUrl ? (
-                        <img src={imageUrl} alt={c.title} className="h-full w-full object-cover sm:min-h-[140px]" />
-                      ) : (
-                        <div className="app-hero-placeholder-inner flex h-full min-h-[100px] items-center justify-center sm:min-h-[140px]">
-                          <img src="/favicon.svg" alt="" className="h-12 w-12 rounded-md opacity-90" aria-hidden />
-                        </div>
-                      )}
+                  <div className="flex flex-wrap items-start justify-between gap-2 gap-y-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span
+                        className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
+                          c.status === "OPEN_FOR_BIDS"
+                            ? "border-emerald-500/35 bg-emerald-500/12 text-emerald-800 dark:text-emerald-300"
+                            : c.status === "ACTIVE"
+                              ? "border-sky-500/35 bg-sky-500/12 text-sky-900 dark:text-sky-200"
+                              : c.status === "COMPLETED"
+                                ? "border-border bg-muted/80 text-muted-foreground"
+                                : c.status === "CANCELLED"
+                                  ? "border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300"
+                                  : "border-border bg-muted/60 text-muted-foreground"
+                        }`}
+                      >
+                        {tDetail(`statuses.${c.status}` as any)}
+                      </span>
+                      <span className="rounded-full border border-border/60 bg-muted/30 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        {t("bidsCount", { count: c.bids.length })}
+                      </span>
                     </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <div className="flex flex-wrap items-start justify-between gap-2">
-                        <div>
-                          <h2 className="font-medium">{c.title}</h2>
-                          <span className="mt-1 inline-block rounded-full border px-2 py-0.5 text-xs font-medium">
-                            {tDetail(`statuses.${c.status}` as any)}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{c.description ?? ""}</p>
-                      <div className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                        <span>
-                          {c.startsAt
-                            ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString()}`
-                            : t("noStartDate")}
-                        </span>
-                        <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
-                      </div>
-                    </div>
+                    {createdFmt && (
+                      <span className="text-[11px] text-muted-foreground">
+                        {t("listPosted")}: {createdFmt}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="mt-1.5 font-semibold leading-snug">{c.title}</h2>
+                  {c.description && (
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>
+                  )}
+                  <div className="mt-2 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
+                    <span>
+                      {c.startsAt
+                        ? `${t("startLabel")}: ${new Date(c.startsAt).toLocaleDateString(intlLocale)}`
+                        : t("noStartDate")}
+                    </span>
+                    <span>{c.totalDays ? `${c.totalDays} ${t("days")}` : t("noDuration")}</span>
                   </div>
                 </Link>
 
