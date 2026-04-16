@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { normalizeBidForResponse } from "@/lib/bid-display";
+import { userMayViewContractMine } from "@/lib/contractor-mine-access";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ export async function GET() {
     select: { id: true, userType: true }
   });
 
-  if (!user || user.userType !== "CONTRACTOR") {
+  if (!user || !(await userMayViewContractMine(prisma, user))) {
     return NextResponse.json({ message: "Only contractors can access" }, { status: 403 });
   }
 

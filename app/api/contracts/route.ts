@@ -12,9 +12,26 @@ export async function GET() {
   const auth = await requireSession();
   if (!auth.ok) return auth.response;
 
-  // Regular contracts list: no drafts (contractors publish when ready), no urgent jobs (separate section)
+  const me = await prisma.user.findUnique({
+    where: { email: auth.session.user!.email! },
+    select: { id: true }
+  });
+  if (!me) {
+    return NextResponse.json([]);
+  }
+
+  // Public list: non-urgent, published jobs. Always include the current user's own
+  // contracts (draft / urgent) so they still appear here as well as under Sözleşmelerim.
   const contracts = await prisma.contract.findMany({
-    where: { isUrgent: false, status: { not: "DRAFT" } },
+    where: {
+      OR: [
+        {
+          isUrgent: false,
+          status: { not: "DRAFT" }
+        },
+        { contractorId: me.id }
+      ]
+    },
     select: {
       id: true,
       title: true,

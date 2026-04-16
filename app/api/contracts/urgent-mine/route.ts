@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { userMayViewContractMine } from "@/lib/contractor-mine-access";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export async function GET() {
     }
   });
 
-  if (!user || user.userType !== "CONTRACTOR") {
+  if (!user || !(await userMayViewContractMine(prisma, user))) {
     return NextResponse.json({ message: "Only contractors can view their urgent jobs" }, { status: 403 });
   }
 
