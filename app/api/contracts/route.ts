@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { getMonetizationConfig } from "@/lib/monetization";
 import { requireSession } from "@/lib/api-auth";
 import { validateContractLocation } from "@/lib/contract-location";
+import { withContractLocationSelectFallback } from "@/lib/contract-location-query-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -22,53 +23,69 @@ export async function GET() {
 
   // Public list: non-urgent, published jobs. Always include the current user's own
   // contracts (draft / urgent) so they still appear here as well as under Sözleşmelerim.
-  const contracts = await prisma.contract.findMany({
-    where: {
-      OR: [
-        {
-          isUrgent: false,
-          status: { not: "DRAFT" }
-        },
-        { contractorId: me.id }
-      ]
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      status: true,
-      startsAt: true,
-      endsAt: true,
-      totalDays: true,
-      contractorId: true,
-      createdAt: true,
-      contractor: {
-        select: {
-          companyName: true,
-          location: true
-        }
+  const browseWhere = {
+    OR: [
+      {
+        isUrgent: false,
+        status: { not: "DRAFT" as const }
       },
-      city: {
-        select: { id: true, plateCode: true, nameTr: true }
-      },
-      district: {
-        select: { id: true, nameTr: true }
-      },
-      requiredSubcontractorMainCategories: {
-        take: 4,
-        select: {
-          mainCategory: {
-            select: { nameEn: true, nameTr: true }
-          }
-        }
-      },
-      _count: {
-        select: { bids: true }
+      { contractorId: me.id }
+    ]
+  };
+
+  const browseSelectCore = {
+    id: true,
+    title: true,
+    description: true,
+    status: true,
+    startsAt: true,
+    endsAt: true,
+    totalDays: true,
+    contractorId: true,
+    createdAt: true,
+    contractor: {
+      select: {
+        companyName: true,
+        location: true
       }
     },
-    orderBy: { createdAt: "desc" },
-    take: 100
-  });
+    requiredSubcontractorMainCategories: {
+      take: 4,
+      select: {
+        mainCategory: {
+          select: { nameEn: true, nameTr: true }
+        }
+      }
+    },
+    _count: {
+      select: { bids: true }
+    }
+  } as const;
+
+  const contracts = await withContractLocationSelectFallback(
+    () =>
+      prisma.contract.findMany({
+        where: browseWhere,
+        select: {
+          ...browseSelectCore,
+          city: {
+            select: { id: true, plateCode: true, nameTr: true }
+          },
+          district: {
+            select: { id: true, nameTr: true }
+          }
+        },
+        orderBy: { createdAt: "desc" },
+        take: 100
+      }),
+    () =>
+      prisma.contract.findMany({
+        where: browseWhere,
+        select: browseSelectCore,
+        orderBy: { createdAt: "desc" },
+        take: 100
+      })
+  );
   return NextResponse.json(contracts);
 }
 

@@ -6,6 +6,7 @@ import { normalizeBidForResponse } from "@/lib/bid-display";
 import { getBidEditEligibility } from "@/lib/bid-edit";
 import { requireSession } from "@/lib/api-auth";
 import { validateContractLocation } from "@/lib/contract-location";
+import { withContractLocationSelectFallback } from "@/lib/contract-location-query-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -18,52 +19,64 @@ export async function GET(_req: Request, { params }: Params) {
   if (!auth.ok) return auth.response;
   const session = auth.session;
 
-  const contract = await prisma.contract.findUnique({
-    where: { id: params.id },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      status: true,
-      contractorId: true,
-      acceptedBidId: true,
-      dwgFiles: true,
-      documentUrls: true,
-      imageUrls: true,
-      startsAt: true,
-      totalDays: true,
-      createdAt: true,
-      updatedAt: true,
-      capabilities: {
-        select: {
-          capability: {
-            select: {
-              id: true,
-              name: true
-            }
+  const contractDetailCore = {
+    id: true,
+    title: true,
+    description: true,
+    status: true,
+    contractorId: true,
+    acceptedBidId: true,
+    dwgFiles: true,
+    documentUrls: true,
+    imageUrls: true,
+    startsAt: true,
+    totalDays: true,
+    createdAt: true,
+    updatedAt: true,
+    capabilities: {
+      select: {
+        capability: {
+          select: {
+            id: true,
+            name: true
           }
         }
-      },
-      requiredSubcontractorMainCategories: {
-        select: {
-          mainCategory: {
-            select: {
-              id: true,
-              slug: true,
-              nameEn: true,
-              nameTr: true
-            }
+      }
+    },
+    requiredSubcontractorMainCategories: {
+      select: {
+        mainCategory: {
+          select: {
+            id: true,
+            slug: true,
+            nameEn: true,
+            nameTr: true
           }
         }
-      },
-      city: {
-        select: { id: true, plateCode: true, nameTr: true }
-      },
-      district: {
-        select: { id: true, nameTr: true }
       }
     }
-  });
+  } as const;
+
+  const contract = await withContractLocationSelectFallback(
+    () =>
+      prisma.contract.findUnique({
+        where: { id: params.id },
+        select: {
+          ...contractDetailCore,
+          city: {
+            select: { id: true, plateCode: true, nameTr: true }
+          },
+          district: {
+            select: { id: true, nameTr: true }
+          }
+        }
+      }),
+    () =>
+      prisma.contract.findUnique({
+        where: { id: params.id },
+        select: contractDetailCore
+      })
+  );
   if (!contract) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
