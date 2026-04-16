@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import { UploadProgressBar } from "@/components/UploadProgressBar";
+import { ContractLocationFields } from "@/components/contract-location-fields";
 import { uploadFileToStorage, type UploadFolder } from "@/lib/upload-client";
 
 function fileLabel(path: string) {
@@ -40,6 +41,8 @@ export default function EditContractPage() {
   const [newDwgFiles, setNewDwgFiles] = useState<FileList | null>(null);
   const [newDocumentFiles, setNewDocumentFiles] = useState<FileList | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [cityId, setCityId] = useState("");
+  const [districtId, setDistrictId] = useState("");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -76,6 +79,8 @@ export default function EditContractPage() {
           status: string;
           dwgFiles: string | null;
           documentUrls: string | null;
+          cityId: string | null;
+          districtId: string | null;
         };
         const uid = (session?.user as { id?: string })?.id;
         if (!uid) return;
@@ -92,6 +97,8 @@ export default function EditContractPage() {
         setContractStatus(c.status ?? "DRAFT");
         setExistingDwgUrls(c.dwgFiles?.split(";").filter(Boolean) ?? []);
         setExistingDocumentUrls(c.documentUrls?.split(";").filter(Boolean) ?? []);
+        setCityId(c.cityId ?? "");
+        setDistrictId(c.districtId ?? "");
       } catch {
         if (!cancelled) setError(t("errors.load"));
       } finally {
@@ -158,6 +165,8 @@ export default function EditContractPage() {
         body: JSON.stringify({
           title: title.trim(),
           description: description.trim() || null,
+          cityId,
+          districtId,
           startsAt: startsAt || null,
           totalDays: totalDays ? parseInt(totalDays, 10) : null,
           status: contractStatus,
@@ -239,6 +248,13 @@ export default function EditContractPage() {
             required
           />
         </div>
+        <ContractLocationFields
+          cityId={cityId}
+          districtId={districtId}
+          onCityChange={setCityId}
+          onDistrictChange={setDistrictId}
+          disabled={saving}
+        />
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("fields.startDate")}</label>

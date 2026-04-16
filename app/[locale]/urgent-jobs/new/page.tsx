@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import { taxonomyLabel } from "@/lib/taxonomy-label";
+import { ContractLocationFields } from "@/components/contract-location-fields";
 
 interface MainCategoryRow {
   id: string;
@@ -25,6 +26,8 @@ export default function NewUrgentJobPage() {
   const [totalDays, setTotalDays] = useState("");
   const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
   const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
+  const [cityId, setCityId] = useState("");
+  const [districtId, setDistrictId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -132,6 +135,13 @@ export default function NewUrgentJobPage() {
             required
           />
         </div>
+        <ContractLocationFields
+          cityId={cityId}
+          districtId={districtId}
+          onCityChange={setCityId}
+          onDistrictChange={setDistrictId}
+          disabled={loading}
+        />
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-1">
             <label className="block text-sm font-medium">{t("fields.startDate")}</label>

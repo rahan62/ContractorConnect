@@ -26,6 +26,8 @@ interface Contract {
   startsAt?: string | null;
   totalDays?: number | null;
   createdAt?: string;
+  city?: { id: string; plateCode: number; nameTr: string } | null;
+  district?: { id: string; nameTr: string } | null;
   capabilities?: Array<{ capability: { id: string; name: string } }>;
   bids: Bid[];
 }
@@ -257,6 +259,7 @@ export default function MyContractsPage() {
         <div className="space-y-3">
           {contracts.map(c => {
             const isExpanded = expandedId === c.id;
+            const jobLoc = [c.district?.nameTr, c.city?.nameTr].filter(Boolean).join(", ");
             const createdFmt = c.createdAt
               ? new Intl.DateTimeFormat(intlLocale, {
                   day: "2-digit",
@@ -308,6 +311,11 @@ export default function MyContractsPage() {
                   <h2 className="mt-1.5 font-semibold leading-snug">{c.title}</h2>
                   {c.description && (
                     <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>
+                  )}
+                  {jobLoc && (
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      {tDetail("jobLocation")}: {jobLoc}
+                    </p>
                   )}
                   <div className="mt-2 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
                     <span>

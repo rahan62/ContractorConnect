@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { normalizeBidForResponse } from "@/lib/bid-display";
 import { getBidEditEligibility } from "@/lib/bid-edit";
 import { requireSession } from "@/lib/api-auth";
+import { validateContractLocation } from "@/lib/contract-location";
 
 export const dynamic = "force-dynamic";
 
@@ -54,6 +55,12 @@ export async function GET(_req: Request, { params }: Params) {
             }
           }
         }
+      },
+      city: {
+        select: { id: true, plateCode: true, nameTr: true }
+      },
+      district: {
+        select: { id: true, nameTr: true }
       }
     }
   });
@@ -203,7 +210,7 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const existing = await prisma.contract.findUnique({
     where: { id: params.id },
-    select: { contractorId: true, dwgFiles: true, documentUrls: true }
+    select: { contractorId: true, dwgFiles: true, documentUrls: true, cityId: true, districtId: true }
   });
 
   if (!currentUser || !existing || currentUser.userType !== "CONTRACTOR" || existing.contractorId !== currentUser.id) {
@@ -211,7 +218,17 @@ export async function PATCH(request: Request, { params }: Params) {
   }
 
   const body = await request.json();
-  const { title, description, startsAt, totalDays, status, appendDwgUrls, appendDocumentUrls } = body as {
+  const {
+    title,
+    description,
+    startsAt,
+    totalDays,
+    status,
+    appendDwgUrls,
+    appendDocumentUrls,
+    cityId: bodyCityId,
+    districtId: bodyDistrictId
+  } = body as {
     title?: string;
     description?: string;
     startsAt?: string | null;
@@ -219,7 +236,18 @@ export async function PATCH(request: Request, { params }: Params) {
     status?: string;
     appendDwgUrls?: string[];
     appendDocumentUrls?: string[];
+    cityId?: string | null;
+    districtId?: string | null;
   };
+
+  const mergedCityId = bodyCityId !== undefined ? bodyCityId : existing.cityId;
+  const mergedDistrictId = bodyDistrictId !== undefined ? bodyDistrictId : existing.districtId;
+  if (bodyCityId !== undefined || bodyDistrictId !== undefined) {
+    const loc = await validateContractLocation(prisma, mergedCityId, mergedDistrictId);
+    if (!loc.ok) {
+      return NextResponse.json({ message: loc.message }, { status: 400 });
+    }
+  }
 
   const mergePaths = (current: string | null, additions: string[] | undefined) => {
     if (!additions?.length) return undefined;
@@ -240,7 +268,13 @@ export async function PATCH(request: Request, { params }: Params) {
       totalDays,
       status: status as any,
       ...(nextDwg !== undefined ? { dwgFiles: nextDwg } : {}),
-      ...(nextDocs !== undefined ? { documentUrls: nextDocs } : {})
+      ...(nextDocs !== undefined ? { documentUrls: nextDocs } : {}),
+      ...(bodyCityId !== undefined
+        ? { cityId: bodyCityId === null ? null : String(bodyCityId).trim() || null }
+        : {}),
+      ...(bodyDistrictId !== undefined
+        ? { districtId: bodyDistrictId === null ? null : String(bodyDistrictId).trim() || null }
+        : {})
     }
   });
 

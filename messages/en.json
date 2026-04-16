@@ -401,6 +401,16 @@
       "uploadDocuments": "Failed to upload a document file"
     }
   },
+  "contractLocation": {
+    "fields": {
+      "city": "Province (il)",
+      "district": "District (ilçe)",
+      "selectCity": "Select province",
+      "selectDistrict": "Select district",
+      "loadingDistricts": "Loading districts…",
+      "districtHint": "Choose the city first, then the district where the work takes place."
+    }
+  },
   "contractCreate": {
     "title": "New contract",
     "creating": "Creating...",
@@ -435,6 +445,7 @@
   },
   "contractDetail": {
     "loading": "Loading contract...",
+    "jobLocation": "Job location",
     "startLabel": "Start",
     "durationLabel": "Duration",
     "days": "days",

@@ -34,6 +34,12 @@ export async function GET() {
       startsAt: true,
       totalDays: true,
       createdAt: true,
+      city: {
+        select: { id: true, plateCode: true, nameTr: true }
+      },
+      district: {
+        select: { id: true, nameTr: true }
+      },
       capabilities: {
         select: {
           capability: {
@@ -75,6 +81,8 @@ export async function GET() {
       startsAt: c.startsAt,
       totalDays: c.totalDays,
       createdAt: c.createdAt,
+      city: c.city,
+      district: c.district,
       capabilities: c.capabilities,
       bids: c.bids.map(b => {
         const norm = normalizeBidForResponse(b);

@@ -16,6 +16,8 @@ interface BrowseContract {
   totalDays: number | null;
   createdAt: string;
   contractor: { companyName: string | null; location: string | null } | null;
+  city?: { id: string; plateCode: number; nameTr: string } | null;
+  district?: { id: string; nameTr: string } | null;
   requiredSubcontractorMainCategories: Array<{
     mainCategory: { nameEn: string; nameTr: string };
   }>;
@@ -220,7 +222,9 @@ export default function ContractsPage() {
       ) : (
         <div className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60 bg-card">
           {sorted.map(c => {
-            const loc = c.contractor?.location?.trim();
+            const contractorLoc = c.contractor?.location?.trim();
+            const jobLoc = [c.district?.nameTr, c.city?.nameTr].filter(Boolean).join(", ");
+            const locLine = jobLoc || contractorLoc || "";
             const primaryWhen = formatWhen(c.startsAt) ?? formatWhen(c.createdAt);
             const tradeLabel = (row: { nameEn: string; nameTr: string }) =>
               locale === "tr" ? row.nameTr : row.nameEn;
@@ -254,7 +258,7 @@ export default function ContractsPage() {
                       ))}
                     </div>
                     <div className="shrink-0 text-right text-[11px] leading-tight text-muted-foreground sm:max-w-[14rem]">
-                      {loc && <div className="font-medium text-foreground/90">{loc}</div>}
+                      {locLine && <div className="font-medium text-foreground/90">{locLine}</div>}
                       {primaryWhen && (
                         <div>
                           {c.startsAt ? t("listStart") : t("listPosted")}: {primaryWhen}

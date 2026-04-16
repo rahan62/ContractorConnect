@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { getMonetizationConfig } from "@/lib/monetization";
 import { requireSession } from "@/lib/api-auth";
+import { validateContractLocation } from "@/lib/contract-location";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,12 @@ export async function GET() {
           companyName: true,
           location: true
         }
+      },
+      city: {
+        select: { id: true, plateCode: true, nameTr: true }
+      },
+      district: {
+        select: { id: true, nameTr: true }
       },
       requiredSubcontractorMainCategories: {
         take: 4,
@@ -97,7 +104,9 @@ export async function POST(request: Request) {
     capabilityIds,
     requiredSubcontractorMainCategoryIds,
     isUrgent,
-    status: initialStatus
+    status: initialStatus,
+    cityId: cityIdBody,
+    districtId: districtIdBody
   } = body as {
     title: string;
     description: string;
@@ -111,6 +120,8 @@ export async function POST(request: Request) {
     isUrgent?: boolean;
     /** Only DRAFT or OPEN_FOR_BIDS when creating a normal contract */
     status?: "DRAFT" | "OPEN_FOR_BIDS";
+    cityId?: string;
+    districtId?: string;
   };
 
   let requiredCategoryRows: { mainCategoryId: string }[] | undefined;
@@ -128,6 +139,11 @@ export async function POST(request: Request) {
 
   if (!title || !description) {
     return NextResponse.json({ message: "Title and description are required" }, { status: 400 });
+  }
+
+  const locCheck = await validateContractLocation(prisma, cityIdBody, districtIdBody);
+  if (!locCheck.ok) {
+    return NextResponse.json({ message: locCheck.message }, { status: 400 });
   }
 
   const resolvedStatus = Boolean(isUrgent)
@@ -164,6 +180,8 @@ export async function POST(request: Request) {
           contractorId: user.id,
           status: resolvedStatus,
           isUrgent: Boolean(isUrgent),
+          cityId: cityIdBody!.trim(),
+          districtId: districtIdBody!.trim(),
           startsAt: startsAt ? new Date(startsAt) : null,
           totalDays: totalDays ?? null,
           dwgFiles: dwgFiles?.join(";") ?? null,

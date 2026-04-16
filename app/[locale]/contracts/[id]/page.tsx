@@ -34,6 +34,8 @@ interface Contract {
       nameTr: string;
     };
   }>;
+  city?: { id: string; plateCode: number; nameTr: string } | null;
+  district?: { id: string; nameTr: string } | null;
 }
 
 interface Bid {
@@ -354,6 +356,12 @@ export default function ContractDetailPage() {
                 {t(`statuses.${contract.status}` as any)}
               </span>
             </div>
+            {(contract.district || contract.city) && (
+              <p className="mt-2 text-sm font-medium text-foreground/90">
+                {t("jobLocation")}:{" "}
+                {[contract.district?.nameTr, contract.city?.nameTr].filter(Boolean).join(", ")}
+              </p>
+            )}
             <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
               <span className="rounded-full border border-border/60 bg-background/50 px-3 py-1 dark:bg-background/20">
                 {contract.startsAt

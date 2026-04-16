@@ -75,7 +75,7 @@
   "dashboard": {
     "title": "Panel",
     "welcome": "Tekrar hoş geldiniz, {email}.",
-    "loading": "Panel yükleniyor...",
+    "loading": "Panel yükleniyor…",
     "loadError": "Panel verileri yüklenemedi.",
     "contractor": {
       "metricsTitle": "Özet",
@@ -114,7 +114,7 @@
   },
   "profile": {
     "title": "Profil",
-    "loading": "Profil yükleniyor...",
+    "loading": "Profil yükleniyor…",
     "fields": {
       "email": "E-posta",
       "name": "Ad",
@@ -124,7 +124,7 @@
   },
   "myBids": {
     "title": "Tekliflerim",
-    "loading": "Teklifler yükleniyor...",
+    "loading": "Teklifler yükleniyor…",
     "empty": "Henüz hiç teklif göndermediniz.",
     "forbidden": "Bu sayfa yalnızca alt yüklenicilere açıktır.",
     "contractor": "Yüklenici",
@@ -176,48 +176,48 @@
   },
   "references": {
     "title": "Referanslar",
-    "hint": "Gecmis projelerinizi veya referanslarinizi ekleyin ve dogrulama durumlarini takip edin.",
-    "loading": "Referanslar yukleniyor...",
-    "listTitle": "Referans kayitlarim",
-    "empty": "Henuz referans eklenmedi.",
-    "verifiedBy": "Dogrulayan",
+    "hint": "Geçmiş projelerinizi veya referanslarınızı ekleyin ve doğrulama durumlarını takip edin.",
+    "loading": "Referanslar yükleniyor…",
+    "listTitle": "Referans kayıtlarım",
+    "empty": "Henüz referans eklenmedi.",
+    "verifiedBy": "Doğrulayan",
     "fields": {
-      "title": "Baslik",
-      "description": "Aciklama",
+      "title": "Başlık",
+      "description": "Açıklama",
       "location": "Konum",
-      "startDate": "Baslangic tarihi",
-      "completedAt": "Bitis tarihi",
-      "verifier": "Dogrulayici firma",
-      "selectVerifier": "Bir dogrulayici secin",
-      "evidence": "Kanıt dosyasi",
-      "evidenceHint": "Istege bagli. Destekleyici belge, teslim tutanagi veya imzali kanit yukleyin.",
-      "openEvidence": "Kaniti ac"
+      "startDate": "Başlangıç tarihi",
+      "completedAt": "Bitiş tarihi",
+      "verifier": "Doğrulayıcı firma",
+      "selectVerifier": "Bir doğrulayıcı seçin",
+      "evidence": "Kanıt dosyası",
+      "evidenceHint": "İsteğe bağlı. Destekleyici belge, teslim tutanağı veya imzalı kanıt yükleyin.",
+      "openEvidence": "Kanıtı aç"
     },
     "actions": {
-      "save": "Referansi kaydet",
-      "saving": "Kaydediliyor..."
+      "save": "Referansı kaydet",
+      "saving": "Kaydediliyor…"
     },
     "statuses": {
-      "PENDING": "Dogrulama bekliyor",
-      "VERIFIED": "Dogrulandi",
+      "PENDING": "Doğrulama bekliyor",
+      "VERIFIED": "Doğrulandı",
       "REJECTED": "Reddedildi"
     },
     "messages": {
-      "saved": "Referans basariyla kaydedildi.",
+      "saved": "Referans başarıyla kaydedildi.",
       "saveFailed": "Referans kaydedilemedi",
-      "uploadFailed": "Kanit dosyasi yuklenemedi"
+      "uploadFailed": "Kanıt dosyası yüklenemedi"
     }
   },
   "referenceRequests": {
     "title": "Referans talepleri",
-    "hint": "Onayinizi bekleyen referans dogrulama taleplerini inceleyin.",
-    "loading": "Talepler yukleniyor...",
+    "hint": "Onayınızı bekleyen referans doğrulama taleplerini inceleyin.",
+    "loading": "Talepler yükleniyor…",
     "empty": "Bekleyen referans talebi bulunmuyor.",
-    "forbidden": "Bu sayfa yalnizca yukleniciler ve alt yukleniciler icindir.",
+    "forbidden": "Bu sayfa yalnızca yükleniciler ve alt yükleniciler içindir.",
     "requestedBy": "Talep eden",
-    "openCompany": "Firma profilini ac",
-    "openEvidence": "Kaniti ac",
-    "noteLabel": "Dogrulama notu",
+    "openCompany": "Firma profilini aç",
+    "openEvidence": "Kanıtı aç",
+    "noteLabel": "Doğrulama notu",
     "approve": "Onayla",
     "reject": "Reddet"
   },
@@ -241,8 +241,8 @@
         "Bu işe uygun ana iş gruplarını seçin (alt yüklenici kaydındaki liste ile aynıdır). En az bir grup seçerseniz, yalnızca işaretlenen tüm grupları kapsayan firmalar teklif verebilir."
     },
     "submit": "Acil iş oluştur",
-    "creating": "Oluşturuluyor...",
-    "loading": "Yükleniyor...",
+    "creating": "Oluşturuluyor…",
+    "loading": "Yükleniyor…",
     "notContractorAccount": "Yalnızca yükleniciler acil iş oluşturabilir.",
     "notFieldCrewAccountForUrgent": "Yalnızca saha ekibi hesapları bu acil iş listesini görebilir.",
     "listTitleForFieldCrews": "Acil işler",
@@ -290,9 +290,9 @@
     "contractorsTitle": "Yüklenici rehberi",
     "subcontractorsTitle": "Alt yüklenici rehberi",
     "fieldCrewsTitle": "Saha ekibi rehberi",
-    "loadingContractors": "Yükleniciler yükleniyor...",
-    "loadingSubcontractors": "Alt yükleniciler yükleniyor...",
-    "loadingFieldCrews": "Saha ekipleri yükleniyor...",
+    "loadingContractors": "Yükleniciler yükleniyor…",
+    "loadingSubcontractors": "Alt yükleniciler yükleniyor…",
+    "loadingFieldCrews": "Saha ekipleri yükleniyor…",
     "noContractors": "Henüz yüklenici bulunamadı.",
     "noSubcontractors": "Henüz alt yüklenici bulunamadı.",
     "noFieldCrews": "Henüz saha ekibi bulunamadı.",
@@ -306,33 +306,33 @@
     "fieldCrewLeaderLabel": "Ekip lideri",
     "crewSpecializationHeading": "Ekip uzmanlığı",
     "noCrewSpecialization": "Kayıtlı ekip uzmanlığı bölümü yok.",
-    "compareAction": "Secilenleri karsilastir ({count})",
-    "comparePick": "Karsilastir",
-    "trustLabel": "Guven skoru",
+    "compareAction": "Seçilenleri karşılaştır ({count})",
+    "comparePick": "Karşılaştır",
+    "trustLabel": "Güven skoru",
     "experienceLabel": "Deneyim",
-    "strengthLabel": "Guc"
+    "strengthLabel": "Güç"
   },
   "compare": {
-    "title": "Firma karsilastirmasi",
-    "hint": "Karar vermeden once secilen firmalari yan yana inceleyin.",
-    "loading": "Karsilastirma yukleniyor...",
-    "empty": "Karsilastirmak icin en az iki firma secin.",
-    "verified": "Dogrulandi",
-    "notVerified": "Dogrulanmadi",
+    "title": "Firma karşılaştırması",
+    "hint": "Karar vermeden önce seçilen firmaları yan yana inceleyin.",
+    "loading": "Karşılaştırma yükleniyor…",
+    "empty": "Karşılaştırmak için en az iki firma seçin.",
+    "verified": "Doğrulandı",
+    "notVerified": "Doğrulanmadı",
     "hours": "saat",
     "fields": {
       "field": "Alan",
       "location": "Konum",
-      "verification": "Dogrulama durumu",
-      "trustScore": "Guven skoru",
-      "experienceAndStrength": "Deneyim / guc",
-      "profileCompleteness": "Profil tamamlilik",
-      "documentCompleteness": "Belge tamamlilik",
-      "referenceCount": "Referans sayisi",
-      "completedJobCount": "Tamamlanan is sayisi",
-      "responseSpeed": "Cevap hizi",
-      "specialties": "Uzmanliklar",
-      "quoteValue": "Ortalama teklif tutari",
+      "verification": "Doğrulama durumu",
+      "trustScore": "Güven skoru",
+      "experienceAndStrength": "Deneyim / güç",
+      "profileCompleteness": "Profil tamamlılığı",
+      "documentCompleteness": "Belge tamamlılığı",
+      "referenceCount": "Referans sayısı",
+      "completedJobCount": "Tamamlanan iş sayısı",
+      "responseSpeed": "Cevap hızı",
+      "specialties": "Uzmanlıklar",
+      "quoteValue": "Ortalama teklif tutarı",
       "notes": "Notlar"
     }
   },
@@ -343,7 +343,7 @@
     "minePageDescription": "Şirketinizin oluşturduğu sözleşmeler. Düzenleme, yayınlama, teklif yönetimi ve kapatma burada.",
     "browseAllContracts": "Tüm sözleşmeler",
     "mineEmpty": "Henüz sözleşme oluşturmadınız.",
-    "loading": "Sözleşmeler yükleniyor...",
+    "loading": "Sözleşmeler yükleniyor…",
     "new": "Yeni sözleşme",
     "empty": "Henüz sözleşme yok.",
     "expand": "Teklifleri göster",
@@ -401,9 +401,19 @@
       "uploadDocuments": "Belge yüklenemedi"
     }
   },
+  "contractLocation": {
+    "fields": {
+      "city": "İl",
+      "district": "İlçe",
+      "selectCity": "İl seçin",
+      "selectDistrict": "İlçe seçin",
+      "loadingDistricts": "İlçeler yükleniyor…",
+      "districtHint": "Önce ili seçin; işin yapılacağı ilçeyi sonra seçin."
+    }
+  },
   "contractCreate": {
     "title": "Yeni sözleşme",
-    "creating": "Oluşturuluyor...",
+    "creating": "Oluşturuluyor…",
     "submit": "Sözleşme oluştur",
     "fields": {
       "title": "Başlık",
@@ -434,7 +444,8 @@
     }
   },
   "contractDetail": {
-    "loading": "Sözleşme yükleniyor...",
+    "loading": "Sözleşme yükleniyor…",
+    "jobLocation": "İş yeri",
     "startLabel": "Başlangıç",
     "durationLabel": "Süre",
     "days": "gün",
@@ -448,9 +459,9 @@
     "bidsTitle": "Teklifler",
     "compareOffers": "Teklifleri karşılaştır",
     "openForBids": "Tekliflere aç",
-    "openingForBids": "Açılıyor...",
+    "openingForBids": "Açılıyor…",
     "acceptBid": "Kabul et",
-    "accepting": "Kabul ediliyor...",
+    "accepting": "Kabul ediliyor…",
     "bidAccepted": "Kabul edildi",
     "bidRejected": "Reddedildi",
     "completeContract": "Sözleşmeyi tamamla",
@@ -471,10 +482,10 @@
       "ratingLabel": "Puan (zorunlu)",
       "ratingHint": "{rating} / 5 yıldız",
       "commentLabel": "Yorum (isteğe bağlı)",
-      "commentPlaceholder": "Onlarla çalışma deneyiminizi paylaşın...",
+      "commentPlaceholder": "Onlarla çalışma deneyiminizi paylaşın…",
       "cancel": "İptal",
       "submit": "Tamamla ve puanla",
-      "submitting": "Tamamlanıyor..."
+      "submitting": "Tamamlanıyor…"
     },
     "bid": {
       "title": "Teklif ver",
@@ -491,9 +502,9 @@
       "document": "Teklif belgesi",
       "documentHint": "İsteğe bağlı. Teklifinizi desteklemek için PDF, tablo veya teklif dosyası yükleyin.",
       "submit": "Teklif gönder",
-      "submitting": "Gönderiliyor...",
+      "submitting": "Gönderiliyor…",
       "updateSubmit": "Teklifi güncelle",
-      "updating": "Güncelleniyor...",
+      "updating": "Güncelleniyor…",
       "openDocument": "Teklif belgesini aç"
     },
     "comment": {
@@ -514,7 +525,7 @@
   "compareOffers": {
     "title": "Teklifleri karşılaştır",
     "hint": "En uygun teklifi seçmek için her teklifin detaylarını yan yana karşılaştırın.",
-    "loading": "Yükleniyor...",
+    "loading": "Yükleniyor…",
     "notFound": "Sözleşme bulunamadı.",
     "forbidden": "Teklifleri karşılaştırmak için yalnızca sözleşme sahibi yetkilidir.",
     "needTwoOffers": "Karşılaştırmak için en az iki teklif gereklidir.",
@@ -533,7 +544,7 @@
   },
   "company": {
     "title": "Firma bilgileri",
-    "loading": "Firma bilgileri yükleniyor...",
+    "loading": "Firma bilgileri yükleniyor…",
     "brandingTitle": "Genel firma profili",
     "companyName": "Firma adı",
     "bio": "Kısa açıklama",
@@ -554,7 +565,7 @@
     "uploadingGazette": "Ticaret sicil gazetesi yükleniyor",
     "uploadingLogo": "Logo yükleniyor",
     "uploadingBanner": "Banner yükleniyor",
-    "saving": "Kaydediliyor...",
+    "saving": "Kaydediliyor…",
     "save": "Değişiklikleri kaydet",
     "messages": {
       "fileUploaded": "Dosya yüklendi. Değişiklikleri kaydetmeyi unutmayın.",
@@ -564,7 +575,7 @@
     }
   },
   "companyPublic": {
-    "loading": "Firma profili yükleniyor...",
+    "loading": "Firma profili yükleniyor…",
     "verified": "Doğrulandı",
     "noDescription": "Bu firma henüz bir açıklama eklemedi.",
     "metrics": {

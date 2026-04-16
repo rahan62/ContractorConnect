@@ -3,6 +3,7 @@ import { contractorProjectTypesSeed } from "../lib/seed/contractor-project-types
 import { subcontractorMainCategoriesSeed } from "../lib/seed/subcontractor-main-categories";
 import { expandTradeSectionsWithSlugs } from "../lib/seed/subcontractor-trade-sections";
 import { expandCrewSectionsWithSlugs } from "../lib/seed/crew-specialization-sections";
+import { seedTurkeyLocations } from "../lib/seed/seed-turkey-locations";
 
 const prisma = new PrismaClient();
 
@@ -105,8 +106,10 @@ async function main() {
     }
   }
 
+  await seedTurkeyLocations(prisma);
+
   console.log(
-    `Seed OK: ${contractorProjectTypesSeed.length} contractor types, ${subcontractorMainCategoriesSeed.length} sub main categories, ${sections.length} subcontractor trade sections, ${crewSections.length} crew specialization sections.`
+    `Seed OK: ${contractorProjectTypesSeed.length} contractor types, ${subcontractorMainCategoriesSeed.length} sub main categories, ${sections.length} subcontractor trade sections, ${crewSections.length} crew specialization sections, Turkey cities & districts.`
   );
 }
 

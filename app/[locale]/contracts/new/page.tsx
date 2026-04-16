@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { UploadProgressBar } from "@/components/UploadProgressBar";
+import { ContractLocationFields } from "@/components/contract-location-fields";
 import { taxonomyLabel } from "@/lib/taxonomy-label";
 import { uploadFileToStorage, type UploadFolder } from "@/lib/upload-client";
 
@@ -30,6 +31,8 @@ export default function NewContractPage() {
   const [mainCategories, setMainCategories] = useState<MainCategoryRow[]>([]);
   const [selectedRequiredMainCategories, setSelectedRequiredMainCategories] = useState<string[]>([]);
   const [initialStatus, setInitialStatus] = useState<"DRAFT" | "OPEN_FOR_BIDS">("OPEN_FOR_BIDS");
+  const [cityId, setCityId] = useState("");
+  const [districtId, setDistrictId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
@@ -120,6 +123,8 @@ export default function NewContractPage() {
         body: JSON.stringify({
           title,
           description,
+          cityId,
+          districtId,
           startsAt: startsAt || undefined,
           totalDays: totalDays ? parseInt(totalDays, 10) : undefined,
           dwgFiles: uploadedPaths,
@@ -169,6 +174,13 @@ export default function NewContractPage() {
             required
           />
         </div>
+        <ContractLocationFields
+          cityId={cityId}
+          districtId={districtId}
+          onCityChange={setCityId}
+          onDistrictChange={setDistrictId}
+          disabled={loading}
+        />
         <div className="space-y-1">
           <label className="block text-sm font-medium">{t("fields.initialStatus")}</label>
           <select

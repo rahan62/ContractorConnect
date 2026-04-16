@@ -352,6 +352,31 @@ model TeamMember {
   userId String
 }
 
+/// Türkiye illeri (81 plaka)
+model City {
+  id        String @id @default(cuid())
+  plateCode Int    @unique
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  districts District[]
+  contracts Contract[]
+}
+
+/// İlçeler — her ilçe tek bir ile bağlıdır (City 1 — N District).
+model District {
+  id        String @id @default(cuid())
+  cityId    String
+  city      City   @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  nameTr    String
+  sortOrder Int    @default(0)
+
+  contracts Contract[]
+
+  @@unique([cityId, nameTr])
+  @@index([cityId])
+}
+
 model Contract {
   id          String         @id @default(cuid())
   title       String
@@ -371,6 +396,12 @@ model Contract {
   // Accepted bid (when contractor selects a sub-contractor/team)
   acceptedBid   Bid?    @relation("AcceptedBid", fields: [acceptedBidId], references: [id])
   acceptedBidId String? @unique
+
+  // Konum (il / ilçe)
+  cityId     String?
+  districtId String?
+  city       City?     @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  district   District? @relation(fields: [districtId], references: [id], onDelete: SetNull)
 
   // Business fields (simplified)
   budget   Int?
