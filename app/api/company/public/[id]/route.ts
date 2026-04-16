@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { computeTrustScore } from "@/lib/trust-score";
 import { requireSession } from "@/lib/api-auth";
+import { strengthLabelFromPoints } from "@/lib/trust-strength";
+import { getTrustStrengthConfig } from "@/lib/trust-strength-recalc";
 
 export const dynamic = "force-dynamic";
 
@@ -73,7 +75,9 @@ export async function GET(
             }
           }
         }
-      }
+      },
+      experienceScore: true,
+      strengthPoints: true
     },
   });
 
@@ -135,6 +139,12 @@ export async function GET(
       }).length
   });
 
+  const strengthConfig = await getTrustStrengthConfig();
+  const isSubOrTeam = user.userType === "SUBCONTRACTOR" || user.userType === "TEAM";
+  const strengthLabel = isSubOrTeam
+    ? strengthLabelFromPoints(Number(user.strengthPoints), strengthConfig.strengthTiersJson)
+    : null;
+
   const result = {
     id: user.id,
     companyName: user.companyName || user.email,
@@ -146,8 +156,10 @@ export async function GET(
     phone: user.phone,
     userType: user.userType,
     isVerified: user.isVerified,
-    trustScore: trust.score,
-    trustGrade: trust.grade,
+    experienceScore: isSubOrTeam ? user.experienceScore : null,
+    strengthLabel,
+    trustScore: isSubOrTeam ? user.experienceScore : trust.score,
+    trustGrade: isSubOrTeam ? strengthLabel : trust.grade,
     profileCompleteness: trust.profileCompleteness,
     documentCompleteness: trust.documentCompleteness,
     capabilities: capabilityNames,

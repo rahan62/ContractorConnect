@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
-import { uploadFileToStorage } from "@/lib/upload-client";
+import { UploadProgressBar } from "@/components/UploadProgressBar";
+import { uploadFileToStorage, type UploadFolder } from "@/lib/upload-client";
 
 function fileLabel(path: string) {
   try {
@@ -24,6 +25,7 @@ export default function EditContractPage() {
   const { data: session, status } = useSession();
   const t = useTranslations("contractEdit");
   const tDetail = useTranslations("contractDetail");
+  const tUpload = useTranslations("upload");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -37,6 +39,7 @@ export default function EditContractPage() {
   const [existingDocumentUrls, setExistingDocumentUrls] = useState<string[]>([]);
   const [newDwgFiles, setNewDwgFiles] = useState<FileList | null>(null);
   const [newDocumentFiles, setNewDocumentFiles] = useState<FileList | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -106,30 +109,48 @@ export default function EditContractPage() {
     e.preventDefault();
     setError(null);
     setSaving(true);
+    setUploadProgress(null);
     try {
-      const appendDwgUrls: string[] = [];
-      if (newDwgFiles && newDwgFiles.length > 0) {
-        for (const file of Array.from(newDwgFiles)) {
-          try {
-            const data = await uploadFileToStorage(file, "dwg");
-            appendDwgUrls.push(data.url ?? data.key);
-          } catch {
-            throw new Error(t("errors.uploadDwg"));
-          }
-        }
+      type Job = { file: File; folder: UploadFolder };
+      const jobs: Job[] = [];
+      if (newDwgFiles?.length) {
+        for (const file of Array.from(newDwgFiles)) jobs.push({ file, folder: "dwg" });
+      }
+      if (newDocumentFiles?.length) {
+        for (const file of Array.from(newDocumentFiles)) jobs.push({ file, folder: "contract-documents" });
       }
 
+      const appendDwgUrls: string[] = [];
       const appendDocumentUrls: string[] = [];
-      if (newDocumentFiles && newDocumentFiles.length > 0) {
-        for (const file of Array.from(newDocumentFiles)) {
-          try {
-            const data = await uploadFileToStorage(file, "contract-documents");
-            appendDocumentUrls.push(data.url ?? data.key);
-          } catch {
-            throw new Error(t("errors.uploadDocuments"));
-          }
-        }
+
+      const totalBytes = jobs.reduce((s, j) => s + j.file.size, 0) || 1;
+      let doneBytes = 0;
+
+      if (jobs.length > 0) {
+        setUploadProgress(0);
       }
+
+      for (const job of jobs) {
+        const startBytes = doneBytes;
+        let data: { url: string; key: string };
+        try {
+          data = await uploadFileToStorage(job.file, job.folder, {
+            onProgress: p => {
+              const overall = ((startBytes + (p / 100) * job.file.size) / totalBytes) * 100;
+              setUploadProgress(overall);
+            }
+          });
+        } catch {
+          if (job.folder === "dwg") throw new Error(t("errors.uploadDwg"));
+          throw new Error(t("errors.uploadDocuments"));
+        }
+        const url = data.url ?? data.key;
+        if (job.folder === "dwg") appendDwgUrls.push(url);
+        else appendDocumentUrls.push(url);
+        doneBytes += job.file.size;
+      }
+
+      setUploadProgress(null);
 
       const res = await fetch(`/api/contracts/${id}`, {
         method: "PATCH",
@@ -153,6 +174,7 @@ export default function EditContractPage() {
     } catch {
       setError(t("errors.save"));
     } finally {
+      setUploadProgress(null);
       setSaving(false);
     }
   }
@@ -310,6 +332,10 @@ export default function EditContractPage() {
           </div>
           <p className="text-xs text-muted-foreground">{t("addFilesHint")}</p>
         </div>
+
+        {uploadProgress !== null && (
+          <UploadProgressBar progress={uploadProgress} label={tUpload("progress")} />
+        )}
 
         <div className="flex flex-wrap gap-3 pt-2">
           <button

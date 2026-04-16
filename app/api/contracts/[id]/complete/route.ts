@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { refreshTrustScoresForSubcontractorUser } from "@/lib/trust-strength-recalc";
 
 export const dynamic = "force-dynamic";
 
@@ -92,6 +93,10 @@ export async function POST(request: Request, { params }: Params) {
       data: { status: "COMPLETED" }
     });
   });
+
+  void refreshTrustScoresForSubcontractorUser(acceptedBid.bidderId).catch(err =>
+    console.error("[complete contract] trust score refresh", err)
+  );
 
   return NextResponse.json({ ok: true });
 }

@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { UploadProgressBar } from "@/components/UploadProgressBar";
 import { uploadFileToStorage } from "@/lib/upload-client";
 
 interface VerifierOption {
@@ -30,11 +31,13 @@ export default function ReferencesPage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("references");
+  const tUpload = useTranslations("upload");
   const { data: session, status } = useSession();
   const userType = (session?.user as any)?.userType as string | undefined;
   const [items, setItems] = useState<ReferenceItem[]>([]);
   const [verifiers, setVerifiers] = useState<VerifierOption[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -83,9 +86,12 @@ export default function ReferencesPage() {
 
     setUploading(true);
     setMessage(null);
+    setUploadProgress(0);
 
     try {
-      const data = await uploadFileToStorage(fileList[0], "reference-evidence");
+      const data = await uploadFileToStorage(fileList[0], "reference-evidence", {
+        onProgress: setUploadProgress
+      });
       const url = data.url ?? data.key;
       if (!url) {
         throw new Error(t("messages.uploadFailed"));
@@ -95,6 +101,7 @@ export default function ReferencesPage() {
     } catch (error: any) {
       setMessage(error.message ?? t("messages.uploadFailed"));
     } finally {
+      setUploadProgress(null);
       setUploading(false);
     }
   }
@@ -227,6 +234,9 @@ export default function ReferencesPage() {
           <label className="block text-sm font-medium">{t("fields.evidence")}</label>
           <input type="file" className="mt-1 text-sm" onChange={e => void handleEvidenceUpload(e.target.files)} />
           <p className="mt-1 text-xs text-muted-foreground">{t("fields.evidenceHint")}</p>
+          {uploadProgress !== null && (
+            <UploadProgressBar progress={uploadProgress} label={tUpload("progress")} className="mt-3" />
+          )}
           {form.evidenceUrl && (
             <a href={form.evidenceUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-xs font-medium text-primary hover:underline">
               {t("fields.openEvidence")}

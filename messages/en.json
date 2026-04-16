@@ -22,6 +22,10 @@
     "toggleNavigation": "Toggle navigation",
     "guestExplainer": "Sign in to browse contractors, directories, contracts, and more."
   },
+  "upload": {
+    "progress": "Uploading…",
+    "preparing": "Preparing…"
+  },
   "auth": {
     "signin": {
       "title": "Sign in",
@@ -304,7 +308,9 @@
     "noCrewSpecialization": "No Crew Specialization details on file.",
     "compareAction": "Compare selected ({count})",
     "comparePick": "Compare",
-    "trustLabel": "Trust score"
+    "trustLabel": "Trust score",
+    "experienceLabel": "Experience",
+    "strengthLabel": "Strength"
   },
   "compare": {
     "title": "Company comparison",
@@ -319,6 +325,7 @@
       "location": "Location",
       "verification": "Verification status",
       "trustScore": "Trust score",
+      "experienceAndStrength": "Experience / strength",
       "profileCompleteness": "Profile completeness",
       "documentCompleteness": "Document completeness",
       "referenceCount": "Reference count",
@@ -458,7 +465,11 @@
     },
     "bid": {
       "title": "Place a bid",
+      "editTitle": "Your bid",
       "hint": "Sub-contractors can submit an amount and a short message for the contractor.",
+      "oneBidHint": "You can only place one bid per contract. You may update it at most once every 3 hours.",
+      "cooldown": "You can edit your bid again after {time}.",
+      "currentDocument": "Current offer document",
       "amount": "Amount",
       "currency": "Currency",
       "tryPreview": "Approx. in TRY: {amount}",
@@ -468,6 +479,8 @@
       "documentHint": "Optional. Upload a PDF, spreadsheet or proposal file to support your offer.",
       "submit": "Submit bid",
       "submitting": "Submitting...",
+      "updateSubmit": "Update bid",
+      "updating": "Updating...",
       "openDocument": "Open offer document"
     },
     "comment": {
@@ -477,6 +490,7 @@
     },
     "errors": {
       "placeBid": "Failed to place bid",
+      "updateBid": "Failed to update bid",
       "addComment": "Failed to add comment",
       "uploadBidDocument": "Failed to upload offer document",
       "acceptBid": "Failed to accept bid",

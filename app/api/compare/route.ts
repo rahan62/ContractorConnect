@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { computeTrustScore } from "@/lib/trust-score";
 import { requireSession } from "@/lib/api-auth";
+import { strengthLabelFromPoints } from "@/lib/trust-strength";
+import { getTrustStrengthConfig } from "@/lib/trust-strength-recalc";
 
 export const dynamic = "force-dynamic";
 
@@ -64,9 +66,13 @@ export async function GET(request: Request) {
             }
           }
         }
-      }
+      },
+      experienceScore: true,
+      strengthPoints: true
     }
   });
+
+  const strengthConfig = await getTrustStrengthConfig();
 
   const result = users.map(user => {
     const specialties = user.capabilities.map(item => item.capability.name);
@@ -113,6 +119,11 @@ export async function GET(request: Request) {
       }).length
     });
 
+    const strengthLabel = strengthLabelFromPoints(
+      Number(user.strengthPoints),
+      strengthConfig.strengthTiersJson
+    );
+
     return {
       id: user.id,
       companyName: user.companyName ?? user.email,
@@ -125,8 +136,10 @@ export async function GET(request: Request) {
       responseSpeedHours: averageResponseHours ? Math.round(averageResponseHours) : null,
       notes: user.bio,
       specialties,
-      trustScore: trust.score,
-      trustGrade: trust.grade,
+      experienceScore: user.experienceScore,
+      strengthLabel,
+      trustScore: user.experienceScore,
+      trustGrade: strengthLabel,
       averageQuoteValue
     };
   });

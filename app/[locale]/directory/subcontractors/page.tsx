@@ -16,6 +16,8 @@ interface DirectoryUser {
   logoUrl?: string | null;
   trustScore?: number | null;
   trustGrade?: string | null;
+  experienceScore?: number | null;
+  strengthLabel?: string | null;
   specialties?: string[];
   subcontractorMainCategories?: LocalizedTaxonomy[];
 }
@@ -85,9 +87,10 @@ export default function SubcontractorsDirectoryPage() {
                 tagsHeading={t("tradeGroupsHeading")}
                 metaLines={
                   <>
-                    {item.trustScore != null && (
+                    {item.experienceScore != null && (
                       <p className="mt-2 text-xs text-muted-foreground">
-                        {t("trustLabel")}: {item.trustScore} / {item.trustGrade}
+                        {t("experienceLabel")}: {item.experienceScore} · {t("strengthLabel")}:{" "}
+                        {item.strengthLabel ?? "—"}
                       </p>
                     )}
                     {item.specialties && item.specialties.length > 0 && (

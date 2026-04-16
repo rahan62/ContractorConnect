@@ -18,6 +18,8 @@ interface CompareItem {
   specialties: string[];
   trustScore: number | null;
   trustGrade: string | null;
+  experienceScore: number | null;
+  strengthLabel: string | null;
   averageQuoteValue: number | null;
 }
 
@@ -65,9 +67,12 @@ export default function ComparePage() {
       render: (item: CompareItem) => (item.isVerified ? t("verified") : t("notVerified"))
     },
     {
-      key: "trustScore",
-      label: t("fields.trustScore"),
-      render: (item: CompareItem) => (item.trustScore != null ? `${item.trustScore} / ${item.trustGrade}` : "-")
+      key: "experienceStrength",
+      label: t("fields.experienceAndStrength"),
+      render: (item: CompareItem) =>
+        item.experienceScore != null && item.strengthLabel != null
+          ? `${item.experienceScore} · ${item.strengthLabel}`
+          : "-"
     },
     {
       key: "profileCompleteness",

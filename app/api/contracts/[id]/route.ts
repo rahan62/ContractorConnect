@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { normalizeBidForResponse } from "@/lib/bid-display";
+import { getBidEditEligibility } from "@/lib/bid-edit";
 import { requireSession } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
@@ -63,11 +64,54 @@ export async function GET(_req: Request, { params }: Params) {
   const currentUser = session?.user?.email
     ? await prisma.user.findUnique({
         where: { email: session.user.email },
-        select: { id: true }
+        select: { id: true, userType: true }
       })
     : null;
 
   const canViewBidDetails = currentUser?.id === contract.contractorId;
+
+  let myBid: {
+    id: string;
+    amount: number;
+    currency: string;
+    message: string | null;
+    documentUrl: string | null;
+    canEdit: boolean;
+    nextEditAvailableAt: string | null;
+  } | null = null;
+
+  if (
+    currentUser &&
+    (currentUser.userType === "SUBCONTRACTOR" || currentUser.userType === "TEAM")
+  ) {
+    const row = await prisma.bid.findUnique({
+      where: {
+        contractId_bidderId: { contractId: params.id, bidderId: currentUser.id }
+      },
+      select: {
+        id: true,
+        amount: true,
+        currency: true,
+        message: true,
+        documentUrl: true,
+        lastEditedAt: true,
+        status: true
+      }
+    });
+    if (row && row.status === "PENDING" && contract.status === "OPEN_FOR_BIDS") {
+      const norm = normalizeBidForResponse(row);
+      const elig = getBidEditEligibility(row.lastEditedAt);
+      myBid = {
+        id: row.id,
+        amount: norm.amount,
+        currency: norm.currency,
+        message: norm.message,
+        documentUrl: row.documentUrl ?? null,
+        canEdit: elig.canEdit,
+        nextEditAvailableAt: elig.nextEditAvailableAt
+      };
+    }
+  }
 
   const [bids, comments] = await Promise.all([
     prisma.bid.findMany({
@@ -106,6 +150,7 @@ export async function GET(_req: Request, { params }: Params) {
   return NextResponse.json({
     contract,
     canViewBidDetails,
+    myBid,
     bids: bids.map(bid => {
       const norm = normalizeBidForResponse(bid);
       if (!canViewBidDetails) {

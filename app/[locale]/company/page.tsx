@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { UploadProgressBar } from "@/components/UploadProgressBar";
 import { uploadFileToStorage } from "@/lib/upload-client";
 
 type UploadField =
@@ -31,6 +32,7 @@ export default function CompanyPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [uploadingField, setUploadingField] = useState<UploadField | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -70,9 +72,10 @@ export default function CompanyPage() {
 
     setUploadingField(field);
     setUploadError(null);
+    setUploadProgress(0);
 
     try {
-      const data = await uploadFileToStorage(file, folder);
+      const data = await uploadFileToStorage(file, folder, { onProgress: setUploadProgress });
       const url = data.url ?? data.key;
       if (!url) {
         throw new Error(t("messages.uploadFailed"));
@@ -83,6 +86,7 @@ export default function CompanyPage() {
     } catch (err: any) {
       setUploadError(err.message ?? t("messages.uploadFailed"));
     } finally {
+      setUploadProgress(null);
       setUploadingField(null);
     }
   }
@@ -217,19 +221,21 @@ export default function CompanyPage() {
               <input type="file" className="mt-1 text-sm" onChange={e => handleFileChange("tradeRegistryGazetteDocUrl", e.target.files)} />
               {form.tradeRegistryGazetteDocUrl && <a href={form.tradeRegistryGazetteDocUrl} target="_blank" rel="noreferrer" className="block text-xs text-primary underline">{t("viewCurrentFile")}</a>}
             </div>
-            {uploadingField && (
-              <p className="text-xs text-muted-foreground">
-                {uploadingField === "signatureAuthDocUrl"
-                  ? t("uploadingSignature")
-                  : uploadingField === "taxCertificateDocUrl"
-                  ? t("uploadingTax")
-                  : uploadingField === "tradeRegistryGazetteDocUrl"
-                  ? t("uploadingGazette")
-                  : uploadingField === "logoUrl"
-                  ? t("uploadingLogo")
-                  : t("uploadingBanner")}
-                ...
-              </p>
+            {uploadingField && uploadProgress !== null && (
+              <UploadProgressBar
+                progress={uploadProgress}
+                label={
+                  uploadingField === "signatureAuthDocUrl"
+                    ? t("uploadingSignature")
+                    : uploadingField === "taxCertificateDocUrl"
+                      ? t("uploadingTax")
+                      : uploadingField === "tradeRegistryGazetteDocUrl"
+                        ? t("uploadingGazette")
+                        : uploadingField === "logoUrl"
+                          ? t("uploadingLogo")
+                          : t("uploadingBanner")
+                }
+              />
             )}
             {uploadError && <p className="text-xs text-red-600 dark:text-red-400">{uploadError}</p>}
           </div>

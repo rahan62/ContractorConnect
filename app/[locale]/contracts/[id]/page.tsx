@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { BID_CURRENCIES, formatBidMoney, type BidCurrency } from "@/lib/bid-display";
 import { amountInTry } from "@/lib/exchange-rates";
+import { UploadProgressBar } from "@/components/UploadProgressBar";
 import { uploadFileToStorage } from "@/lib/upload-client";
 import { taxonomyLabel } from "@/lib/taxonomy-label";
 
@@ -50,11 +51,22 @@ interface Comment {
   body: string;
 }
 
+interface MyBidInfo {
+  id: string;
+  amount: number;
+  currency: string;
+  message: string | null;
+  documentUrl: string | null;
+  canEdit: boolean;
+  nextEditAvailableAt: string | null;
+}
+
 export default function ContractDetailPage() {
   const params = useParams();
   const id = params?.id as string;
   const locale = (params?.locale as string) ?? "tr";
   const t = useTranslations("contractDetail");
+  const tUpload = useTranslations("upload");
   const intlLocale = locale === "tr" ? "tr-TR" : "en-US";
 
   const [contract, setContract] = useState<Contract | null>(null);
@@ -63,13 +75,17 @@ export default function ContractDetailPage() {
   const [downloadableFiles, setDownloadableFiles] = useState<string[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [canViewBidDetails, setCanViewBidDetails] = useState(false);
+  const [myBid, setMyBid] = useState<MyBidInfo | null>(null);
   const [bidAmount, setBidAmount] = useState("");
   const [bidCurrency, setBidCurrency] = useState<BidCurrency>("TRY");
   const [bidMessage, setBidMessage] = useState("");
   const [bidDocument, setBidDocument] = useState<File | null>(null);
   const [tryPerUnit, setTryPerUnit] = useState<Record<BidCurrency, number> | null>(null);
   const [isSubmittingBid, setIsSubmittingBid] = useState(false);
+  const [bidUploadProgress, setBidUploadProgress] = useState<number | null>(null);
+  const [bidError, setBidError] = useState<string | null>(null);
   const [commentBody, setCommentBody] = useState("");
+  const [commentError, setCommentError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [completeRating, setCompleteRating] = useState(5);
@@ -82,18 +98,41 @@ export default function ContractDetailPage() {
     async function load() {
       const res = await fetch(`/api/contracts/${id}`);
       if (!res.ok) return;
-      const data = await res.json();
+      const data = await res.json() as {
+        contract: Contract;
+        bids: Bid[];
+        comments: Comment[];
+        downloadableFiles?: string[];
+        imageUrls?: string[];
+        canViewBidDetails?: boolean;
+        myBid?: MyBidInfo | null;
+      };
       setContract(data.contract);
       setBids(data.bids);
       setComments(data.comments);
       setDownloadableFiles(data.downloadableFiles ?? []);
       setImageUrls(data.imageUrls ?? []);
       setCanViewBidDetails(Boolean(data.canViewBidDetails));
+      setMyBid(data.myBid ?? null);
     }
     if (id) {
       void load();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (!myBid) {
+      setBidAmount("");
+      setBidCurrency("TRY");
+      setBidMessage("");
+      setBidDocument(null);
+      return;
+    }
+    setBidAmount(String(myBid.amount));
+    setBidCurrency((myBid.currency as BidCurrency) || "TRY");
+    setBidMessage(myBid.message ?? "");
+    setBidDocument(null);
+  }, [myBid]);
 
   useEffect(() => {
     let cancelled = false;
@@ -113,60 +152,83 @@ export default function ContractDetailPage() {
 
   async function submitBid(e: FormEvent) {
     e.preventDefault();
-    setError(null);
+    setBidError(null);
     setIsSubmittingBid(true);
+    setBidUploadProgress(null);
+
+    const isUpdate = Boolean(myBid);
 
     try {
       let documentUrl: string | undefined;
 
       if (bidDocument) {
+        setBidUploadProgress(0);
         try {
-          const uploadData = await uploadFileToStorage(bidDocument, "bid-documents");
+          const uploadData = await uploadFileToStorage(bidDocument, "bid-documents", {
+            onProgress: setBidUploadProgress
+          });
           documentUrl = uploadData.url ?? uploadData.key;
         } catch {
-          setError(t("errors.uploadBidDocument"));
+          setBidError(t("errors.uploadBidDocument"));
           return;
+        } finally {
+          setBidUploadProgress(null);
         }
 
         if (!documentUrl) {
-          setError(t("errors.uploadBidDocument"));
+          setBidError(t("errors.uploadBidDocument"));
           return;
         }
       }
 
+      const body: Record<string, unknown> = {
+        amount: parseFloat(bidAmount),
+        currency: bidCurrency,
+        message: bidMessage.trim() || null
+      };
+      if (documentUrl !== undefined) {
+        body.documentUrl = documentUrl;
+      }
+
       const res = await fetch(`/api/contracts/${id}/bids`, {
-        method: "POST",
+        method: isUpdate ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: parseFloat(bidAmount),
-          currency: bidCurrency,
-          message: bidMessage || undefined,
-          documentUrl
-        })
+        body: JSON.stringify(body)
       });
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? t("errors.placeBid"));
+        const msg =
+          (data as { message?: string }).message ??
+          (isUpdate ? t("errors.updateBid") : t("errors.placeBid"));
+        setBidError(msg);
         return;
       }
 
-      const created = await res.json();
-      setBids(prev => [created, ...prev]);
-      setBidAmount("");
-      setBidCurrency("TRY");
-      setBidMessage("");
+      const reload = await fetch(`/api/contracts/${id}`);
+      if (reload.ok) {
+        const data = await reload.json();
+        setContract(data.contract);
+        setBids(data.bids);
+        setComments(data.comments);
+        setDownloadableFiles(data.downloadableFiles ?? []);
+        setImageUrls(data.imageUrls ?? []);
+        setCanViewBidDetails(Boolean(data.canViewBidDetails));
+        setMyBid(data.myBid ?? null);
+      }
       setBidDocument(null);
+      setBidError(null);
     } catch {
-      setError(t("errors.placeBid"));
+      setBidError(myBid ? t("errors.updateBid") : t("errors.placeBid"));
     } finally {
+      setBidUploadProgress(null);
       setIsSubmittingBid(false);
     }
   }
 
   async function submitComment(e: FormEvent) {
     e.preventDefault();
-    setError(null);
+    setCommentError(null);
     const res = await fetch(`/api/contracts/${id}/comments`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -174,7 +236,7 @@ export default function ContractDetailPage() {
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.message ?? t("errors.addComment"));
+      setCommentError((data as { message?: string }).message ?? t("errors.addComment"));
       return;
     }
     const created = await res.json();
@@ -413,8 +475,23 @@ export default function ContractDetailPage() {
             onSubmit={submitBid}
             className="mb-6 space-y-3 rounded-xl border border-border/50 bg-muted/10 p-4 dark:bg-background/25"
           >
-            <h3 className="text-base font-semibold">{t("bid.title")}</h3>
-            <p className="text-xs text-muted-foreground">{t("bid.hint")}</p>
+            <h3 className="text-base font-semibold">{myBid ? t("bid.editTitle") : t("bid.title")}</h3>
+            <p className="text-xs text-muted-foreground">{myBid ? t("bid.oneBidHint") : t("bid.hint")}</p>
+            {myBid && !myBid.canEdit && myBid.nextEditAvailableAt && (
+              <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-100">
+                {t("bid.cooldown", {
+                  time: new Date(myBid.nextEditAvailableAt).toLocaleString(intlLocale)
+                })}
+              </p>
+            )}
+            {bidError && (
+              <p
+                className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/50 dark:text-red-200"
+                role="alert"
+              >
+                {bidError}
+              </p>
+            )}
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-1">
                 <label className="block text-xs font-medium">{t("bid.amount")}</label>
@@ -425,6 +502,7 @@ export default function ContractDetailPage() {
                   className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                   value={bidAmount}
                   onChange={e => setBidAmount(e.target.value)}
+                  disabled={Boolean(myBid && !myBid.canEdit) || isSubmittingBid}
                 />
               </div>
               <div className="space-y-1">
@@ -433,6 +511,7 @@ export default function ContractDetailPage() {
                   className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                   value={bidCurrency}
                   onChange={e => setBidCurrency(e.target.value as BidCurrency)}
+                  disabled={Boolean(myBid && !myBid.canEdit) || isSubmittingBid}
                 >
                   {BID_CURRENCIES.map(c => (
                     <option key={c} value={c}>
@@ -456,6 +535,7 @@ export default function ContractDetailPage() {
                 rows={3}
                 value={bidMessage}
                 onChange={e => setBidMessage(e.target.value)}
+                disabled={Boolean(myBid && !myBid.canEdit) || isSubmittingBid}
               />
             </div>
             <div className="space-y-1">
@@ -465,16 +545,36 @@ export default function ContractDetailPage() {
                 accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,image/*"
                 className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                 onChange={e => setBidDocument(e.target.files?.[0] ?? null)}
+                disabled={Boolean(myBid && !myBid.canEdit) || isSubmittingBid}
               />
               <p className="text-xs text-muted-foreground">{t("bid.documentHint")}</p>
+              {myBid?.documentUrl && (
+                <a
+                  href={myBid.documentUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 inline-flex text-xs font-medium text-primary hover:underline"
+                >
+                  {t("bid.currentDocument")}
+                </a>
+              )}
               {bidDocument && <p className="text-xs text-muted-foreground">{bidDocument.name}</p>}
+              {bidUploadProgress !== null && (
+                <UploadProgressBar progress={bidUploadProgress} label={tUpload("progress")} className="mt-2" />
+              )}
             </div>
             <button
               type="submit"
-              disabled={isSubmittingBid}
+              disabled={isSubmittingBid || Boolean(myBid && !myBid.canEdit)}
               className="w-full rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground disabled:opacity-60 sm:w-auto"
             >
-              {isSubmittingBid ? t("bid.submitting") : t("bid.submit")}
+              {isSubmittingBid
+                ? myBid
+                  ? t("bid.updating")
+                  : t("bid.submitting")
+                : myBid
+                  ? t("bid.updateSubmit")
+                  : t("bid.submit")}
             </button>
           </form>
         )}
@@ -569,6 +669,14 @@ export default function ContractDetailPage() {
         <h2 className="mb-3 text-lg font-semibold tracking-tight">{t("commentsTitle")}</h2>
         <form onSubmit={submitComment} className="mb-6 space-y-3">
           <p className="text-xs text-muted-foreground">{t("comment.hint")}</p>
+          {commentError && (
+            <p
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/50 dark:text-red-200"
+              role="alert"
+            >
+              {commentError}
+            </p>
+          )}
           <textarea
             className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
             rows={4}

@@ -22,6 +22,10 @@
     "toggleNavigation": "Gezinmeyi aç veya kapat",
     "guestExplainer": "Yüklenicileri, rehberi, sözleşmeleri ve daha fazlasını görmek için giriş yapın."
   },
+  "upload": {
+    "progress": "Yükleniyor…",
+    "preparing": "Hazırlanıyor…"
+  },
   "auth": {
     "signin": {
       "title": "Giriş Yap",
@@ -304,7 +308,9 @@
     "noCrewSpecialization": "Kayıtlı ekip uzmanlığı bölümü yok.",
     "compareAction": "Secilenleri karsilastir ({count})",
     "comparePick": "Karsilastir",
-    "trustLabel": "Guven skoru"
+    "trustLabel": "Guven skoru",
+    "experienceLabel": "Deneyim",
+    "strengthLabel": "Guc"
   },
   "compare": {
     "title": "Firma karsilastirmasi",
@@ -319,6 +325,7 @@
       "location": "Konum",
       "verification": "Dogrulama durumu",
       "trustScore": "Guven skoru",
+      "experienceAndStrength": "Deneyim / guc",
       "profileCompleteness": "Profil tamamlilik",
       "documentCompleteness": "Belge tamamlilik",
       "referenceCount": "Referans sayisi",
@@ -458,7 +465,11 @@
     },
     "bid": {
       "title": "Teklif ver",
+      "editTitle": "Teklifiniz",
       "hint": "Alt yükleniciler, yükleniciye tutar ve kısa bir mesaj ile teklif gönderebilir.",
+      "oneBidHint": "Sözleşme başına yalnızca bir teklif verebilirsiniz. En fazla 3 saatte bir güncelleyebilirsiniz.",
+      "cooldown": "Teklifinizi şu saatten sonra yeniden düzenleyebilirsiniz: {time}",
+      "currentDocument": "Mevcut teklif belgesi",
       "amount": "Tutar",
       "currency": "Para birimi",
       "tryPreview": "Yaklaşık TL: {amount}",
@@ -468,6 +479,8 @@
       "documentHint": "İsteğe bağlı. Teklifinizi desteklemek için PDF, tablo veya teklif dosyası yükleyin.",
       "submit": "Teklif gönder",
       "submitting": "Gönderiliyor...",
+      "updateSubmit": "Teklifi güncelle",
+      "updating": "Güncelleniyor...",
       "openDocument": "Teklif belgesini aç"
     },
     "comment": {
@@ -477,6 +490,7 @@
     },
     "errors": {
       "placeBid": "Teklif verilemedi",
+      "updateBid": "Teklif güncellenemedi",
       "addComment": "Yorum eklenemedi",
       "uploadBidDocument": "Teklif belgesi yüklenemedi",
       "acceptBid": "Teklif kabul edilemedi",

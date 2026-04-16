@@ -4,7 +4,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
-import { uploadFileToStorage } from "@/lib/upload-client";
+import { UploadProgressBar } from "@/components/UploadProgressBar";
+import { uploadFileToStorage, type UploadFolder } from "@/lib/upload-client";
 
 const ALLOWED_TYPES = new Set(["CONTRACTOR", "SUBCONTRACTOR", "TEAM"]);
 
@@ -31,6 +32,7 @@ export default function CategoryExperiencePage() {
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("categoryExperience");
+  const tUpload = useTranslations("upload");
   const { data: session, status } = useSession();
   const userType = (session?.user as { userType?: string } | undefined)?.userType;
 
@@ -40,6 +42,7 @@ export default function CategoryExperiencePage() {
   const [applicantNote, setApplicantNote] = useState("");
   const [documentUrls, setDocumentUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -75,18 +78,32 @@ export default function CategoryExperiencePage() {
     if (!fileList?.length) return;
     setUploading(true);
     setMessage(null);
+    setUploadProgress(0);
+    const folder: UploadFolder = "category-experience-evidence";
     try {
+      const files = Array.from(fileList);
+      const totalBytes = files.reduce((s, f) => s + f.size, 0) || 1;
+      let doneBytes = 0;
       const next: string[] = [];
-      for (const file of Array.from(fileList)) {
-        const data = await uploadFileToStorage(file, "category-experience-evidence");
+
+      for (const file of files) {
+        const start = doneBytes;
+        const data = await uploadFileToStorage(file, folder, {
+          onProgress: p => {
+            const overall = ((start + (p / 100) * file.size) / totalBytes) * 100;
+            setUploadProgress(overall);
+          }
+        });
         const url = data.url ?? data.key;
         if (!url) throw new Error(t("error"));
         next.push(url);
+        doneBytes += file.size;
       }
       setDocumentUrls(prev => [...prev, ...next]);
     } catch (e: unknown) {
       setMessage((e as Error).message ?? t("error"));
     } finally {
+      setUploadProgress(null);
       setUploading(false);
     }
   }
@@ -190,6 +207,9 @@ export default function CategoryExperiencePage() {
             onChange={e => void handleFiles(e.target.files)}
           />
           <p className="mt-1 text-xs text-muted-foreground">{t("documentsHint")}</p>
+          {uploadProgress !== null && (
+            <UploadProgressBar progress={uploadProgress} label={tUpload("progress")} className="mt-3" />
+          )}
           {documentUrls.length > 0 && (
             <ul className="mt-2 space-y-1 text-sm">
               {documentUrls.map((url, i) => (

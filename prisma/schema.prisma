@@ -103,6 +103,13 @@ model User {
   // Manual approval (admin side)
   isVerified Boolean @default(false)
 
+  // Experience score 0–100: derived from job ratings (see TrustStrengthConfig); capped at 100.
+  experienceScore Int @default(45)
+  /// Cumulative score for strength letter (trade categories, certifications, approved evidence value).
+  strengthPoints Decimal @default(2) @db.Decimal(14, 4)
+  /// Optional: ISO 9001 (or similar) — contributes to strength when enabled in TrustStrengthConfig.
+  companyHasIso9001 Boolean @default(false)
+
   // Relations
   contractsCreated  Contract[]               @relation("UserContractsCreated")
   contractsAsClient Contract[]               @relation("UserContractsAsClient")
@@ -405,6 +412,24 @@ model MonetizationConfig {
   tokensPerUrgentJob       Int
 }
 
+/// Singleton (id=1): operator-tunable weights for subcontractor/field-crew strength scoring.
+model TrustStrengthConfig {
+  id Int @id @default(1)
+
+  experienceDefault Int @default(45)
+  strengthPointsDefault Decimal @default(2) @db.Decimal(14, 4)
+
+  pointsPerTradeCategory Decimal @default(2) @db.Decimal(10, 4)
+  pointsIso9001          Decimal @default(1) @db.Decimal(10, 4)
+  /// USD of evidence value per one strength point (e.g. 333333 → ~3 pts per $1M).
+  usdPerStrengthPoint    Decimal @default(333333) @db.Decimal(18, 4)
+
+  /// [{ "minPoints": number, "label": string }, ...] sorted ascending by minPoints; highest matching tier wins.
+  strengthTiersJson Json?
+
+  updatedAt DateTime @updatedAt
+}
+
 model Bid {
   id          String    @id @default(cuid())
   amount      Decimal   @db.Decimal(16, 2)
@@ -424,6 +449,10 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  /// Set when the bidder updates their offer (not set on initial POST). Used for 3h edit cooldown.
+  lastEditedAt DateTime?
+
+  @@unique([contractId, bidderId])
 }
 
 model ContractRating {
@@ -626,6 +655,8 @@ model CategoryExperienceApprovalRequest {
   mainCategoryId       String
   documentUrls         String
   applicantNote        String?
+  /// Optional declared job/order value in USD (operator may set when reviewing evidence).
+  declaredEvidenceValueUsd Decimal? @db.Decimal(18, 2)
   status               ProfessionRequestStatus @default(PENDING)
   reviewerNote         String?
   reviewedAt           DateTime?

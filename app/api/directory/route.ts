@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { computeTrustScore } from "@/lib/trust-score";
 import { requireSession } from "@/lib/api-auth";
+import { strengthLabelFromPoints } from "@/lib/trust-strength";
+import { getTrustStrengthConfig } from "@/lib/trust-strength-recalc";
 
 type DirectoryType = "CONTRACTOR" | "SUBCONTRACTOR" | "TEAM";
 
@@ -78,11 +80,15 @@ export async function GET(request: Request) {
       contractsCreated: {
         where: { status: "COMPLETED" },
         select: { id: true }
-      }
+      },
+      experienceScore: true,
+      strengthPoints: true
     },
     take: 100,
     orderBy: { createdAt: "desc" }
   });
+
+  const strengthConfig = await getTrustStrengthConfig();
 
   return NextResponse.json(
     users.map(user => {
@@ -125,6 +131,11 @@ export async function GET(request: Request) {
         }).length
       });
 
+      const isSubOrTeam = user.userType === "SUBCONTRACTOR" || user.userType === "TEAM";
+      const strengthLabel = isSubOrTeam
+        ? strengthLabelFromPoints(Number(user.strengthPoints), strengthConfig.strengthTiersJson)
+        : null;
+
       const contractorProjectTypes = user.contractorProjectTypes.map(
         u => u.projectType
       );
@@ -141,8 +152,10 @@ export async function GET(request: Request) {
         logoUrl: user.logoUrl,
         userType: user.userType,
         isVerified: user.isVerified,
-        trustScore: trust.score,
-        trustGrade: trust.grade,
+        experienceScore: isSubOrTeam ? user.experienceScore : null,
+        strengthLabel,
+        trustScore: isSubOrTeam ? user.experienceScore : trust.score,
+        trustGrade: isSubOrTeam ? strengthLabel : trust.grade,
         profileCompleteness: trust.profileCompleteness,
         documentCompleteness: trust.documentCompleteness,
         referenceCount: verifiedReferenceCount,
